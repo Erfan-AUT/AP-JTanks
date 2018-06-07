@@ -1,6 +1,7 @@
 package game.template.Graphics;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Animation {
@@ -85,10 +86,8 @@ public class Animation {
         this.showDelay = showDelay;
 
         timeOfAnimationCration = System.currentTimeMillis();
-
         startingXOfFrameInImage = 0;
         endingXOfFrameInImage = frameWidth;
-
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
@@ -202,6 +201,9 @@ public class Animation {
 
         if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis())
             g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+
     }
+
+
 
 }

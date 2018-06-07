@@ -40,17 +40,17 @@ public class GameFrame extends JFrame {
         //
         // Initialize the JFrame ...
         //
-        expAnimImages = new BufferedImage[8];
-        expAnimImageLocation = new File(".\\Move\\Robot");
+        expAnimImages = new BufferedImage[5];
+        expAnimImageLocation = new File(".\\Move\\Etank");
         expAnimImageLocations = expAnimImageLocation.listFiles();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 5; i++) {
             try {
                 expAnimImages[i] = ImageIO.read(expAnimImageLocations[i]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        expAnim = new Animation(expAnimImages, 500, 500, 8, 50, true, 400, 400, 0);
+        expAnim = new Animation(expAnimImages, 500, 500, 5, 50, true, 400, 400, 0);
 //        expAnimImageLocation = new File("explosion_anim.png");
 //        try {
 //            expAnimImage = ImageIO.read(expAnimImageLocation);
