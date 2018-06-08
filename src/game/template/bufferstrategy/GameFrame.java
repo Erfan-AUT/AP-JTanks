@@ -41,7 +41,7 @@ public class GameFrame extends JFrame {
         // Initialize the JFrame ...
         //
         expAnimImages = new BufferedImage[5];
-        expAnimImageLocation = new File(".\\Move\\Etank");
+        expAnimImageLocation = new File(".\\Move\\Etank2");
         expAnimImageLocations = expAnimImageLocation.listFiles();
         for (int i = 0; i < 5; i++) {
             try {
@@ -50,7 +50,7 @@ public class GameFrame extends JFrame {
                 e.printStackTrace();
             }
         }
-        expAnim = new Animation(expAnimImages, 500, 500, 5, 50, true, 400, 400, 0);
+        expAnim = new Animation(expAnimImages, 250, 250, 5, 50, true, 400, 400, 0);
 //        expAnimImageLocation = new File("explosion_anim.png");
 //        try {
 //            expAnimImage = ImageIO.read(expAnimImageLocation);
