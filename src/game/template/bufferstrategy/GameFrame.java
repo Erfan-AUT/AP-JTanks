@@ -1,7 +1,7 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
-import game.template.Graphics.Animation;
+import game.template.graphics.Animation;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -106,5 +106,11 @@ public class GameFrame extends JFrame {
             expAnim.drawImages(g2d);
         }
     }
+
+    public Graphics2D sendGraphics()
+    {
+        return (Graphics2D) bufferStrategy.getDrawGraphics();
+    }
+
 
 }

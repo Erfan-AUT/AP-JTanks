@@ -1,6 +1,8 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
+import game.template.graphics.Animation;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -66,7 +68,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * Game rendering with triple-buffering using BufferStrategy.
 	 */
-	public void render(GameState state) {
+	public void render(GameState state, Animation animation) {
 		// Render single frame
 		do {
 			// The following loop ensures that the contents of the drawing buffer
@@ -76,7 +78,7 @@ public class GameFrame extends JFrame {
 				// to make sure the strategy is validated
 				Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 				try {
-					doRendering(graphics, state);
+					doRendering(graphics, state, animation);
 				} finally {
 					// Dispose the graphics
 					graphics.dispose();
@@ -97,15 +99,15 @@ public class GameFrame extends JFrame {
 	/**
 	 * Rendering all game elements based on the game state.
 	 */
-	private void doRendering(Graphics2D g2d, GameState state) {
+	private void doRendering(Graphics2D g2d, GameState state, Animation animation) {
 		// Draw background
-		g2d.setColor(Color.GRAY);
+		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 		// Draw ball
-		g2d.setColor(Color.BLACK);
-		g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
+//		g2d.setColor(Color.BLACK);
+//		g2d.fillOval(state.locX, state.locY, state.diam, state.diam);
 
-		g2d.drawImage(image,state.locX,state.locY,null);
+		g2d.drawImage(animation.getAnimImage() ,state.locX,state.locY,null);
 
 
 		// Print FPS info

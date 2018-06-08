@@ -1,15 +1,26 @@
-package game.template.logic;
+package game.template.logic.cellfillers;
 
 import game.template.graphics.Animation;
+import game.template.logic.Map;
+import game.template.logic.objectstates.ObjectState;
 
 import java.awt.*;
 
+/**
+ * Game, I am your father.
+ * Basically is the blueprint for every visible thing in the game.
+ */
+
 public abstract class GameObject {
 
+    // Its animation.
     protected Animation animation;
     private boolean isDestructible;
     private int health;
-    private Map whichMap;
+    //Its map
+    protected Map whichMap;
+    //Its state, taken directly from the template's model for updating animate objects.
+    protected ObjectState state;
 
     public GameObject(boolean isDestructible, int health, Map whichMap) {
         this.isDestructible = isDestructible;
@@ -22,7 +33,11 @@ public abstract class GameObject {
             health -= damage;
     }
 
-//    protected void changeDimension(int x, int y) {
+    public ObjectState getState() {
+        return state;
+    }
+
+    //    protected void changeDimension(int x, int y) {
 //        int secX = this.x + x, secY = this.y + y;
 //        if ((whichMap.getHeight() >= secY) && (0 <= secY))
 //            this.y += y;

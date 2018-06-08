@@ -1,14 +1,20 @@
-package game.template.logic;
+package game.template.logic.objectstates;
 
 import java.awt.event.*;
+
+/**
+ * The state class belonging to the tanks controlled by user.
+ * Basically everything is a copy of Ghaffarian's code.
+ * The only noticeable thing is the rotational angle.
+ */
 
 public class UserTankState extends TankState {
 
 
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
-    private boolean rotating;
-    private boolean moving;
+    //Does it rotate?
+
     private boolean mousePress;
 
 
@@ -84,6 +90,7 @@ public class UserTankState extends TankState {
 
     /**
      * The mouse handler.
+     * Tries to find the angle between the line connecting the tank and the mouse.
      */
     class MouseHandler extends MouseAdapter {
         @Override
@@ -98,18 +105,5 @@ public class UserTankState extends TankState {
         }
     }
 
-    public boolean isRotating() {
-        return rotating;
-    }
 
-    public boolean isMoving() {
-        return moving;
-    }
-
-    // At the end of every gameFrame rendering, this method should be called to revert to the original state
-    // of not moving anything.
-    public void revertToZeroState() {
-        rotating = false;
-        moving = false;
-    }
 }

@@ -1,6 +1,10 @@
-package game.template.Graphics;
+package game.template.graphics;
 
-import java.awt.Graphics2D;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class Animation {
@@ -19,7 +23,7 @@ public class Animation {
     // Number of frames in the animation image.
     private int numberOfFrames;
 
-    // Amount of time between frames in milliseconds. (How many time in milliseconds will be one frame shown before showing next frame?)
+    // Amount of time between frames in milliseconds. (How much time in milliseconds will one frame be shown before showing next frame?)
     private long frameTime;
 
     // Time when the frame started showing. (We use this to calculate the time for the next frame.)
@@ -55,7 +59,10 @@ public class Animation {
     private long showDelay;
 
     // At what time was animation created.
-    private long timeOfAnimationCration;
+    private long timeOfAnimationCreation;
+
+    //Because it's the same thing being passed all over again.
+    private Graphics2D g2d;
 
 
     /**
@@ -71,20 +78,22 @@ public class Animation {
      * @param y              y coordinate. Where to draw the animation on the screen?
      * @param showDelay      In milliseconds. How long to wait before starting the animation and displaying it?
      */
-    public Animation(BufferedImage animImage, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
+    public Animation(BufferedImage animImage, int frameWidth, int frameHeight, int numberOfFrames,
+                     long frameTime, boolean loop, int x, int y, long showDelay, Graphics2D g2d) {
         this.animImage = animImage;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.numberOfFrames = numberOfFrames;
         this.frameTime = frameTime;
         this.loop = loop;
+        this.g2d = g2d;
 
         this.x = x;
         this.y = y;
 
         this.showDelay = showDelay;
 
-        timeOfAnimationCration = System.currentTimeMillis();
+        timeOfAnimationCreation = System.currentTimeMillis();
 
         startingXOfFrameInImage = 0;
         endingXOfFrameInImage = frameWidth;
@@ -109,7 +118,7 @@ public class Animation {
 
         this.showDelay = showDelay;
 
-        timeOfAnimationCration = System.currentTimeMillis();
+        timeOfAnimationCreation = System.currentTimeMillis();
 
         startingXOfFrameInImage = 0;
         endingXOfFrameInImage = frameWidth;
@@ -141,7 +150,8 @@ public class Animation {
             // Next frame.
             currentFrameNumber++;
 
-            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
+            // If the animation has reached the end, we restart it by setting current frame to zero.
+            // If the animation isn't loop then we set that animation isn't active.
             if (currentFrameNumber >= numberOfFrames) {
                 currentFrameNumber = 0;
 
@@ -193,15 +203,37 @@ public class Animation {
         this.Update();
 
         // Checks if show delay is over.
-        if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis())
+        if (this.timeOfAnimationCreation + this.showDelay <= System.currentTimeMillis())
             g2d.drawImage(animImage, x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
     }
 
     public void drawImages(Graphics2D g2d) {
         this.UpdateImages();
+        if (this.timeOfAnimationCreation + this.showDelay <= System.currentTimeMillis()) {
+            g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth,
+                    y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage,
+                    frameHeight, null);
+            animImage = animImages[currentFrameNumber];
+        }
 
-        if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis())
-            g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
     }
 
+    public void rotate(Graphics2D g2d, double angle) {
+        // The required drawing location,
+        int drawLocationX = 300;
+        int drawLocationY = 300;
+
+        // Rotation information
+        double locationX = animImage.getWidth() / 2;
+        double locationY = animImage.getHeight() / 2;
+        AffineTransform tx = AffineTransform.getRotateInstance(angle, locationX, locationY);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+        // Drawing the rotated image at the required drawing locations
+        g2d.drawImage(op.filter(animImage, null), drawLocationX, drawLocationY, null);
+    }
+
+    public BufferedImage getAnimImage() {
+        return animImage;
+    }
 }

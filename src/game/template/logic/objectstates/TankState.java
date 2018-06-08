@@ -1,9 +1,7 @@
 /*** In The Name of Allah ***/
-package game.template.logic;
+package game.template.logic.objectstates;
 
 import game.sample.ball.GameFrame;
-
-import java.awt.event.*;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -11,10 +9,17 @@ import java.awt.event.*;
  * 
  * @author Seyed Mohammad Ghaffarian
  */
-public abstract class TankState extends ObjectState {
+public class TankState extends ObjectState {
 
-	public boolean gameOver;
+    /**
+     * The state of every tank, you'll notice the similarities between this and the original code in the template.
+     * Added the rotating template to adjust the tank's cannon.
+     */
+
+    public boolean gameOver;
 	protected boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
+    protected boolean rotating;
+    protected boolean moving;
 	//protected boolean mousePress;
 	protected double rotatingAngle;
 	//private int mouseX, mouseY;
@@ -35,8 +40,9 @@ public abstract class TankState extends ObjectState {
 	}
 	
 	/**
-	 * The method which updates the game state.
+	 * The method which updates the tank's state.
 	 */
+	@Override
 	public void update() {
 		if (keyUP)
 			locY -= 8;
@@ -52,8 +58,24 @@ public abstract class TankState extends ObjectState {
 		locY = Math.max(locY, 0);
 		locY = Math.min(locY, GameFrame.GAME_HEIGHT - diam);
 	}
-	
-	
 
+    public double getRotatingAngle() {
+        return rotatingAngle;
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    // At the end of every gameFrame rendering, this method should be called to revert to the original state
+    // of not moving anything.
+    public void revertToZeroState() {
+        rotating = false;
+        moving = false;
+    }
 }
 

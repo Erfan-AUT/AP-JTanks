@@ -1,9 +1,9 @@
 package game.template.logic;
 
-public enum CellState {
+public enum CellType {
     USER_TANK,
-    DESTROYABLE_COMPUTER_TANK,
-    NON_DESTROYABLE_COMPUTER_TANK,
+    MOBILE_COMPUTER_TANK,
+    IMMBOBILE_COMPUTER_TANK,
     TREASURE,
     EMPTY,
     NON_BREAKABLE_BLOCK,

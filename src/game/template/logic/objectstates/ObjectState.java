@@ -1,5 +1,10 @@
-package game.template.logic;
+package game.template.logic.objectstates;
 
+
+/**
+ * The basic state of every visible game object.
+ * containing its location and diameter. (not set by default.)
+ */
 public class ObjectState {
     public int locX, locY, diam;
 
@@ -8,4 +13,6 @@ public class ObjectState {
         this.locY = locY;
         //diam = 32;
     }
+
+    public void update() { }
 }
