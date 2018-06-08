@@ -1,0 +1,12 @@
+package game.template.logic;
+
+public enum CellState {
+    USER_TANK,
+    DESTROYABLE_COMPUTER_TANK,
+    NON_DESTROYABLE_COMPUTER_TANK,
+    TREASURE,
+    EMPTY,
+    NON_BREAKABLE_BLOCK,
+    BREAKABLE_BLOCK,
+    BULLET_MOVING_THROUGH
+}
