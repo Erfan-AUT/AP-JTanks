@@ -41,7 +41,7 @@ public class GameFrame extends JFrame {
         // Initialize the JFrame ...
         //
         expAnimImages = new BufferedImage[5];
-        expAnimImageLocation = new File(".\\Move\\Etank2");
+        expAnimImageLocation = new File(".\\Move\\Etank3");
         expAnimImageLocations = expAnimImageLocation.listFiles();
         for (int i = 0; i < 5; i++) {
             try {
