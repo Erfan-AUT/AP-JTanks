@@ -1,6 +1,11 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
+import game.template.logic.Map;
+import game.template.logic.cellfillers.Bullet;
+import game.template.logic.cellfillers.GameObject;
+import game.template.logic.cellfillers.Tank;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,6 +30,8 @@ public class GameState {
 	private int mouseX, mouseY;	
 	private KeyHandler keyHandler;
 	private MouseHandler mouseHandler;
+	private Map map;
+
 	
 	public GameState() {
 		locX = 100;
@@ -43,6 +50,8 @@ public class GameState {
 		//
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
+
+		map = new Map(1);
 	}
 	
 	/**
@@ -66,6 +75,24 @@ public class GameState {
 		locX = Math.min(locX, GameFrame.GAME_WIDTH - diam);
 		locY = Math.max(locY, 0);
 		locY = Math.min(locY, GameFrame.GAME_HEIGHT - diam);
+
+        /**
+         * cross-checks all bullets with all destructible objects to see whether or not they collide.
+         */
+
+        for (GameObject bullet : map.getVisibleObjects()) {
+            if (bullet instanceof Bullet) {
+                boolean collision;
+                for (GameObject target : map.getVisibleObjects() ) {
+                    if (target.isDestructible()) {
+                        if (collision = checkIfTwoObjectsCollide(bullet, target)) {
+                            target.takeDamage(((Bullet) bullet).getDamage());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 	}
 	
 	
@@ -78,6 +105,19 @@ public class GameState {
 	public MouseMotionListener getMouseMotionListener() {
 		return mouseHandler;
 	}
+	public Map getMap() { return map; }
+
+	public static boolean checkIfTwoObjectsCollide(GameObject one, GameObject two)
+    {
+        int deltaX = one.getState().locX - two.getState().locX;
+        int deltaY = one.getState().locY - two.getState().locY;
+        //double distance = Math.pow(deltaX + deltaY, 0.5);
+        //double angle = Math.atan(deltaY / deltaX);
+        if ((0 >= deltaY - one.getHeight() - two.getHeight()) && (0 >= deltaX - one.getWidth() - two.getWidth()))
+            return true;
+        return false;
+    }
+
 
 
 

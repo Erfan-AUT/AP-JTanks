@@ -62,7 +62,7 @@ public class Animation {
     private long timeOfAnimationCreation;
 
     //Because it's the same thing being passed all over again.
-    private Graphics2D g2d;
+//    private Graphics2D g2d;
 
 
     /**
@@ -79,14 +79,14 @@ public class Animation {
      * @param showDelay      In milliseconds. How long to wait before starting the animation and displaying it?
      */
     public Animation(BufferedImage animImage, int frameWidth, int frameHeight, int numberOfFrames,
-                     long frameTime, boolean loop, int x, int y, long showDelay, Graphics2D g2d) {
+                     long frameTime, boolean loop, int x, int y, long showDelay) {
         this.animImage = animImage;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.numberOfFrames = numberOfFrames;
         this.frameTime = frameTime;
         this.loop = loop;
-        this.g2d = g2d;
+        //this.g2d = g2d;
 
         this.x = x;
         this.y = y;
@@ -218,10 +218,10 @@ public class Animation {
 
     }
 
-    public void rotate(Graphics2D g2d, double angle) {
+    public void rotate(double angle) {
         // The required drawing location,
-        int drawLocationX = 300;
-        int drawLocationY = 300;
+//        int drawLocationX = 300;
+//        int drawLocationY = 300;
 
         // Rotation information
         double locationX = animImage.getWidth() / 2;
@@ -230,10 +230,18 @@ public class Animation {
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
         // Drawing the rotated image at the required drawing locations
-        g2d.drawImage(op.filter(animImage, null), drawLocationX, drawLocationY, null);
+        //g2d.drawImage(op.filter(animImage, null), drawLocationX, drawLocationY, null);
     }
 
     public BufferedImage getAnimImage() {
         return animImage;
+    }
+
+    public int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public int getFrameHeight() {
+        return frameHeight;
     }
 }

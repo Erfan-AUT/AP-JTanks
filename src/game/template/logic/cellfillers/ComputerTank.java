@@ -7,8 +7,8 @@ public class ComputerTank extends Tank {
     private boolean isMobile;
     private char type;
 
-    public ComputerTank(int y, int x, boolean isDestructible, int health, Map whichMap) {
-        super(isDestructible, health, whichMap);
+    public ComputerTank(int y, int x, int health, Map whichMap) {
+        super(health, whichMap);
         state = new ComputerTankState(y, x);
     }
 

@@ -6,7 +6,7 @@ package game.template.logic.objectstates;
  * containing its location and diameter. (not set by default.)
  */
 public class ObjectState {
-    public int locX, locY, diam;
+    public int locX, locY;
 
     public ObjectState(int locY, int locX) {
         this.locX = locX;
@@ -14,5 +14,5 @@ public class ObjectState {
         //diam = 32;
     }
 
-    public void update() { }
+    protected void update() {}
 }

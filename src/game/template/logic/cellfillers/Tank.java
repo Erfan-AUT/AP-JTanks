@@ -30,7 +30,7 @@ public abstract class Tank extends GameObject {
             check = true;
         }
         if (check)
-            new Bullet(state.locY, state.locX, true, 0,
+            new Bullet(state.locY, state.locX, 0,
                     this.whichMap, ((TankState) state).getRotatingAngle(), currentWeaponType);
     }
 

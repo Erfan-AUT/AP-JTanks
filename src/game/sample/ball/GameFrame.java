@@ -2,6 +2,7 @@
 package game.sample.ball;
 
 import game.template.graphics.Animation;
+import game.template.logic.cellfillers.GameObject;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -68,7 +69,7 @@ public class GameFrame extends JFrame {
 	/**
 	 * Game rendering with triple-buffering using BufferStrategy.
 	 */
-	public void render(GameState state, Animation animation) {
+	public void render(GameState state) {
 		// Render single frame
 		do {
 			// The following loop ensures that the contents of the drawing buffer
@@ -78,7 +79,8 @@ public class GameFrame extends JFrame {
 				// to make sure the strategy is validated
 				Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 				try {
-					doRendering(graphics, state, animation);
+				    for (GameObject object : state.getMap().getVisibleObjects())
+                        doRendering(graphics, state, object.getAnimation());
 				} finally {
 					// Dispose the graphics
 					graphics.dispose();

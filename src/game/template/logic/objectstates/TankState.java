@@ -2,6 +2,9 @@
 package game.template.logic.objectstates;
 
 import game.sample.ball.GameFrame;
+import game.sample.ball.GameState;
+import game.template.logic.cellfillers.GameObject;
+import game.template.logic.cellfillers.Tank;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -20,13 +23,14 @@ public class TankState extends ObjectState {
 	protected boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
     protected boolean rotating;
     protected boolean moving;
+    private Tank source;
 	//protected boolean mousePress;
 	protected double rotatingAngle;
 	//private int mouseX, mouseY;
 	
-	public TankState(int y, int x) {
+	public TankState(int y, int x, Tank source) {
 	    super(y, x);
-		diam = 32;
+		//diam = 32;
 		gameOver = false;
 		//
 		keyUP = false;
@@ -36,6 +40,7 @@ public class TankState extends ObjectState {
 		//
 		//mousePress = false;
 		//
+        this.source = source;
 
 	}
 	
@@ -45,19 +50,29 @@ public class TankState extends ObjectState {
 	@Override
 	public void update() {
 		if (keyUP)
-			locY -= 8;
+            locY -= (8 + avoidCollision());
 		if (keyDOWN)
-			locY += 8;
+			locY += (8 + avoidCollision());
 		if (keyLEFT)
-			locX -= 8;
+			locX -= (8 + avoidCollision());
 		if (keyRIGHT)
-		    locX += 8;
+		    locX += (8 + avoidCollision());
 
 		locX = Math.max(locX, 0);
-		locX = Math.min(locX, GameFrame.GAME_WIDTH - diam);
+		locX = Math.min(locX, GameFrame.GAME_WIDTH - source.getWidth());
 		locY = Math.max(locY, 0);
-		locY = Math.min(locY, GameFrame.GAME_HEIGHT - diam);
+		locY = Math.min(locY, GameFrame.GAME_HEIGHT - source.getHeight());
 	}
+
+	private int avoidCollision()
+    {
+        for (GameObject object : source.getWhichMap().getVisibleObjects())
+            if (object != source)
+                if (GameState.checkIfTwoObjectsCollide(object, source))
+                    return -8;
+        return 0;
+    }
+
 
     public double getRotatingAngle() {
         return rotatingAngle;

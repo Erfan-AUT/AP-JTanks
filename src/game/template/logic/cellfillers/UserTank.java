@@ -9,8 +9,8 @@ import java.awt.event.MouseEvent;
 
 public class UserTank extends Tank {
 
-    public UserTank(int y, int x, boolean isDestructible, int health, Map whichMap) {
-        super(isDestructible, health, whichMap);
+    public UserTank(int y, int x, int health, Map whichMap) {
+        super(health, whichMap);
         state = new UserTankState(y, x);
     }
 

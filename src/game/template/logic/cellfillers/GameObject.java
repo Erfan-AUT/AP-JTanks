@@ -17,8 +17,10 @@ public abstract class GameObject {
     protected Animation animation;
     private boolean isDestructible;
     private int health;
+
     //Its map
     protected Map whichMap;
+
     //Its state, taken directly from the template's model for updating animate objects.
     protected ObjectState state;
 
@@ -37,6 +39,24 @@ public abstract class GameObject {
         return state;
     }
 
+    public int getHeight()
+    {
+        return animation.getFrameHeight();
+    }
+
+    public int getWidth()
+    {
+        return animation.getFrameWidth();
+    }
+
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    public boolean isDestructible() {
+        return isDestructible;
+    }
+
     //    protected void changeDimension(int x, int y) {
 //        int secX = this.x + x, secY = this.y + y;
 //        if ((whichMap.getHeight() >= secY) && (0 <= secY))
@@ -46,5 +66,7 @@ public abstract class GameObject {
 //    }
 
 
-
+    public Map getWhichMap() {
+        return whichMap;
+    }
 }
