@@ -118,9 +118,6 @@ public class GameState {
         return false;
     }
 
-
-
-
 	/**
 	 * The keyboard handler.
 	 */

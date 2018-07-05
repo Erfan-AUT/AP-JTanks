@@ -22,6 +22,8 @@ public class Map implements Serializable {
      * To load from scratch,
      * each line in the text file represents a row of the actual map:
      * and its format is: Type-x-y.
+     * post-b is for bullet-passable
+     * post-t is for tank-passable
      * e = empty, d = destroyable block, n = non-destroyable block, u = userTank,
      * c = computerTank.
      */
@@ -33,16 +35,22 @@ public class Map implements Serializable {
             int y = data.y, x = data.x;
             switch (data.type)
             {
-                case 'd':
-                    allObjects.add(new Block(y, x, true, 10, this));
+                case "dt":
+                    allObjects.add(new Block(y, x, true, 10, this, 0));
                     break;
-                case 'n':
-                    allObjects.add(new Block(y, x, false, 10, this));
+                case "n":
+                    allObjects.add(new Block(y, x, false, 10, this, 2));
                     break;
-                case 'u':
-                    allObjects.add(new UserTank(y, x,100, this ));
+                case "db":
+                    allObjects.add(new Block(y, x, true, 10, this, 1));
                     break;
-                case 'c':
+                case "nb":
+                    allObjects.add(new Block(y, x, false, 10, this, 1));
+                    break;
+                case "u":
+                    allObjects.add(new UserTank(y, x,100, this));
+                    break;
+                case "c":
                     allObjects.add(new ComputerTank(y, x, 100, this));
                     break;
             }
@@ -95,13 +103,13 @@ public class Map implements Serializable {
     {
         public int y;
         public int x;
-        public char type;
+        public String type;
 
         public MapData(String value) {
             String[] values = value.split("-");
             this.y = Integer.parseInt(values[0]);
             this.x = Integer.parseInt(values[1]);
-            this.type = values[2].toCharArray()[0];
+            this.type = values[2];
         }
     }
 }

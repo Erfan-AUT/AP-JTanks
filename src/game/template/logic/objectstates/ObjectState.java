@@ -14,5 +14,5 @@ public class ObjectState {
         //diam = 32;
     }
 
-    protected void update() {}
+    public void update() {}
 }

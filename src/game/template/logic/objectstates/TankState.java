@@ -3,6 +3,7 @@ package game.template.logic.objectstates;
 
 import game.sample.ball.GameFrame;
 import game.sample.ball.GameState;
+import game.template.logic.cellfillers.Block;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.Tank;
 
@@ -23,7 +24,7 @@ public class TankState extends ObjectState {
 	protected boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
     protected boolean rotating;
     protected boolean moving;
-    private Tank source;
+    protected Tank source;
 	//protected boolean mousePress;
 	protected double rotatingAngle;
 	//private int mouseX, mouseY;
@@ -44,39 +45,26 @@ public class TankState extends ObjectState {
 
 	}
 	
-	/**
-	 * The method which updates the tank's state.
-	 */
-	@Override
-	public void update() {
-		if (keyUP)
-            locY -= (8 + avoidCollision());
-		if (keyDOWN)
-			locY += (8 + avoidCollision());
-		if (keyLEFT)
-			locX -= (8 + avoidCollision());
-		if (keyRIGHT)
-		    locX += (8 + avoidCollision());
 
-		locX = Math.max(locX, 0);
-		locX = Math.min(locX, GameFrame.GAME_WIDTH - source.getWidth());
-		locY = Math.max(locY, 0);
-		locY = Math.min(locY, GameFrame.GAME_HEIGHT - source.getHeight());
-	}
 
-	private int avoidCollision()
+	public int avoidCollision()
     {
-        for (GameObject object : source.getWhichMap().getVisibleObjects())
-            if (object != source)
-                if (GameState.checkIfTwoObjectsCollide(object, source))
-                    return -8;
+        for (GameObject object : source.getWhichMap().getVisibleObjects()) {
+            if (object != source) {
+                if (GameState.checkIfTwoObjectsCollide(object, source)) {
+                    if (object instanceof Block) {
+                        if (((Block) object).isPassableByTank())
+                            return -8;
+                    }
+                    else
+                        return -8;
+                }
+            }
+        }
         return 0;
     }
 
 
-    public double getRotatingAngle() {
-        return rotatingAngle;
-    }
 
     public boolean isRotating() {
         return rotating;

@@ -30,6 +30,8 @@ public abstract class GameObject {
         this.whichMap = whichMap;
     }
 
+    public void update(){}
+
     public void takeDamage(int damage) {
         if (isDestructible)
             health -= damage;

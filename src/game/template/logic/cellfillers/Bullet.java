@@ -7,8 +7,8 @@ public class Bullet extends GameObject {
     private char type;
     private int damage;
 
-    public Bullet(int y, int x, int health, Map whichMap, double shootingAngle, char type) {
-        super(true, health, whichMap);
+    public Bullet(int y, int x, Map whichMap, double shootingAngle, char type) {
+        super(true, 0, whichMap);
         state = new BulletState(y, x, shootingAngle);
         this.type = type;
         if (type == 'c')
@@ -19,5 +19,10 @@ public class Bullet extends GameObject {
 
     public int getDamage() {
         return damage;
+    }
+
+    @Override
+    public void update() {
+        state.update();
     }
 }

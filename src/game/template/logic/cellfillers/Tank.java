@@ -19,19 +19,7 @@ public abstract class Tank extends GameObject {
     }
 
     protected void shoot() {
-        boolean check = false;
-        if (currentWeaponType == 'c') {
-            if (cannonCount >= 1) {
-                cannonCount--;
-                check = true;
-            }
-        } else if (rifleCount >= 1) {
-            rifleCount--;
-            check = true;
-        }
-        if (check)
-            new Bullet(state.locY, state.locX, 0,
-                    this.whichMap, ((TankState) state).getRotatingAngle(), currentWeaponType);
+
     }
 
     protected void changeWeapon() {
@@ -39,6 +27,36 @@ public abstract class Tank extends GameObject {
             currentWeaponType = 'r';
         else
             currentWeaponType = 'c';
+    }
+
+    public char getCurrentWeaponType() {
+        return currentWeaponType;
+    }
+
+    public int getCannonCount() {
+        return cannonCount;
+    }
+
+    public boolean decreaseCannonCount() {
+        cannonCount--;
+        if (cannonCount < 0) {
+            cannonCount = 0;
+            return false;
+        }
+        return true;
+    }
+
+    public int getRifleCount() {
+        return rifleCount;
+    }
+
+    public boolean decreaseRifleCount() {
+        rifleCount--;
+        if (rifleCount < 0) {
+            rifleCount = 0;
+            return false;
+        }
+        return true;
     }
 
 

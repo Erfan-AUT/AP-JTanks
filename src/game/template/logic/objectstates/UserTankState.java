@@ -1,5 +1,8 @@
 package game.template.logic.objectstates;
 
+import game.sample.ball.GameFrame;
+import game.template.logic.cellfillers.UserTank;
+
 import java.awt.event.*;
 
 /**
@@ -18,8 +21,8 @@ public class UserTankState extends TankState {
     private boolean mousePress;
 
 
-    public UserTankState(int locY, int locX) {
-        super(locY, locX);
+    public UserTankState(int locY, int locX, UserTank source) {
+        super(locY, locX, source);
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
         mousePress = false;
@@ -86,6 +89,38 @@ public class UserTankState extends TankState {
             }
         }
 
+    }
+
+    /**
+     * The method which updates the tank's state.
+     */
+    @Override
+    public void update() {
+        if (keyUP) {
+            locY -= 8;
+            locY -= avoidCollision();
+        }
+        if (keyDOWN) {
+            locY += 8 ;
+            locY += avoidCollision();
+        }
+        if (keyLEFT) {
+            locX -= 8;
+            locX -= avoidCollision();
+        }
+        if (keyRIGHT) {
+            locX += 8;
+            locX -= avoidCollision();
+        }
+
+        locX = Math.max(locX, 0);
+        locX = Math.min(locX, GameFrame.GAME_WIDTH - source.getWidth());
+        locY = Math.max(locY, 0);
+        locY = Math.min(locY, GameFrame.GAME_HEIGHT - source.getHeight());
+    }
+
+    public double getRotatingAngle() {
+        return rotatingAngle;
     }
 
     /**
