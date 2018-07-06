@@ -30,7 +30,7 @@ public class TankState extends ObjectState {
 	//private int mouseX, mouseY;
 	
 	public TankState(int y, int x, Tank source) {
-	    super(y, x);
+	    super(y, x, source.getWhichMap());
 		//diam = 32;
 		gameOver = false;
 		//
@@ -44,8 +44,6 @@ public class TankState extends ObjectState {
         this.source = source;
 
 	}
-	
-
 
 	public int avoidCollision()
     {
@@ -53,18 +51,18 @@ public class TankState extends ObjectState {
             if (object != source) {
                 if (GameState.checkIfTwoObjectsCollide(object, source)) {
                     if (object instanceof Block) {
-                        if (((Block) object).isPassableByTank())
+                        if (!((Block) object).isPassableByTank())
                             return -8;
                     }
                     else
                         return -8;
                 }
+                else if (!whichMap.doesntGoOutOfMap(source, false))
+                    return -8;
             }
         }
         return 0;
     }
-
-
 
     public boolean isRotating() {
         return rotating;

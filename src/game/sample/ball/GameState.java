@@ -23,7 +23,7 @@ import java.awt.event.MouseMotionListener;
 public class GameState {
 	
 	public int locX, locY, diam;
-	public boolean gameOver;
+	public static boolean gameOver;
 	
 	private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
 	private boolean mousePress;
@@ -111,8 +111,12 @@ public class GameState {
     {
         int deltaX = one.getState().locX - two.getState().locX;
         int deltaY = one.getState().locY - two.getState().locY;
-        //double distance = Math.pow(deltaX + deltaY, 0.5);
-        //double angle = Math.atan(deltaY / deltaX);
+        //Soon to be replaced when the rotating angle is considered.
+        // division by 2 is important because only half of it counts.
+//        int height1 = Math.abs(one.getHeight() * Math.sin(one.getAnimation().getAngle()) / 2);
+//        int width1 = Math.abs(one.getWidth() * Math.cos(one.getAnimation().getAngle()) / 2);
+//        int height2 = Math.abs(two.getHeight() * Math.sin(two.getAnimation().getAngle()) / 2);
+//        int width2 = Math.abs(two.getWidth() * Math.cos(two.getAnimation().getAngle()) / 2);
         if ((0 >= deltaY - one.getHeight() - two.getHeight()) && (0 >= deltaX - one.getWidth() - two.getWidth()))
             return true;
         return false;

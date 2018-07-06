@@ -16,6 +16,7 @@ public abstract class GameObject {
     // Its animation.
     protected Animation animation;
     private boolean isDestructible;
+    private boolean isAlive;
     private int health;
 
     //Its map
@@ -57,6 +58,22 @@ public abstract class GameObject {
 
     public boolean isDestructible() {
         return isDestructible;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     //    protected void changeDimension(int x, int y) {

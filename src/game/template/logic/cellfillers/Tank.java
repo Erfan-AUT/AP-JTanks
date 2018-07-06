@@ -18,9 +18,8 @@ public abstract class Tank extends GameObject {
         cannonCount = 50;
     }
 
-    protected void shoot() {
+    protected abstract void shoot();
 
-    }
 
     protected void changeWeapon() {
         if (currentWeaponType == 'c')

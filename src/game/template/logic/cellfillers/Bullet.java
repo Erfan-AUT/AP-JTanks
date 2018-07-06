@@ -24,5 +24,7 @@ public class Bullet extends GameObject {
     @Override
     public void update() {
         state.update();
+        if (whichMap.doesntGoOutOfMap(this, true))
+            setAlive(false);
     }
 }

@@ -10,10 +10,13 @@ public class ComputerTank extends Tank {
     private boolean isMobile;
     private char type;
     private UserTank enemyTank = null;
+    private boolean temporarilyDisabled = true;
 
     public ComputerTank(int y, int x, int health, Map whichMap) {
         super(health, whichMap);
         state = new ComputerTankState(y, x, this);
+        if (whichMap.doesntGoOutOfMap(this, true))
+            temporarilyDisabled = false;
     }
 
     /**
@@ -40,6 +43,7 @@ public class ComputerTank extends Tank {
         }
     }
 
+    @Override
     public void shoot() {
         findEnemyTank();
         double angle = Math.atan((enemyTank.state.locY - state.locY) / (enemyTank.state.locX - state.locX));
@@ -49,9 +53,25 @@ public class ComputerTank extends Tank {
 
     @Override
     public void update() {
-        if (isMobile)
+        if (isMobile && validateAbility())
             move();
-        shoot();
+        if (!temporarilyDisabled)
+            shoot();
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        super.takeDamage(damage);
+        if (getHealth() < 0)
+            setAlive(false);
+    }
+
+    private boolean validateAbility() {
+        if (whichMap.doesntGoOutOfMap(this, true))
+            temporarilyDisabled = false;
+        else
+            temporarilyDisabled = true;
+        return !temporarilyDisabled;
     }
 }
 
