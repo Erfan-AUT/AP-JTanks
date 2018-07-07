@@ -62,7 +62,7 @@ public class Map implements Serializable {
                     allObjects.add(mainTank);
                     break;
                 case "c":
-                    allObjects.add(new ComputerTank(y, x, 100, this));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false));
                     break;
             }
         }
@@ -99,11 +99,16 @@ public class Map implements Serializable {
         ArrayList<String> read = FileUtils.readWithStream(fileName);
         ArrayList<MapData> returnValue = new ArrayList<>();
         for (String s : read) {
-            StringBuilder value = new StringBuilder("");
-            for (char c : s.toCharArray())
+            StringBuilder value = new StringBuilder();
+            for (char c : s.toCharArray()) {
                 if (c != ' ')
                     value.append(c);
-            returnValue.add(new MapData(value.toString()));
+                else {
+                    returnValue.add(new MapData(value.toString()));
+                    value.delete(0, value.length());
+                }
+
+            }
         }
         return returnValue;
     }
@@ -150,9 +155,9 @@ public class Map implements Serializable {
 
         public MapData(String value) {
             String[] values = value.split("-");
-            this.y = Integer.parseInt(values[0]);
-            this.x = Integer.parseInt(values[1]);
-            this.type = values[2];
+            this.y = Integer.parseInt(values[1]);
+            this.x = Integer.parseInt(values[2]);
+            this.type = values[0];
         }
     }
 }

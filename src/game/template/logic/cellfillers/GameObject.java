@@ -76,6 +76,7 @@ public abstract class GameObject {
         isAlive = alive;
     }
 
+    public int getDamage(){return  0;}
     //    protected void changeDimension(int x, int y) {
 //        int secX = this.x + x, secY = this.y + y;
 //        if ((whichMap.getHeight() >= secY) && (0 <= secY))

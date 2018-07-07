@@ -33,7 +33,7 @@ public class UserTank extends Tank {
     }
 
     @Override
-    protected void shoot() {
+    public void shoot() {
         boolean check;
         if (getCurrentWeaponType() == 'c')
             check = decreaseCannonCount();

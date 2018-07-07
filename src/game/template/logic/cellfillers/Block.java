@@ -15,7 +15,7 @@ public class Block extends GameObject {
 
     public Block(int y, int x, boolean isDestructible, int health, Map whichMap, int pass) {
         super(isDestructible, health, whichMap);
-        state = new ObjectState(y, x);
+        state = new ObjectState(y, x, whichMap);
         if (pass == 1)
             isPassableByBullet = true;
         if (pass == 0)

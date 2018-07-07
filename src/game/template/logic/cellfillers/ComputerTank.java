@@ -11,12 +11,15 @@ public class ComputerTank extends Tank {
     private char type;
     private UserTank enemyTank = null;
     private boolean temporarilyDisabled = true;
+    private boolean doesCollisionDamageUserTank;
+    private int damageInCaseCollisionIsDestructive = 2;
 
-    public ComputerTank(int y, int x, int health, Map whichMap) {
+    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank) {
         super(health, whichMap);
         state = new ComputerTankState(y, x, this);
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
+        this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
     }
 
     /**
@@ -73,6 +76,16 @@ public class ComputerTank extends Tank {
             temporarilyDisabled = true;
         return !temporarilyDisabled;
     }
+
+    public boolean isDoesCollisionDamageUserTank() {
+        return doesCollisionDamageUserTank;
+    }
+
+    @Override
+    public int getDamage() {
+        return damageInCaseCollisionIsDestructive;
+    }
+
 }
 
 

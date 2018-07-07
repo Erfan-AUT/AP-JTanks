@@ -1,6 +1,7 @@
 package game.template.logic.objectstates;
 
 import game.template.graphics.Animation;
+import game.template.logic.Map;
 
 /**
  * The state of every bullet in the game.
@@ -20,8 +21,8 @@ public class BulletState extends ObjectState {
     private int mainSpeed;
     private Animation animation;
 
-    public BulletState(int locY, int locX, double shootingAngle) {
-        super(locY, locX);
+    public BulletState(int locY, int locX, double shootingAngle, Map whichMap) {
+        super(locY, locX, whichMap);
         this.shootingAngle = shootingAngle;
         mainSpeed = 8;
     }

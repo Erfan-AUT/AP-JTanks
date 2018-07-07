@@ -1,5 +1,6 @@
 package game.template.logic.cellfillers;
 
+import game.sample.ball.GameState;
 import game.template.logic.Map;
 import game.template.logic.objectstates.BulletState;
 
@@ -9,7 +10,7 @@ public class Bullet extends GameObject {
 
     public Bullet(int y, int x, Map whichMap, double shootingAngle, char type) {
         super(true, 0, whichMap);
-        state = new BulletState(y, x, shootingAngle);
+        state = new BulletState(y, x, shootingAngle, whichMap);
         this.type = type;
         if (type == 'c')
             damage = 200;
@@ -17,6 +18,7 @@ public class Bullet extends GameObject {
             damage = 100;
     }
 
+    @Override
     public int getDamage() {
         return damage;
     }

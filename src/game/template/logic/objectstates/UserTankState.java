@@ -101,7 +101,7 @@ public class UserTankState extends TankState {
             locY -= avoidCollision();
         }
         if (keyDOWN) {
-            locY += 8 ;
+            locY += 8;
             locY += avoidCollision();
         }
         if (keyLEFT) {
@@ -137,6 +137,7 @@ public class UserTankState extends TankState {
         @Override
         public void mousePressed(MouseEvent e) {
             mousePress = true;
+            ((UserTank) source).shoot();
         }
     }
 
