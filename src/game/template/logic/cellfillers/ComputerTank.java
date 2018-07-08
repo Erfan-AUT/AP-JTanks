@@ -1,6 +1,5 @@
 package game.template.logic.cellfillers;
 
-import game.sample.ball.GameState;
 import game.template.logic.Map;
 
 public class ComputerTank extends Tank {
@@ -12,8 +11,7 @@ public class ComputerTank extends Tank {
     private int damageInCaseCollisionIsDestructive = 2;
 
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
-        super(health, whichMap, location);
-        state = new ComputerTankState(y, x, this);
+        super(y, x, health, whichMap, location);
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
@@ -25,14 +23,13 @@ public class ComputerTank extends Tank {
     public void move() {
         if (isMobile) {
             findEnemyTank();
-            int ySign = (state.locY - enemyTank.state.locY) / Math.abs(state.locY - enemyTank.state.locY);
-            int plusY = 8 * ySign;
-            state.locY += plusY;
-            state.locY += ((TankState) state).avoidCollision() * ySign;
-            int xSign = (state.locX - enemyTank.state.locX) / Math.abs(state.locX - enemyTank.state.locX);
-            int plusX = 8 * xSign;
-            state.locX += plusX;
-            state.locX += ((TankState) state).avoidCollision();
+            int ySign = (locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
+            int plusY = velocity * ySign;
+            locY += plusY;
+            locY += avoidCollision() * ySign;
+            int xSign = (locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
+            int plusX = velocity * xSign;
+            locX += plusX + avoidCollision() * xSign;
         }
     }
 
@@ -48,8 +45,8 @@ public class ComputerTank extends Tank {
     @Override
     public void shoot() {
         findEnemyTank();
-        double angle = Math.atan((enemyTank.state.locY - state.locY) / (enemyTank.state.locX - state.locX));
-        new Bullet(state.locY, state.locX, this.whichMap, angle, getCurrentWeaponType());
+        double angle = Math.atan((enemyTank.locY - locY) / (enemyTank.locX - locX));
+        new Bullet(locY, locX, this.whichMap, angle, getCurrentWeaponType(), "Bullet Location");
     }
 
 

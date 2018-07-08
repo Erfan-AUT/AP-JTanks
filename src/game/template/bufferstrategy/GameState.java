@@ -2,10 +2,7 @@
 package game.template.bufferstrategy;
 
 import game.template.logic.Map;
-import game.template.logic.cellfillers.Bullet;
-import game.template.logic.cellfillers.ComputerTank;
-import game.template.logic.cellfillers.GameObject;
-import game.template.logic.cellfillers.UserTank;
+import game.template.logic.cellfillers.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -30,6 +27,12 @@ public class GameState {
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
     private Map map;
+    private Tank playerTank;
+
+    public Tank getPlayerTank() {
+        return playerTank;
+    }
+
     public static boolean gameOver;
 
 
@@ -47,6 +50,7 @@ public class GameState {
         mouseY = 0;
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
+        playerTank = new UserTank(50, 50, 100, null,
         //map = new Map(1);
     }
 

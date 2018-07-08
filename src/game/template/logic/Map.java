@@ -1,5 +1,6 @@
 package game.template.logic;
 
+import game.template.bufferstrategy.GameState;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
 import game.template.logic.utils.FileUtils;

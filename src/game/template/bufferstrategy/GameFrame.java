@@ -39,25 +39,6 @@ public class GameFrame extends JFrame {
         setSize(GAME_WIDTH, GAME_HEIGHT);
         //
         // Initialize the JFrame ...
-        //
-        expAnimImages = new BufferedImage[4];
-        expAnimImageLocation = new File(".\\Move");
-        expAnimImageLocations = expAnimImageLocation.listFiles();
-        for (int i = 0; i < 4; i++) {
-            try {
-                expAnimImages[i] = ImageIO.read(expAnimImageLocations[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        expAnim = new Animation(expAnimImages, 500, 500, 4, 50, true, 400, 400, 0);
-//        expAnimImageLocation = new File("explosion_anim.png");
-//        try {
-//            expAnimImage = ImageIO.read(expAnimImageLocation);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        expAnim = new Animation(expAnimImage, 134, 134, 12, 20, true, 400, 400, 0);
     }
 
     /**
@@ -101,16 +82,22 @@ public class GameFrame extends JFrame {
         //
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-        if (expAnim.active) {
-            expAnim.drawImages(g2d);
+        if (state.getPlayerTank().getAnimation().active) {
+            if (state.getPlayerTank().isForward()) {
+//                g2d.drawImage(state.getPlayerTank().getTankImages()[4],state.getPlayerTank().getCannonX(),state.getPlayerTank().getCannonY(),state.getPlayerTank().getCannonX() + 200, state.getPlayerTank().getCannonX() +200,0,0,200,200,null);
+                state.getPlayerTank().getAnimation().drawImages(g2d);
+            } else {
+                state.getPlayerTank().getAnimation().drawImagesReverse(g2d);
+            }
+        } else {
+            state.getPlayerTank().getAnimation().drawOnlyTheCurrentFrame(g2d);
         }
+//
+//        if (expAnim.active) {
+//            expAnim.drawImages(g2d);
+//        } else {
+//            expAnim.drawOnlyTheCurrentFrame(g2d);
+//        }
     }
-
-    public Graphics2D sendGraphics()
-    {
-        return (Graphics2D) bufferStrategy.getDrawGraphics();
-    }
-
 
 }

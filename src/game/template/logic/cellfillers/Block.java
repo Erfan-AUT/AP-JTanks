@@ -7,7 +7,6 @@ import game.template.logic.Map;
  */
 public class Block extends GameObject {
 
-    private ObjectState state;
     //Whether or not tanks or bullets can pass through it.
     private boolean isPassableByTank = false;
     private boolean isPassableByBullet = false;
@@ -23,7 +22,6 @@ public class Block extends GameObject {
                 break;
         }
         //Any other means non-passable.
-        state = new ObjectState(y, x, whichMap);
     }
 
     public boolean isPassableByTank() {
