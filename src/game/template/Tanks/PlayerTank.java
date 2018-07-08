@@ -1,5 +1,6 @@
 package game.template.Tanks;
 
+import game.template.Bullet;
 import game.template.Graphics.Animation;
 import game.template.bufferstrategy.GameState;
 
@@ -13,7 +14,7 @@ public class PlayerTank extends Tank {
     private int rotationDegree;
 
     public PlayerTank(GameState state) {
-        super("./Move/00");
+        super("./Move/Tank", "./Bullet/HeavyBullet.png");
         this.state = state;
         rotationDegree = 90;
         setVelocity(10);
@@ -200,17 +201,33 @@ public class PlayerTank extends Tank {
         tankMove.setMovingRotationDeg(getAngle());
     }
 
-    private void rotateTheCannon() {
+    private double rotateTheCannon() {
         int dx = state.getMouseX() - (getX() + 10);
         int dy = state.getMouseY() - (getY() + 20);
         double deg = Math.atan2(dy, dx);
         tankMove.setCannonRotationDeg(deg);
+        return deg;
     }
 
     public void update() {
         rotate();
         move();
-        rotateTheCannon();
+        double deg = rotateTheCannon();
+        if (state.isMouseLeftClickPressed()) {
+            tankMove.getBullets().add(shoot(deg));
+        }
     }
 
+    @Override
+    protected Bullet shoot(double deg) {
+        int xSign = (int) (Math.cos(deg) / Math.abs(Math.cos(deg)));
+        if (((deg >= -Math.PI/2) && (deg <= Math.PI/2)))
+            xSign *= -1;
+        Bullet bullet = new Bullet(bulletImage, (int) (getX() + 150 + Math.cos(deg) * 80 + 73 * xSign),
+                (int) (getY() + 75 + Math.sin(deg) * (80)), Math.cos(deg), Math.sin(deg), deg);
+        System.out.println(deg % 360);
+        Thread thread = new Thread(bullet);
+        thread.start();
+        return bullet;
+    }
 }

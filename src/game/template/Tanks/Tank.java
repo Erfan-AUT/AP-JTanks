@@ -1,20 +1,21 @@
 package game.template.Tanks;
 
+import game.template.Bullet;
 import game.template.Graphics.Animation;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public abstract class Tank {
     protected BufferedImage[] tankImages;
-    protected BufferedImage bullet;
+    protected BufferedImage bulletImage;
     protected Animation tankMove;
     protected Animation explosion;
     private File imageLocation;
     private File[] imagesLocations;
+    private File bulletLocation;
     private int health;
     private int damage;
     private int x;
@@ -24,9 +25,11 @@ public abstract class Tank {
     private int angle;
     private int velocity;
     private boolean forward;
+    private boolean isShooting;
 
-    public Tank(String location) {
+    public Tank(String location, String bulletLocation) {
         imageLocation = new File(location);
+        this.bulletLocation = new File(bulletLocation);
         imagesLocations = imageLocation.listFiles();
         tankImages = new BufferedImage[imagesLocations.length];
         forward = false;
@@ -83,6 +86,13 @@ public abstract class Tank {
                 e.printStackTrace();
             }
         }
+
+        try {
+            bulletImage = ImageIO.read(bulletLocation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Animation getTankMove() {
@@ -128,4 +138,15 @@ public abstract class Tank {
     }
 
     public abstract void update();
+
+    public boolean isShooting() {
+        return isShooting;
+    }
+
+    public void setShooting(boolean shooting) {
+        isShooting = shooting;
+    }
+
+    protected abstract Bullet shoot(double deg);
+
 }

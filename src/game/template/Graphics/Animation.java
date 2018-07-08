@@ -1,8 +1,12 @@
 package game.template.Graphics;
 
+import game.template.Bullet;
+
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Animation extends MasterAnimation {
 
@@ -65,6 +69,8 @@ public class Animation extends MasterAnimation {
 
     private double cannonRotationDeg;
 
+    private ArrayList<Bullet> bullets;
+
     /**
      * Creates animation.
      *
@@ -79,7 +85,8 @@ public class Animation extends MasterAnimation {
      * @param showDelay      In milliseconds. How long to wait before starting the animation and displaying it?
      */
     public Animation(BufferedImage animImage, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
-        super(animImage,frameWidth,frameHeight,numberOfFrames,frameTime,loop,x,y,showDelay);
+        super(animImage, frameWidth, frameHeight, numberOfFrames, frameTime, loop, x, y, showDelay);
+        bullets = new ArrayList<>();
 //        this.animImage = animImage;
 //        this.frameWidth = frameWidth;
 //        this.frameHeight = frameHeight;
@@ -104,7 +111,8 @@ public class Animation extends MasterAnimation {
     }
 
     public Animation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
-        super(animImages,frameWidth,frameHeight,numberOfFrames,frameTime,loop,x,y,showDelay);
+        super(animImages, frameWidth, frameHeight, numberOfFrames, frameTime, loop, x, y, showDelay);
+        bullets = new ArrayList<>();
 //        this.animImages = animImages;
 //        this.frameWidth = frameWidth;
 //        this.frameHeight = frameHeight;
@@ -269,7 +277,16 @@ public class Animation extends MasterAnimation {
         tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
         tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
         g2d.drawImage(animImages[4], tx, null);
-
+        for (Iterator it = bullets.iterator(); it.hasNext(); ) {
+            Bullet bullet = (Bullet) it.next();
+            if (bullet.isActive()) {
+                tx = AffineTransform.getTranslateInstance(bullet.getX() , bullet.getY());
+                tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
+                g2d.drawImage(bullet.getBullet(), tx, null);
+            } else {
+                it.remove();
+            }
+        }
 //        }
 
     }
@@ -309,10 +326,26 @@ public class Animation extends MasterAnimation {
         tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
         tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2 - 5);
         g2d.drawImage(animImages[4], tx, null);
-    }
+//        if (!bullets.isEmpty()) {
+            for (Iterator it = bullets.iterator(); it.hasNext();) {
+                Bullet bullet = (Bullet) it.next();
+                if (bullet.isActive()) {
+                    tx = AffineTransform.getTranslateInstance(bullet.getX(), bullet.getY());
+                    tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
+                    g2d.drawImage(bullet.getBullet(), tx, null);
+                } else {
+                    it.remove();
+                }
+            }
+        }
+//    }
 
     public void setCannonRotationDeg(double cannonRotationDeg) {
         this.cannonRotationDeg = cannonRotationDeg;
+    }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
     }
 
 }
