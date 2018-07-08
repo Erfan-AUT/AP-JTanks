@@ -35,6 +35,7 @@ public class Animation {
     // Should animation repeat in loop?
     private boolean loop;
 
+    private boolean rotateIsNeeded;
     /**
      * x and y coordinates. Where to draw the animation on the screen?
      */
@@ -58,6 +59,11 @@ public class Animation {
     // At what time was animation created.
     private long timeOfAnimationCration;
 
+    private int movingRotationDeg;
+
+    private AffineTransform tx;
+
+    private double cannonRotationDeg;
 
     /**
      * Creates animation.
@@ -91,7 +97,9 @@ public class Animation {
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
+        cannonRotationDeg = 0;
         active = true;
+        rotateIsNeeded = false;
     }
 
     public Animation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
@@ -159,7 +167,7 @@ public class Animation {
         }
     }
 
-    private void UpdateImages() {
+    private void updateImages() {
         if (timeForNextFrame <= System.currentTimeMillis()) {
             // Next frame.
             currentFrameNumber++;
@@ -167,6 +175,30 @@ public class Animation {
             // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
             if (currentFrameNumber >= numberOfFrames) {
                 currentFrameNumber = 0;
+
+                // If the animation isn't loop then we set that animation isn't active.
+                if (!loop)
+                    active = false;
+            }
+
+            // Starting and ending coordinates for cuting the current frame image out of the animation image.
+            startingXOfFrameInImage = 0;
+            endingXOfFrameInImage = frameWidth;
+
+            // Set time for the next frame.
+            startingFrameTime = System.currentTimeMillis();
+            timeForNextFrame = startingFrameTime + frameTime;
+        }
+    }
+
+    private void updateImagesReverse() {
+        if (timeForNextFrame <= System.currentTimeMillis()) {
+            // Next frame.
+            currentFrameNumber--;
+
+            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
+            if (currentFrameNumber < 0) {
+                currentFrameNumber = numberOfFrames - 1;
 
                 // If the animation isn't loop then we set that animation isn't active.
                 if (!loop)
@@ -197,13 +229,88 @@ public class Animation {
     }
 
     public void drawImages(Graphics2D g2d) {
-        this.UpdateImages();
+        this.updateImages();
 
-        if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis())
-            g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+        if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis()) {
+//            if (!rotateIsNeeded) {
+//                g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//                g2d.drawImage(animImages[4], x + 10, y + 12, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//            } else {
+            drawIt(g2d);
+
+//            }
+        }
 
     }
 
+    public void drawImagesReverse(Graphics2D g2d) {
+        this.updateImagesReverse();
 
+        if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis()) {
+//            if (!rotateIsNeeded) {
+//                g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//                g2d.drawImage(animImages[4], x + 10, y + 12, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//            } else {
+            drawIt(g2d);
+//            }
+        }
+    }
+
+    public void drawOnlyTheCurrentFrame(Graphics2D g2d) {
+//        if (!isRotateIsNeeded()) {
+//            g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//            g2d.drawImage(animImages[4], x + 10, y + 12, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+//        } else {
+        tx = AffineTransform.getTranslateInstance(x, y);
+        tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
+        g2d.drawImage(animImages[currentFrameNumber], tx, null);
+        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
+        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
+        g2d.drawImage(animImages[4], tx, null);
+
+//        }
+
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public BufferedImage[] getAnimImages() {
+        return animImages;
+    }
+
+    private void rot(int rotationDegree) {
+        AffineTransform tx = AffineTransform.getTranslateInstance(150, 150);
+        tx.rotate(Math.toRadians(rotationDegree));
+        for (int i = 0; i < animImages.length - 1; i++) {
+
+        }
+    }
+
+    public boolean isRotateIsNeeded() {
+        return rotateIsNeeded;
+    }
+
+    public void setRotateIsNeeded(boolean rotateIsNeeded) {
+        this.rotateIsNeeded = rotateIsNeeded;
+    }
+
+    public void setMovingRotationDeg(int rotationDeg) {
+        this.movingRotationDeg = rotationDeg;
+    }
+
+    public void drawIt(Graphics2D g2d) {
+        tx = AffineTransform.getTranslateInstance(x, y);
+        tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
+        g2d.drawImage(animImages[currentFrameNumber], tx, null);
+        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
+        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2 - 5);
+        g2d.drawImage(animImages[4], tx, null);
+    }
+
+    public void setCannonRotationDeg(double cannonRotationDeg) {
+        this.cannonRotationDeg = cannonRotationDeg;
+    }
 
 }

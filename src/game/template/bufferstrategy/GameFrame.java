@@ -50,7 +50,7 @@ public class GameFrame extends JFrame {
                 e.printStackTrace();
             }
         }
-        expAnim = new Animation(expAnimImages, 250, 250, 5, 50, true, 400, 400, 0);
+        expAnim = new Animation(expAnimImages, 250, 250, 5, 50, false, 400, 400, 0);
 //        expAnimImageLocation = new File("explosion_anim.png");
 //        try {
 //            expAnimImage = ImageIO.read(expAnimImageLocation);
@@ -101,10 +101,22 @@ public class GameFrame extends JFrame {
         //
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
-        if (expAnim.active) {
-            expAnim.drawImages(g2d);
+        if (state.getPlayerTank().getTankMove().active) {
+            if (state.getPlayerTank().isForward()) {
+//                g2d.drawImage(state.getPlayerTank().getTankImages()[4],state.getPlayerTank().getCannonX(),state.getPlayerTank().getCannonY(),state.getPlayerTank().getCannonX() + 200, state.getPlayerTank().getCannonX() +200,0,0,200,200,null);
+                state.getPlayerTank().getTankMove().drawImages(g2d);
+            } else {
+                state.getPlayerTank().getTankMove().drawImagesReverse(g2d);
+            }
+        } else {
+            state.getPlayerTank().getTankMove().drawOnlyTheCurrentFrame(g2d);
         }
+//
+//        if (expAnim.active) {
+//            expAnim.drawImages(g2d);
+//        } else {
+//            expAnim.drawOnlyTheCurrentFrame(g2d);
+//        }
     }
 
 }
