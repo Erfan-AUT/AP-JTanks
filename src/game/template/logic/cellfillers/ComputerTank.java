@@ -2,9 +2,6 @@ package game.template.logic.cellfillers;
 
 import game.sample.ball.GameState;
 import game.template.logic.Map;
-import game.template.logic.objectstates.ComputerTankState;
-import game.template.logic.objectstates.TankState;
-import game.template.logic.objectstates.UserTankState;
 
 public class ComputerTank extends Tank {
     private boolean isMobile;
@@ -14,8 +11,8 @@ public class ComputerTank extends Tank {
     private boolean doesCollisionDamageUserTank;
     private int damageInCaseCollisionIsDestructive = 2;
 
-    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank) {
-        super(health, whichMap);
+    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
+        super(health, whichMap, location);
         state = new ComputerTankState(y, x, this);
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
@@ -26,15 +23,17 @@ public class ComputerTank extends Tank {
      * Remember to update only objects that ARE visible.
      */
     public void move() {
-        findEnemyTank();
-        int ySign = (state.locY - enemyTank.state.locY) / Math.abs(state.locY - enemyTank.state.locY);
-        int plusY = 8 * ySign;
-        state.locY += plusY;
-        state.locY += ((TankState) state).avoidCollision() * ySign;
-        int xSign = (state.locX - enemyTank.state.locX) / Math.abs(state.locX - enemyTank.state.locX);
-        int plusX = 8 * xSign;
-        state.locX += plusX;
-        state.locX += ((TankState) state).avoidCollision();
+        if (isMobile) {
+            findEnemyTank();
+            int ySign = (state.locY - enemyTank.state.locY) / Math.abs(state.locY - enemyTank.state.locY);
+            int plusY = 8 * ySign;
+            state.locY += plusY;
+            state.locY += ((TankState) state).avoidCollision() * ySign;
+            int xSign = (state.locX - enemyTank.state.locX) / Math.abs(state.locX - enemyTank.state.locX);
+            int plusX = 8 * xSign;
+            state.locX += plusX;
+            state.locX += ((TankState) state).avoidCollision();
+        }
     }
 
     public void findEnemyTank() {

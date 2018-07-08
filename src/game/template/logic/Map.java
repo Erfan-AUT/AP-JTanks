@@ -1,6 +1,6 @@
 package game.template.logic;
 
-import game.sample.ball.GameState;
+import game.template.bufferstrategy.GameState;
 import game.template.logic.cellfillers.Block;
 import game.template.logic.cellfillers.ComputerTank;
 import game.template.logic.cellfillers.GameObject;
@@ -46,27 +46,28 @@ public class Map implements Serializable {
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
-            switch (data.type) {
-                case "dt":
-                    allObjects.add(new Block(y, x, true, 10, this, 0));
-                    break;
-                case "n":
-                    allObjects.add(new Block(y, x, false, 10, this, 2));
-                    break;
-                case "db":
-                    allObjects.add(new Block(y, x, true, 10, this, 1));
-                    break;
-                case "nb":
-                    allObjects.add(new Block(y, x, false, 10, this, 1));
-                    break;
-                case "u":
-                    mainTank = new UserTank(y, x, 100, this);
-                    allObjects.add(mainTank);
-                    break;
-                case "c":
-                    allObjects.add(new ComputerTank(y, x, 100, this, false));
-                    break;
-            }
+            //Soon to be reloaded.
+//            switch (data.type) {
+//                case "dt":
+//                    allObjects.add(new Block(y, x, true, 10, this, 0));
+//                    break;
+//                case "n":
+//                    allObjects.add(new Block(y, x, false, 10, this, 2));
+//                    break;
+//                case "db":
+//                    allObjects.add(new Block(y, x, true, 10, this, 1));
+//                    break;
+//                case "nb":
+//                    allObjects.add(new Block(y, x, false, 10, this, 1));
+//                    break;
+//                case "u":
+//                    mainTank = new UserTank(y, x, 100, this);
+//                    allObjects.add(mainTank);
+//                    break;
+//                case "c":
+//                    allObjects.add(new ComputerTank(y, x, 100, this, false));
+//                    break;
+//            }
         }
 
     }
@@ -121,8 +122,8 @@ public class Map implements Serializable {
         visibleObjects.clear();
         for (GameObject object : allObjects)
         {
-            int y = object.getState().locY;
-            int x = object.getState().locX;
+            int y = object.locY;
+            int x = object.locX;
             if ((y >= cameraZeroY) && (y <= cameraZeroY + cameraHeight))
                 if ((x >= cameraZeroX) && (y <= cameraZeroX + cameraWidth))
                     visibleObjects.add(object);
@@ -132,8 +133,8 @@ public class Map implements Serializable {
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll)
     {
         Dimension d = GameState.getRelativeHeightWidth(one);
-        int y = one.getState().locY;
-        int x = one.getState().locX;
+        int y = one.locY;
+        int x = one.locX;
         int height1 = d.height;
         int width1 = d.width;
 
@@ -168,6 +169,9 @@ public class Map implements Serializable {
         updateVisibleObjects();
     }
 
+    public UserTank getMainTank() {
+        return mainTank;
+    }
 
     private class MapData {
         public int y;

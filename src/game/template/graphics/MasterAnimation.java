@@ -204,6 +204,11 @@ public class MasterAnimation {
 
     }
 
+    public int getFrameWidth() {
+        return frameWidth;
+    }
 
-
+    public int getFrameHeight() {
+        return frameHeight;
+    }
 }

@@ -2,9 +2,11 @@ package game.template.logic.cellfillers;
 
 import game.template.graphics.Animation;
 import game.template.logic.Map;
-import game.template.logic.objectstates.ObjectState;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Game, I am your father.
@@ -17,18 +19,26 @@ public abstract class GameObject {
     protected Animation animation;
     private boolean isDestructible;
     private boolean isAlive;
+    protected BufferedImage[] images;
     private int health;
-
+    private File imageLocation;
+    private File[] imagesLocations;
+    protected int angle;
     //Its map
     protected Map whichMap;
+    public int locX;
+    public int locY;
+    protected int velocity;
 
-    //Its state, taken directly from the template's model for updating animate objects.
-    protected ObjectState state;
 
-    public GameObject(boolean isDestructible, int health, Map whichMap) {
+    public GameObject(int y, int x, boolean isDestructible, int health, Map whichMap, String location) {
         this.isDestructible = isDestructible;
         this.health = health;
         this.whichMap = whichMap;
+        imageLocation = new File(location);
+        imagesLocations = imageLocation.listFiles();
+        locY = y;
+        locX = x;
     }
 
     public void update(){}
@@ -36,10 +46,6 @@ public abstract class GameObject {
     public void takeDamage(int damage) {
         if (isDestructible)
             health -= damage;
-    }
-
-    public ObjectState getState() {
-        return state;
     }
 
     public int getHeight()
@@ -76,6 +82,20 @@ public abstract class GameObject {
         isAlive = alive;
     }
 
+    public File[] getImagesLocations() {
+        return imagesLocations;
+    }
+
+    protected void readContents() {
+        for (int i = 0; i < imagesLocations.length; i++) {
+            try {
+                images[i] = ImageIO.read(imagesLocations[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public int getDamage(){return  0;}
     //    protected void changeDimension(int x, int y) {
 //        int secX = this.x + x, secY = this.y + y;
@@ -85,6 +105,17 @@ public abstract class GameObject {
 //            this.x += x;
 //    }
 
+
+    public double getAngleInRadians() {
+        int tmp = angle % 360;
+        if (tmp < 0)
+            tmp = 360 + tmp;
+        return Math.toRadians(tmp);
+    }
+
+    public BufferedImage[] getImages() {
+        return images;
+    }
 
     public Map getWhichMap() {
         return whichMap;

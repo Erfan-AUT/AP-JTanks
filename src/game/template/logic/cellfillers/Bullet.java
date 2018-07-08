@@ -1,16 +1,13 @@
 package game.template.logic.cellfillers;
 
-import game.sample.ball.GameState;
 import game.template.logic.Map;
-import game.template.logic.objectstates.BulletState;
 
 public class Bullet extends GameObject {
     private char type;
     private int damage;
 
-    public Bullet(int y, int x, Map whichMap, double shootingAngle, char type) {
-        super(true, 0, whichMap);
-        state = new BulletState(y, x, shootingAngle, whichMap);
+    public Bullet(int y, int x, Map whichMap, double shootingAngle, char type, String location) {
+        super(y, x, true, 0, whichMap, location);
         this.type = type;
         if (type == 'c')
             damage = 200;
@@ -23,10 +20,16 @@ public class Bullet extends GameObject {
         return damage;
     }
 
+    /**
+     * Shoots the bullet in the specified direction.
+     */
     @Override
     public void update() {
-        state.update();
+        locX += velocity * Math.cos(getAngleInRadians());
+        locY += velocity * Math.sin(getAngleInRadians());
         if (whichMap.doesntGoOutOfMap(this, true))
             setAlive(false);
     }
+
+
 }
