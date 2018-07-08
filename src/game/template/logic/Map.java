@@ -1,6 +1,8 @@
 package game.template.logic;
 
 import game.template.bufferstrategy.GameState;
+import game.template.logic.cellfillers.Block;
+import game.template.logic.cellfillers.ComputerTank;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
 import game.template.logic.utils.FileUtils;
@@ -13,8 +15,8 @@ public class Map implements Serializable {
     /**
      * is the base map for everything that happens in the game.
      */
-    private ArrayList<GameObject> allObjects;
-    private transient  ArrayList<GameObject> visibleObjects;
+    private ArrayList<GameObject> allObjects = new ArrayList<>();
+    private transient  ArrayList<GameObject> visibleObjects = new ArrayList<>();
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
@@ -26,6 +28,7 @@ public class Map implements Serializable {
     //These two should change with movement.
     private int cameraZeroX = 0;
     private int cameraZeroY;
+    private GameState state;
 
     /**
      * To load from scratch,
@@ -33,39 +36,72 @@ public class Map implements Serializable {
      * and its format is: Type-x-y.
      * post-b is for bullet-passable
      * post-t is for tank-passable
-     * e = empty, d = destroyable block, n = non-destroyable block, u = userTank,
-     * c = computerTank.
+     * post-main is for image type = 1, 2, 3..
+     * e = empty, d = destroyable block, p = plant, u = userTank,
+     * c = computerTank, w = wicket, cf = cannonFood, t = teazel, w = wicket
      * empty blocks don't matter because the only image there is its background
      * (Which is to be loaded later.)
      */
-    public Map(int level) {
-        cameraZeroY = height;
-        String fileName = "\\maps\\defaultMaps\\map" + level + ".txt";
+    public Map(int level, GameState state) {
+       // cameraZeroY = height;
+        String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
+        String softWall = ".\\images\\softWall";
+        String eTank = ".\\Move\\Etank";
+        String wicket = ".\\images\\wicket";
+        String teazel = ".\\images\\teazel";
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
-            //Soon to be reloaded.
-//            switch (data.type) {
-//                case "dt":
-//                    allObjects.add(new Block(y, x, true, 10, this, 0));
-//                    break;
-//                case "n":
-//                    allObjects.add(new Block(y, x, false, 10, this, 2));
-//                    break;
-//                case "db":
-//                    allObjects.add(new Block(y, x, true, 10, this, 1));
-//                    break;
-//                case "nb":
-//                    allObjects.add(new Block(y, x, false, 10, this, 1));
-//                    break;
-//                case "u":
-//                    mainTank = new UserTank(y, x, 100, this);
-//                    allObjects.add(mainTank);
-//                    break;
-//                case "c":
-//                    allObjects.add(new ComputerTank(y, x, 100, this, false));
-//                    break;
-//            }
+            System.out.println(data.type);
+          //  Soon to be reloaded.
+            switch (data.type) {
+                case "p":
+                    allObjects.add(new Block(y, x, false, 10, this, 0, ".\\images\\plant.png", false));
+                    break;
+                case "t1":
+                    allObjects.add(new Block(y, x, false, 10, this, 0, teazel + "1.png", false));
+                    break;
+                case "t2":
+                    allObjects.add(new Block(y, x, false, 10, this, 0, teazel + "2.png", false));
+                    break;
+                case "nd2":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\", true));
+                    break;
+                case "d0":
+                    allObjects.add(new Block(y, x, true, 10, this, 2, softWall + ".png", false));
+                    break;
+                case "d1":
+                    allObjects.add(new Block(y, x, true, 20, this, 2, softWall + "1.png", false));
+                    break;
+                case "d2":
+                    allObjects.add(new Block(y, x, true, 30, this, 2, softWall + "2.png", false));
+                    break;
+                case "d3":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, softWall + "3.png", false));
+                    break;
+                case "w1":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", true));
+                    break;
+                case "w2":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", true));
+                    break;
+                case "c1":
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank + "1.png"));
+                    break;
+                case "c2":
+                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2.png"));
+                    break;
+                case "c3":
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3.png"));
+                    break;
+                case "r":
+                    allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot"));
+                    break;
+                case "u":
+                    mainTank = new UserTank(y, x, 100, this, ".\\Move\\Tank", state);
+                    allObjects.add(mainTank);
+                    break;
+            }
         }
 
     }

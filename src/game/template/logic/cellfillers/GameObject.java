@@ -1,5 +1,6 @@
 package game.template.logic.cellfillers;
 
+import game.template.Graphics.MasterAnimation;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
 
@@ -7,6 +8,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Game, I am your father.
@@ -16,7 +19,7 @@ import java.io.IOException;
 public abstract class GameObject {
 
     // Its animation.
-    protected Animation animation;
+    protected game.template.Graphics.MasterAnimation animation;
     private boolean isDestructible;
     private boolean isAlive;
     protected BufferedImage[] images;
@@ -35,10 +38,17 @@ public abstract class GameObject {
         this.isDestructible = isDestructible;
         this.health = health;
         this.whichMap = whichMap;
-        imageLocation = new File(location);
-        imagesLocations = imageLocation.listFiles();
+        if (Files.isDirectory(Paths.get(location))) {
+            imageLocation = new File(location);
+            imagesLocations = imageLocation.listFiles();
+        }
+        else
+            imagesLocations = new File[] {new File(location)};
+        images = new BufferedImage[imagesLocations.length];
+        //TODO: not actual values and need to be changed.
         locY = y;
         locX = x;
+        readContents();
     }
 
     public void update(){}
@@ -58,7 +68,7 @@ public abstract class GameObject {
         return animation.getFrameWidth();
     }
 
-    public Animation getAnimation() {
+    public MasterAnimation getAnimation() {
         return animation;
     }
 

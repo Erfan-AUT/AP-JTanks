@@ -21,7 +21,6 @@ public class UserTank extends Tank {
         initialHealth = health;
         this.gameState = gameState;
         setVelocity(10);
-        readContents();
         animation = new Animation(images, 250, 250, 4, 20, false, x, y, 0);
     }
 
@@ -29,10 +28,7 @@ public class UserTank extends Tank {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            if (SwingUtilities.isRightMouseButton(e))
-                changeWeapon();
-            if (SwingUtilities.isLeftMouseButton(e))
-                shoot();
+
         }
     }
 
@@ -43,10 +39,16 @@ public class UserTank extends Tank {
             check = decreaseCannonCount();
         else
             check = decreaseRifleCount();
-        if (check)
+        if (check) {
             //This should be changed to cannon's location.
+            String location;
+            if (getCurrentWeaponType() == 'r')
+                location = "\\images\\LightBullet.png";
+            else
+                location = "\\images\\HeavyBullet.png";
             new Bullet(locY, locX,
-                    this.whichMap, getAngleInRadians(), getCurrentWeaponType(), "BulletLocation");
+                    this.whichMap, getAngleInRadians(), getCurrentWeaponType(), location);
+        }
     }
 
     @Override
@@ -68,17 +70,17 @@ public class UserTank extends Tank {
         int x = locX;
         int y = locY;
         if (gameState.isKeyUP()) {
-            y -= velocity + avoidCollision();
+            y -= velocity ;//+ avoidCollision();
             isMoving = true;
         } else if (gameState.isKeyDOWN()) {
-            y += velocity + avoidCollision();
+            y += velocity ;//+ avoidCollision();
             isMoving = true;
         }
         if (gameState.isKeyRIGHT()) {
-            x += velocity + avoidCollision();
+            x += velocity ;//+ avoidCollision();
             isMoving = true;
         } else if (gameState.isKeyLEFT()) {
-            x -= velocity + avoidCollision();
+            x -= velocity ;//+ avoidCollision();
             isMoving = true;
         }
         locX = x;
@@ -87,9 +89,9 @@ public class UserTank extends Tank {
 //        setCannonY(getY() + 75);
         animation.changeCoordinates(locX, locY);
         if (isMoving) {
-            animation.setActive(true);
+            ((Animation)animation).setActive(true);
         } else {
-            animation.setActive(false);
+            ((Animation)animation).setActive(false);
         }
     }
 
@@ -230,7 +232,7 @@ public class UserTank extends Tank {
         setVelocity(0);
         rotationDegree = deg;
         setAngle(getAngle() + rotationDegree);
-        animation.setMovingRotationDeg(getAngle());
+        ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
     private void crossRot(int deg) {
@@ -238,20 +240,25 @@ public class UserTank extends Tank {
         setVelocity(0);
         rotationDegree = deg;
         setAngle(getAngle() + rotationDegree);
-        animation.setMovingRotationDeg(getAngle());
+        ((Animation)animation).setMovingRotationDeg(getAngle());
     }
 
     private void rotateTheCannon() {
         int dx = gameState.getMouseX() - (locX + 10);
         int dy = gameState.getMouseY() - (locY + 20);
         double deg = Math.atan2(dy, dx);
-        animation.setCannonRotationDeg(deg);
+        ((Animation)animation).setCannonRotationDeg(deg);
     }
 
     public void update() {
         rotate();
         move();
         rotateTheCannon();
+        if (gameState.isMouseLeftClickPressed()) {
+            shoot();
+        }
+        if (gameState.isMouseRightClickPressed())
+            changeWeapon();
     }
 
 }

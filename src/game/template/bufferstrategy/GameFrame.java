@@ -2,6 +2,9 @@
 package game.template.bufferstrategy;
 
 import game.template.graphics.Animation;
+import game.template.logic.Map;
+import game.template.logic.cellfillers.GameObject;
+import game.template.logic.cellfillers.UserTank;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -82,15 +85,22 @@ public class GameFrame extends JFrame {
         //
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-        if (state.getPlayerTank().getAnimation().active) {
-            if (state.getPlayerTank().isForward()) {
+        //TODO: should be visible ones.
+        for (GameObject object : state.getMap().getAllObjects()) {
+            if (object.getAnimation().active) {
+                if (object instanceof UserTank) {
+                    if (state.getPlayerTank().isForward()) {
 //                g2d.drawImage(state.getPlayerTank().getTankImages()[4],state.getPlayerTank().getCannonX(),state.getPlayerTank().getCannonY(),state.getPlayerTank().getCannonX() + 200, state.getPlayerTank().getCannonX() +200,0,0,200,200,null);
-                state.getPlayerTank().getAnimation().drawImages(g2d);
+                        state.getPlayerTank().getAnimation().drawImages(g2d);
+                    } else {
+                        ((Animation) state.getPlayerTank().getAnimation()).drawImagesReverse(g2d);
+                    }
+                }
+                else
+                    object.getAnimation().drawImages(g2d);
             } else {
-                state.getPlayerTank().getAnimation().drawImagesReverse(g2d);
+                ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
             }
-        } else {
-            state.getPlayerTank().getAnimation().drawOnlyTheCurrentFrame(g2d);
         }
 //
 //        if (expAnim.active) {

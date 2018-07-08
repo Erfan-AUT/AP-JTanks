@@ -50,30 +50,35 @@ public class GameState {
         mouseY = 0;
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
-        playerTank = new UserTank(50, 50, 100, null,
-        //map = new Map(1);
+        //playerTank = new UserTank(50, 50, 100, null, ".\\Move\\Tank", this);
+        playerTank = map.getMainTank();
     }
 
+    public void setMap(Map map)
+    {
+        this.map = map;
+    }
     /**
      * The method which updates the game state.
      */
     public void update() {
-        map.getMainTank().update();
-        for (GameObject bullet : map.getVisibleObjects()) {
-            for (GameObject target : map.getVisibleObjects()) {
-                if (target.isDestructible()) {
-                    if ((bullet instanceof Bullet) ||
-                            ((target instanceof UserTank) && (bullet instanceof ComputerTank)
-                                    && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
-                        if (checkIfTwoObjectsCollide(bullet, target)) {
-                            target.takeDamage(bullet.getDamage());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+//        map.getMainTank().update();
+//        for (GameObject bullet : map.getVisibleObjects()) {
+//            for (GameObject target : map.getVisibleObjects()) {
+//                if (target.isDestructible()) {
+//                    if ((bullet instanceof Bullet) ||
+//                            ((target instanceof UserTank) && (bullet instanceof ComputerTank)
+//                                    && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
+//                        if (checkIfTwoObjectsCollide(bullet, target)) {
+//                            target.takeDamage(bullet.getDamage());
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
+        playerTank.update();
         //
         // Update the state of all game elements
         //  based on user input and elapsed time ...

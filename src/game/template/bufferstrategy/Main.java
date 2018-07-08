@@ -1,6 +1,8 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import game.template.logic.Map;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
@@ -21,6 +23,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+              //  Map map = new Map(1, null);
 				GameFrame frame = new GameFrame("Game Title");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

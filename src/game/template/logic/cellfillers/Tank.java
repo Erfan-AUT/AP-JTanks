@@ -20,6 +20,14 @@ public abstract class Tank extends GameObject {
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
+
+    public Tank(int y, int x, int health, Map whichMap, String location) {
+        super(y, x,true, health, whichMap, location);
+        rifleCount = 300;
+        cannonCount = 50;
+        forward = false;
+        angle = 0;
+    }
     public int avoidCollision()
     {
         for (GameObject object : whichMap.getVisibleObjects()) {
@@ -54,14 +62,6 @@ public abstract class Tank extends GameObject {
         moving = false;
     }
 
-    public Tank(int y, int x, int health, Map whichMap, String location) {
-        super(y, x,true, health, whichMap, location);
-        rifleCount = 300;
-        cannonCount = 50;
-        images = new BufferedImage[getImagesLocations().length];
-        forward = false;
-        angle = 0;
-    }
 
     protected abstract void shoot();
     protected abstract void move();
