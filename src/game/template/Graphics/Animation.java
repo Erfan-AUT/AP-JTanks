@@ -4,43 +4,43 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class Animation {
+public class Animation extends MasterAnimation {
 
     // Image of animation.
-    private BufferedImage animImage;
+//    private BufferedImage animImage;
 
-    private BufferedImage[] animImages;
+//    private BufferedImage[] animImages;
 
     // Width of one frame in animated image.
-    private int frameWidth;
+//    private int frameWidth;
 
     // Height of the frame(image).
-    private int frameHeight;
+//    private int frameHeight;
 
     // Number of frames in the animation image.
-    private int numberOfFrames;
+//    private int numberOfFrames;
 
     // Amount of time between frames in milliseconds. (How many time in milliseconds will be one frame shown before showing next frame?)
-    private long frameTime;
+//    private long frameTime;
 
     // Time when the frame started showing. (We use this to calculate the time for the next frame.)
-    private long startingFrameTime;
+//    private long startingFrameTime;
 
     // Time when we show next frame. (When current time is equal or greater than time in "timeForNextFrame", it's time to move to the next frame of the animation.)
-    private long timeForNextFrame;
+//    private long timeForNextFrame;
 
     // Current frame number.
-    private int currentFrameNumber;
+//    private int currentFrameNumber;
 
     // Should animation repeat in loop?
-    private boolean loop;
+//    private boolean loop;
 
     private boolean rotateIsNeeded;
     /**
      * x and y coordinates. Where to draw the animation on the screen?
      */
-    public int x;
-    public int y;
+//    public int x;
+//    public int y;
 
     // Starting x coordinate of the current frame in the animation image.
     private int startingXOfFrameInImage;
@@ -54,10 +54,10 @@ public class Animation {
     public boolean active;
 
     // In milliseconds. How long to wait before starting the animation and displaying it?
-    private long showDelay;
+//    private long showDelay;
 
     // At what time was animation created.
-    private long timeOfAnimationCration;
+//    private long timeOfAnimationCration;
 
     private int movingRotationDeg;
 
@@ -79,52 +79,54 @@ public class Animation {
      * @param showDelay      In milliseconds. How long to wait before starting the animation and displaying it?
      */
     public Animation(BufferedImage animImage, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
-        this.animImage = animImage;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        this.numberOfFrames = numberOfFrames;
-        this.frameTime = frameTime;
-        this.loop = loop;
-
-        this.x = x;
-        this.y = y;
-
-        this.showDelay = showDelay;
-
-        timeOfAnimationCration = System.currentTimeMillis();
-        startingXOfFrameInImage = 0;
-        endingXOfFrameInImage = frameWidth;
-        startingFrameTime = System.currentTimeMillis() + showDelay;
-        timeForNextFrame = startingFrameTime + this.frameTime;
-        currentFrameNumber = 0;
-        cannonRotationDeg = 0;
-        active = true;
-        rotateIsNeeded = false;
+        super(animImage,frameWidth,frameHeight,numberOfFrames,frameTime,loop,x,y,showDelay);
+//        this.animImage = animImage;
+//        this.frameWidth = frameWidth;
+//        this.frameHeight = frameHeight;
+//        this.numberOfFrames = numberOfFrames;
+//        this.frameTime = frameTime;
+//        this.loop = loop;
+//
+//        this.x = x;
+//        this.y = y;
+//
+//        this.showDelay = showDelay;
+//
+//        timeOfAnimationCration = System.currentTimeMillis();
+//        startingXOfFrameInImage = 0;
+//        endingXOfFrameInImage = frameWidth;
+//        startingFrameTime = System.currentTimeMillis() + showDelay;
+//        timeForNextFrame = startingFrameTime + this.frameTime;
+//        currentFrameNumber = 0;
+//        cannonRotationDeg = 0;
+//        active = true;
+//        rotateIsNeeded = false;
     }
 
     public Animation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
-        this.animImages = animImages;
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        this.numberOfFrames = numberOfFrames;
-        this.frameTime = frameTime;
-        this.loop = loop;
-
-
-        this.x = x;
-        this.y = y;
-
-        this.showDelay = showDelay;
-
-        timeOfAnimationCration = System.currentTimeMillis();
-
-        startingXOfFrameInImage = 0;
-        endingXOfFrameInImage = frameWidth;
-
-        startingFrameTime = System.currentTimeMillis() + showDelay;
-        timeForNextFrame = startingFrameTime + this.frameTime;
-        currentFrameNumber = 0;
-        active = true;
+        super(animImages,frameWidth,frameHeight,numberOfFrames,frameTime,loop,x,y,showDelay);
+//        this.animImages = animImages;
+//        this.frameWidth = frameWidth;
+//        this.frameHeight = frameHeight;
+//        this.numberOfFrames = numberOfFrames;
+//        this.frameTime = frameTime;
+//        this.loop = loop;
+//
+//
+//        this.x = x;
+//        this.y = y;
+//
+//        this.showDelay = showDelay;
+//
+//        timeOfAnimationCration = System.currentTimeMillis();
+//
+//        startingXOfFrameInImage = 0;
+//        endingXOfFrameInImage = frameWidth;
+//
+//        startingFrameTime = System.currentTimeMillis() + showDelay;
+//        timeForNextFrame = startingFrameTime + this.frameTime;
+//        currentFrameNumber = 0;
+//        active = true;
     }
 
     /**
@@ -143,53 +145,53 @@ public class Animation {
      * It checks if it's time to show next frame of the animation.
      * It also checks if the animation is finished.
      */
-    private void Update() {
-        if (timeForNextFrame <= System.currentTimeMillis()) {
-            // Next frame.
-            currentFrameNumber++;
+//    private void Update() {
+//        if (timeForNextFrame <= System.currentTimeMillis()) {
+//            // Next frame.
+//            currentFrameNumber++;
+//
+//            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
+//            if (currentFrameNumber >= numberOfFrames) {
+//                currentFrameNumber = 0;
+//
+//                // If the animation isn't loop then we set that animation isn't active.
+//                if (!loop)
+//                    active = false;
+//            }
+//
+//            // Starting and ending coordinates for cuting the current frame image out of the animation image.
+//            startingXOfFrameInImage = currentFrameNumber * frameWidth;
+//            endingXOfFrameInImage = startingXOfFrameInImage + frameWidth;
+//
+//            // Set time for the next frame.
+//            startingFrameTime = System.currentTimeMillis();
+//            timeForNextFrame = startingFrameTime + frameTime;
+//        }
+//    }
 
-            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
-            if (currentFrameNumber >= numberOfFrames) {
-                currentFrameNumber = 0;
-
-                // If the animation isn't loop then we set that animation isn't active.
-                if (!loop)
-                    active = false;
-            }
-
-            // Starting and ending coordinates for cuting the current frame image out of the animation image.
-            startingXOfFrameInImage = currentFrameNumber * frameWidth;
-            endingXOfFrameInImage = startingXOfFrameInImage + frameWidth;
-
-            // Set time for the next frame.
-            startingFrameTime = System.currentTimeMillis();
-            timeForNextFrame = startingFrameTime + frameTime;
-        }
-    }
-
-    private void updateImages() {
-        if (timeForNextFrame <= System.currentTimeMillis()) {
-            // Next frame.
-            currentFrameNumber++;
-
-            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
-            if (currentFrameNumber >= numberOfFrames) {
-                currentFrameNumber = 0;
-
-                // If the animation isn't loop then we set that animation isn't active.
-                if (!loop)
-                    active = false;
-            }
-
-            // Starting and ending coordinates for cuting the current frame image out of the animation image.
-            startingXOfFrameInImage = 0;
-            endingXOfFrameInImage = frameWidth;
-
-            // Set time for the next frame.
-            startingFrameTime = System.currentTimeMillis();
-            timeForNextFrame = startingFrameTime + frameTime;
-        }
-    }
+//    private void updateImages() {
+//        if (timeForNextFrame <= System.currentTimeMillis()) {
+//            // Next frame.
+//            currentFrameNumber++;
+//
+//            // If the animation is reached the end, we restart it by seting current frame to zero. If the animation isn't loop then we set that animation isn't active.
+//            if (currentFrameNumber >= numberOfFrames) {
+//                currentFrameNumber = 0;
+//
+//                // If the animation isn't loop then we set that animation isn't active.
+//                if (!loop)
+//                    active = false;
+//            }
+//
+//            // Starting and ending coordinates for cuting the current frame image out of the animation image.
+//            startingXOfFrameInImage = 0;
+//            endingXOfFrameInImage = frameWidth;
+//
+//            // Set time for the next frame.
+//            startingFrameTime = System.currentTimeMillis();
+//            timeForNextFrame = startingFrameTime + frameTime;
+//        }
+//    }
 
     private void updateImagesReverse() {
         if (timeForNextFrame <= System.currentTimeMillis()) {
@@ -229,7 +231,7 @@ public class Animation {
     }
 
     public void drawImages(Graphics2D g2d) {
-        this.updateImages();
+        UpdateImages();
 
         if (this.timeOfAnimationCration + this.showDelay <= System.currentTimeMillis()) {
 //            if (!rotateIsNeeded) {

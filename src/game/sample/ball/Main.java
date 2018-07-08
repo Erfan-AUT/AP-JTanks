@@ -1,7 +1,6 @@
 /*** In The Name of Allah ***/
 package game.sample.ball;
 
-import javafx.animation.Animation;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.Vector;

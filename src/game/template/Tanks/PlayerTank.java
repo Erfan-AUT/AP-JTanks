@@ -13,7 +13,7 @@ public class PlayerTank extends Tank {
     private int rotationDegree;
 
     public PlayerTank(GameState state) {
-        super(".\\Move\\00");
+        super("./Move/00");
         this.state = state;
         rotationDegree = 90;
         setVelocity(10);
