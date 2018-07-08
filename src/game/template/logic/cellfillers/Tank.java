@@ -1,6 +1,5 @@
 package game.template.logic.cellfillers;
 
-import game.template.bufferstrategy.GameState;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
 

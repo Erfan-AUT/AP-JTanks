@@ -1,7 +1,6 @@
 package game.template.logic;
 
 import game.template.Graphics.Animation;
-import game.template.bufferstrategy.GameState;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
