@@ -4,6 +4,7 @@ package game.sample.ball;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.*;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -113,18 +114,34 @@ public class GameState {
     }
 
     public static boolean checkIfTwoObjectsCollide(GameObject one, GameObject two) {
-        int deltaX = one.getState().locX - two.getState().locX;
-        int deltaY = one.getState().locY - two.getState().locY;
+        int deltaX = Math.abs(one.getState().locX - two.getState().locX);
+        int deltaY = Math.abs(one.getState().locY - two.getState().locY);
         //Soon to be replaced when the rotating angle is considered.
         // division by 2 is important because only half of it counts.
-//        int height1 = Math.abs(one.getHeight() * Math.sin(one.getAnimation().getAngle()) / 2);
-//        int width1 = Math.abs(one.getWidth() * Math.cos(one.getAnimation().getAngle()) / 2);
-//        int height2 = Math.abs(two.getHeight() * Math.sin(two.getAnimation().getAngle()) / 2);
-//        int width2 = Math.abs(two.getWidth() * Math.cos(two.getAnimation().getAngle()) / 2);
-        if ((0 >= deltaY - one.getHeight() - two.getHeight()) && (0 >= deltaX - one.getWidth() - two.getWidth()))
+//        int height1 = Math.abs((one.getHeight() + one.getWidth()) * Math.sin(one.getAnimation().getAngle()));
+//        int width1 = Math.abs((one.getHeight() + one.getWidth()) * Math.cos(one.getAnimation().getAngle()));
+//        int height2 = Math.abs((one.getHeight() + one.getWidth()) * Math.sin(two.getAnimation().getAngle()));
+//        int width2 = Math.abs((one.getHeight() + one.getWidth()) * Math.cos(two.getAnimation().getAngle()));
+        Dimension d1 = getRelativeHeightWidth(one), d2 = getRelativeHeightWidth(two);
+        int height1 = d1.height;
+        int width1 = d1.width;
+        int height2 = d2.height;
+        int width2 = d2.width;
+
+        if ((0 >= deltaY - height1 - height2) && (0 >= deltaX - width1 - width2))
             return true;
         return false;
     }
+
+    public static Dimension getRelativeHeightWidth(GameObject object)
+    {
+        Dimension d = new Dimension();
+        d.height = Math.abs((object.getHeight() + object.getWidth()) * Math.sin(object.getAnimation().getAngle()));
+        d.width = Math.abs((object.getHeight() + object.getWidth()) * Math.cos(object.getAnimation().getAngle()));
+        return d;
+    }
+
+
 
     /**
      * The keyboard handler.

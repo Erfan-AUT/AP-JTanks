@@ -1,11 +1,13 @@
 package game.template.logic;
 
+import game.sample.ball.GameState;
 import game.template.logic.cellfillers.Block;
 import game.template.logic.cellfillers.ComputerTank;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
 import game.template.logic.utils.FileUtils;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -129,24 +131,43 @@ public class Map implements Serializable {
 
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll)
     {
+        Dimension d = GameState.getRelativeHeightWidth(one);
         int y = one.getState().locY;
         int x = one.getState().locX;
-        int height1 = 0;
-        int width1 = 0;
-        // int height1 = Math.abs(one.getHeight() * Math.sin(one.getAnimation().getAngle()) / 2);
-        //      int width1 = Math.abs(one.getWidth() * Math.cos(one.getAnimation().getAngle()) / 2);
+        int height1 = d.height;
+        int width1 = d.width;
+
         if (!trueForVisibleFalseForAll) {
-            if ((y - height1 >= 0) && (y + height1 <= height) && ((x - width1 >= 0) && (x + width1 <= width)))
+            if ((y - height1 >= 0) && (y <= height) && ((x >= 0) && (x + width1 <= width)))
                 return true;
         }
         else
         {
-            if ((y - height1 >= cameraZeroY) && (y + height1 <= cameraZeroY + cameraHeight) &&
-                    ((x - width1 >= cameraZeroX) && (x + width1 <= cameraZeroX + cameraWidth)))
+            if ((y - height1 >= cameraZeroY) && (y <= cameraZeroY + cameraHeight) &&
+                    ((x >= cameraZeroX) && (x + width1 <= cameraZeroX + cameraWidth)))
                 return true;
         }
         return false;
     }
+
+    public void updateCameraZeros()
+    {
+        if (mainTank.getAnimation().x + cameraWidth <= width)
+            cameraZeroX = mainTank.getAnimation().x;
+        else
+            cameraZeroX = width - cameraWidth;
+        if (mainTank.getAnimation().y - mainTank.getAnimation().getFrameHeight() + cameraHeight <= height)
+            cameraZeroY = mainTank.getAnimation().x - mainTank.getAnimation().getFrameHeight();
+        else
+            cameraZeroX = height - cameraHeight;
+    }
+
+    public void update()
+    {
+        updateCameraZeros();
+        updateVisibleObjects();
+    }
+
 
     private class MapData {
         public int y;

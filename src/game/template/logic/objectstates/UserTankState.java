@@ -117,6 +117,7 @@ public class UserTankState extends TankState {
         locX = Math.min(locX, GameFrame.GAME_WIDTH - source.getWidth());
         locY = Math.max(locY, 0);
         locY = Math.min(locY, GameFrame.GAME_HEIGHT - source.getHeight());
+        whichMap.update();
     }
 
     public double getRotatingAngle() {
