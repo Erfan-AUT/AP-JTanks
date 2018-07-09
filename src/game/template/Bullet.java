@@ -63,4 +63,5 @@ public class Bullet implements Runnable {
     public double getDeg() {
         return deg;
     }
+
 }
