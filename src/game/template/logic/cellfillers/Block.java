@@ -1,6 +1,6 @@
 package game.template.logic.cellfillers;
 
-import game.template.Graphics.MasterAnimation;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 
 /**
@@ -13,9 +13,12 @@ public class Block extends GameObject {
     private boolean isPassableByBullet = false;
     private int initialHealth;
     private boolean isGift;
+    private String type;
 
-    public Block(int y, int x, boolean isDestructible, int health, Map whichMap, int pass, String location, boolean isGift) {
+    public Block(int y, int x, boolean isDestructible, int health, Map whichMap, int pass,
+                 String location, boolean isGift, String type) {
         super(y, x, isDestructible, health, whichMap, location);
+        this.type = type;
         initialHealth = health;
         if (isGift) {
             pass = 0;

@@ -23,6 +23,9 @@ public class GameState {
     private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
     private boolean mouseRightClickPressed;
     private boolean mouseLeftClickPressed;
+    private boolean mouseMoved;
+
+
     private int mouseX, mouseY;
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
@@ -81,6 +84,7 @@ public class GameState {
 //        }
        for (GameObject object : map.getAllObjects())
             object.update();
+       map.update();
        //map.update();
         //playerTank.update();
         //
@@ -115,7 +119,10 @@ public class GameState {
         int width1 = d1.width;
         int height2 = d2.height;
         int width2 = d2.width;
-
+        System.out.println("Y dif:");
+        System.out.println(deltaY - height1 - height2);
+        System.out.println("X dif:");
+        System.out.println(deltaX - width1 - width2);
         if ((0 >= deltaY - height1 - height2) && (0 >= deltaX - width1 - width2))
             return true;
         return false;
@@ -123,8 +130,9 @@ public class GameState {
 
     public static Dimension getRelativeHeightWidth(GameObject object) {
         Dimension d = new Dimension();
-        d.height = (int) Math.abs((object.getHeight() + object.getWidth()) * Math.sin(object.getAngleInRadians()));
-        d.width = (int) Math.abs((object.getHeight() + object.getWidth()) * Math.cos(object.getAngleInRadians()));
+        double angle = object.getAngleInRadians();
+        d.height = (int) Math.abs((object.getHeight() * Math.sin(angle) + object.getWidth() * Math.cos(angle)));
+        d.width = (int) Math.abs((object.getHeight() * Math.cos(angle) + object.getWidth() * Math.sin(angle)));
         return d;
     }
 
@@ -182,8 +190,8 @@ public class GameState {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            System.out.println(e.getX());
-            System.out.println(e.getY());
+//            System.out.println(e.getX());
+//            System.out.println(e.getY());
         }
 
         @Override
@@ -221,6 +229,7 @@ public class GameState {
         public void mouseMoved(MouseEvent e) {
             mouseX = e.getX();
             mouseY = e.getY();
+            mouseMoved = true;
         }
     }
 
@@ -254,6 +263,10 @@ public class GameState {
 
     public int getMouseY() {
         return mouseY;
+    }
+
+    public boolean isMouseMoved() {
+        return mouseMoved;
     }
 
 }

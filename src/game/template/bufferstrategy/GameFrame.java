@@ -35,6 +35,7 @@ public class GameFrame extends JFrame {
     private Animation expAnim;
     private File expAnimImageLocation;
     private File[] expAnimImageLocations;
+
     //    private Animation expAnim;
     public GameFrame(String title) {
         super(title);
@@ -60,19 +61,23 @@ public class GameFrame extends JFrame {
      */
     public void render(GameState state) {
         // Get a new graphics context to render the current frame
-        Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
         try {
-            // Do the rendering
-            doRendering(graphics, state);
-        } finally {
-            // Dispose the graphics, because it is no more needed
-            graphics.dispose();
+            Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
+            try {
+                // Do the rendering
+                doRendering(graphics, state);
+            } finally {
+                // Dispose the graphics, because it is no more needed
+                graphics.dispose();
+            }
+            // Display the buffer
+            bufferStrategy.show();
+            // Tell the system to do the drawing NOW;
+            // otherwise it can take a few extra ms and will feel jerky!
+            Toolkit.getDefaultToolkit().sync();
+        } catch (NullPointerException ex) {
+
         }
-        // Display the buffer
-        bufferStrategy.show();
-        // Tell the system to do the drawing NOW;
-        // otherwise it can take a few extra ms and will feel jerky!
-        Toolkit.getDefaultToolkit().sync();
     }
 
     /**
@@ -87,26 +92,28 @@ public class GameFrame extends JFrame {
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getAllObjects()) {
-            if (object.getAnimation().active) {
-                if (object instanceof UserTank) {
-                    if (state.getPlayerTank().isForward()) {
-                        state.getPlayerTank().getAnimation().drawImages(g2d);
-                    } else {
-                        ((Animation) state.getPlayerTank().getAnimation()).drawImagesReverse(g2d);
-                    }
+            if (!(object instanceof UserTank)) {
+                object.getAnimation().drawIt(g2d);
+                //g2d.dispose();
+            }
+            UserTank pTank = (UserTank) state.getPlayerTank();
+            if (pTank.getAnimation().active) {
+                if (pTank.isForward()) {
+                    pTank.getAnimation().drawImages(g2d);
+                } else {
+                    ((Animation) pTank.getAnimation()).drawImagesReverse(g2d);
                 }
-                else
-                    object.getAnimation().drawIt(g2d);
             } else {
                 ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
             }
         }
-//
+    }
+}
+
+
 //        if (expAnim.active) {
 //            expAnim.drawImages(g2d);
 //        } else {
 //            expAnim.drawOnlyTheCurrentFrame(g2d);
 //        }
-    }
 
-}

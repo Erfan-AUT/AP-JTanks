@@ -1,7 +1,7 @@
 package game.template.logic.cellfillers;
 
-import game.template.Graphics.MasterAnimation;
 import game.template.graphics.Animation;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 
 import javax.imageio.ImageIO;
@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 public abstract class GameObject {
 
     // Its animation.
-    protected game.template.Graphics.MasterAnimation animation;
+    protected game.template.graphics.MasterAnimation animation;
     private boolean isDestructible;
     private boolean isAlive;
     protected BufferedImage[] images;
@@ -118,19 +118,21 @@ public abstract class GameObject {
 
 
     public double getAngleInRadians() {
-        int tmp = angle % 360;
-        if (tmp < 0)
-            tmp = 360 + tmp;
-        return Math.toRadians(tmp);
+        if (animation.active) {
+            int tmp = angle % 360;
+            if (tmp < 0)
+                tmp = 360 + tmp;
+            return Math.toRadians(tmp);
+        }
+        return Math.PI / 2;
     }
 
     public void displayTheAnimations()
     {
         animation = new MasterAnimation(images, 250, 250, 1, 20,
                 false, locX, locY, 0);
-        animation.active = true;
+        animation.active = false;
     }
-
 
     public BufferedImage[] getImages() {
         return images;

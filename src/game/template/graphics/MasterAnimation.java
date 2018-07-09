@@ -1,4 +1,4 @@
-package game.template.Graphics;
+package game.template.graphics;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -205,7 +205,8 @@ public class MasterAnimation {
     }
 
     public void drawIt(Graphics2D g2d) {
-        g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+       // g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+        g2d.drawImage(animImages[currentFrameNumber], x, y, null);
     }
 
 

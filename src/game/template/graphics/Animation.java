@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-public class Animation extends game.template.Graphics.MasterAnimation {
+public class Animation extends game.template.graphics.MasterAnimation {
 
 
     private boolean rotateIsNeeded;

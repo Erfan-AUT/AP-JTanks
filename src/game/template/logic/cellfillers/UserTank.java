@@ -22,6 +22,7 @@ public class UserTank extends Tank {
         this.gameState = gameState;
         setVelocity(10);
         animation = new Animation(images, 250, 250, 4, 20, false, x, y, 0);
+        animation.active = true;
     }
 
     private class MouseObserver extends MouseAdapter {
@@ -70,17 +71,17 @@ public class UserTank extends Tank {
         int x = locX;
         int y = locY;
         if (gameState.isKeyUP()) {
-            y -= velocity ;//+ avoidCollision();
+            y -= velocity + avoidCollision();
             isMoving = true;
         } else if (gameState.isKeyDOWN()) {
-            y += velocity ;//+ avoidCollision();
+            y += velocity + avoidCollision();
             isMoving = true;
         }
         if (gameState.isKeyRIGHT()) {
-            x += velocity ;//+ avoidCollision();
+            x += velocity + avoidCollision();
             isMoving = true;
         } else if (gameState.isKeyLEFT()) {
-            x -= velocity ;//+ avoidCollision();
+            x -= velocity + avoidCollision();
             isMoving = true;
         }
         locX = x;
@@ -251,9 +252,12 @@ public class UserTank extends Tank {
     }
 
     public void update() {
-        rotate();
-        move();
-        rotateTheCannon();
+        if (gameState.isKeyUP() || gameState.isKeyDOWN() || gameState.isKeyLEFT() || gameState.isKeyRIGHT()) {
+            rotate();
+            move();
+        }
+        if (gameState.isMouseMoved())
+            rotateTheCannon();
         if (gameState.isMouseLeftClickPressed()) {
             shoot();
         }

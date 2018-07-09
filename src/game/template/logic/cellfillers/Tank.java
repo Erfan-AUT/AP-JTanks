@@ -22,25 +22,23 @@ public abstract class Tank extends GameObject {
 
 
     public Tank(int y, int x, int health, Map whichMap, String location) {
-        super(y, x,true, health, whichMap, location);
+        super(y, x, true, health, whichMap, location);
         rifleCount = 300;
         cannonCount = 50;
         forward = false;
         angle = 0;
     }
-    public int avoidCollision()
-    {
+
+    public int avoidCollision() {
         for (GameObject object : whichMap.getVisibleObjects()) {
             if (object != this) {
                 if (GameState.checkIfTwoObjectsCollide(object, this)) {
                     if (object instanceof Block) {
                         if (!((Block) object).isPassableByTank())
                             return -velocity;
-                    }
-                    else
+                    } else
                         return -velocity;
-                }
-                else if (!whichMap.doesntGoOutOfMap(this, false))
+                } else if (!whichMap.doesntGoOutOfMap(this, false))
                     return -velocity;
             }
         }
@@ -64,6 +62,7 @@ public abstract class Tank extends GameObject {
 
 
     protected abstract void shoot();
+
     protected abstract void move();
 
 
