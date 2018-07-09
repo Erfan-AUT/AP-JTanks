@@ -200,7 +200,6 @@ public class Animation extends MasterAnimation {
 //            timeForNextFrame = startingFrameTime + frameTime;
 //        }
 //    }
-
     private void updateImagesReverse() {
         if (timeForNextFrame <= System.currentTimeMillis()) {
             // Next frame.
@@ -271,24 +270,7 @@ public class Animation extends MasterAnimation {
 //            g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
 //            g2d.drawImage(animImages[4], x + 10, y + 12, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
 //        } else {
-        tx = AffineTransform.getTranslateInstance(x, y);
-        tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
-        g2d.drawImage(animImages[currentFrameNumber], tx, null);
-        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
-        g2d.drawImage(animImages[4], tx, null);
-        for (Iterator it = bullets.iterator(); it.hasNext(); ) {
-            Bullet bullet = (Bullet) it.next();
-            if (bullet.isActive()) {
-                tx = AffineTransform.getTranslateInstance(bullet.getX() , bullet.getY());
-                tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
-                g2d.drawImage(bullet.getBullet(), tx, null);
-            } else {
-                it.remove();
-            }
-        }
-//        }
-
+        drawIt(g2d);
     }
 
     public void setActive(boolean active) {
@@ -324,21 +306,11 @@ public class Animation extends MasterAnimation {
         tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
         g2d.drawImage(animImages[currentFrameNumber], tx, null);
         tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2 - 5);
+        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
         g2d.drawImage(animImages[4], tx, null);
-//        if (!bullets.isEmpty()) {
-            for (Iterator it = bullets.iterator(); it.hasNext();) {
-                Bullet bullet = (Bullet) it.next();
-                if (bullet.isActive()) {
-                    tx = AffineTransform.getTranslateInstance(bullet.getX(), bullet.getY());
-                    tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
-                    g2d.drawImage(bullet.getBullet(), tx, null);
-                } else {
-                    it.remove();
-                }
-            }
-        }
-//    }
+        drawTheBullet(g2d);
+    }
+
 
     public void setCannonRotationDeg(double cannonRotationDeg) {
         this.cannonRotationDeg = cannonRotationDeg;
@@ -346,6 +318,19 @@ public class Animation extends MasterAnimation {
 
     public ArrayList<Bullet> getBullets() {
         return bullets;
+    }
+
+    private void drawTheBullet(Graphics2D g2d) {
+        for (Iterator it = bullets.iterator(); it.hasNext(); ) {
+            Bullet bullet = (Bullet) it.next();
+            if (bullet.isActive()) {
+                tx = AffineTransform.getTranslateInstance(bullet.getX(), bullet.getY());
+                tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
+                g2d.drawImage(bullet.getBullet(), tx, null);
+            } else {
+                it.remove();
+            }
+        }
     }
 
 }

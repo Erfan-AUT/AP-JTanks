@@ -106,80 +106,64 @@ public class PlayerTank extends Tank {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(-5);
-                    System.out.println(getAngle());
                 } else {
                     rot(5);
-                    System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 0) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 }
             }
         } else if (state.isKeyLEFT() && !(state.isKeyUP() || state.isKeyDOWN())) {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(5);
-                    System.out.println(getAngle());
                 } else {
                     rot(-5);
-                    System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 0) {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 } else {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 }
             }
         } else if (state.isKeyUP() && !(state.isKeyRIGHT() || state.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(5);
-                    System.out.println(getAngle());
                 } else {
                     rot(-5);
-                    System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 270) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 }
             }
         } else if (state.isKeyDOWN() && !(state.isKeyRIGHT() || state.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(-5);
-                    System.out.println(getAngle());
                 } else {
                     rot(5);
-                    System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 90) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
                 }
             }
         }
@@ -214,20 +198,27 @@ public class PlayerTank extends Tank {
         move();
         double deg = rotateTheCannon();
         if (state.isMouseLeftClickPressed()) {
-            tankMove.getBullets().add(shoot(deg));
+            Bullet bullet = shoot(deg);
+            if (bullet != null) {
+                tankMove.getBullets().add(bullet);
+            }
         }
     }
 
     @Override
     protected Bullet shoot(double deg) {
-        int xSign = (int) (Math.cos(deg) / Math.abs(Math.cos(deg)));
-        if (((deg >= -Math.PI/2) && (deg <= Math.PI/2)))
-            xSign *= -1;
-        Bullet bullet = new Bullet(bulletImage, (int) (getX() + 150 + Math.cos(deg) * 80 + 73 * xSign),
-                (int) (getY() + 75 + Math.sin(deg) * (80)), Math.cos(deg), Math.sin(deg), deg);
-        System.out.println(deg % 360);
-        Thread thread = new Thread(bullet);
-        thread.start();
-        return bullet;
+//        int xSign = (int) (Math.cos(deg) / Math.abs(Math.cos(deg)));
+//        if (((deg >= -Math.PI/2) && (deg <= Math.PI/2)))
+//            xSign *= -1;
+//        System.out.println(deg % 360);
+        long time = System.currentTimeMillis();
+        if (lastShootTime == 0 || time > lastShootTime + 1000) {
+            lastShootTime = time;
+            Bullet bullet = new Bullet(bulletImage, (int) (getX() + 67 + Math.cos(deg) * 100), (int) (getY() + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg);
+            Thread thread = new Thread(bullet);
+            thread.start();
+            return bullet;
+        }
+        return null;
     }
 }

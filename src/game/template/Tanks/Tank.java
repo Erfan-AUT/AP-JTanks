@@ -26,6 +26,7 @@ public abstract class Tank {
     private int velocity;
     private boolean forward;
     private boolean isShooting;
+    protected long lastShootTime;
 
     public Tank(String location, String bulletLocation) {
         imageLocation = new File(location);
@@ -34,6 +35,7 @@ public abstract class Tank {
         tankImages = new BufferedImage[imagesLocations.length];
         forward = false;
         angle = 0;
+        lastShootTime = 0;
     }
 
     public int getX() {

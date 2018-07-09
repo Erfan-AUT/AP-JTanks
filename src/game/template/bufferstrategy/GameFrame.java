@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The window on which the rendering is performed.

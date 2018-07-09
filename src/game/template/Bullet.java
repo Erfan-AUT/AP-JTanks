@@ -19,7 +19,7 @@ public class Bullet implements Runnable {
         this.x = x;
         this.y = y;
         this.deg = deg;
-        this.velocity = 20;
+        this.velocity = 15;
         this.coeX = coeX;
         this.coeY = coeY;
     }
@@ -34,7 +34,7 @@ public class Bullet implements Runnable {
         while (isActive) {
             move();
             try {
-                Thread.sleep(50);
+                Thread.sleep(24);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
