@@ -46,8 +46,9 @@ public abstract class GameObject {
             imagesLocations = new File[] {new File(location)};
         images = new BufferedImage[imagesLocations.length];
         //TODO: not actual values and need to be changed.
-        locY = y;
-        locX = x;
+        locY = (y+1) * 200;
+        locX = (x+1) * 200;
+
         readContents();
     }
 

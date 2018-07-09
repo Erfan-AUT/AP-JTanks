@@ -31,7 +31,7 @@ public class GameLoop implements Runnable {
 
 	public GameLoop(GameFrame frame) {
 		canvas = frame;
-        map = new Map(1, state);
+     //   map = new Map(1, state);
 	}
 	
 	/**

@@ -16,7 +16,7 @@ public class Map implements Serializable {
      * is the base map for everything that happens in the game.
      */
     private ArrayList<GameObject> allObjects = new ArrayList<>();
-    private transient  ArrayList<GameObject> visibleObjects = new ArrayList<>();
+    private transient ArrayList<GameObject> visibleObjects = new ArrayList<>();
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
@@ -43,7 +43,7 @@ public class Map implements Serializable {
      * (Which is to be loaded later.)
      */
     public Map(int level, GameState state) {
-       // cameraZeroY = height;
+        // cameraZeroY = height;
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
@@ -53,7 +53,7 @@ public class Map implements Serializable {
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
             System.out.println(data.type);
-          //  Soon to be reloaded.
+            //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
                     allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\CannonFood.png", true));
@@ -135,30 +135,31 @@ public class Map implements Serializable {
         return visibleObjects;
     }
 
+
     private ArrayList<MapData> modifyReadString(String fileName) {
         ArrayList<String> read = FileUtils.readWithStream(fileName);
         ArrayList<MapData> returnValue = new ArrayList<>();
         for (String s : read) {
             StringBuilder value = new StringBuilder();
             for (char c : s.toCharArray()) {
-                if (c != ' ')
+                if ((c != ' ') && (c!= '\n'))
                     value.append(c);
                 else {
                     returnValue.add(new MapData(value.toString()));
                     value.delete(0, value.length());
                 }
-
             }
+            returnValue.add(new MapData(value.toString()));
+            value.delete(0, value.length());
         }
         return returnValue;
     }
 
-    public void updateVisibleObjects()
-    {
+
+    public void updateVisibleObjects() {
         //Resets everything in order to see what has been renewed.
         visibleObjects.clear();
-        for (GameObject object : allObjects)
-        {
+        for (GameObject object : allObjects) {
             int y = object.locY;
             int x = object.locX;
             if ((y >= cameraZeroY) && (y <= cameraZeroY + cameraHeight))
@@ -167,8 +168,7 @@ public class Map implements Serializable {
         }
     }
 
-    public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll)
-    {
+    public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll) {
         Dimension d = GameState.getRelativeHeightWidth(one);
         int y = one.locY;
         int x = one.locX;
@@ -178,9 +178,7 @@ public class Map implements Serializable {
         if (!trueForVisibleFalseForAll) {
             if ((y - height1 >= 0) && (y <= height) && ((x >= 0) && (x + width1 <= width)))
                 return true;
-        }
-        else
-        {
+        } else {
             if ((y - height1 >= cameraZeroY) && (y <= cameraZeroY + cameraHeight) &&
                     ((x >= cameraZeroX) && (x + width1 <= cameraZeroX + cameraWidth)))
                 return true;
@@ -188,8 +186,7 @@ public class Map implements Serializable {
         return false;
     }
 
-    public void updateCameraZeros()
-    {
+    public void updateCameraZeros() {
         if (mainTank.getAnimation().x + cameraWidth <= width)
             cameraZeroX = mainTank.getAnimation().x;
         else
@@ -200,8 +197,7 @@ public class Map implements Serializable {
             cameraZeroX = height - cameraHeight;
     }
 
-    public void update()
-    {
+    public void update() {
         updateCameraZeros();
         updateVisibleObjects();
     }

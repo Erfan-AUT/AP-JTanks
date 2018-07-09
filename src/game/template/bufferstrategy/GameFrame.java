@@ -90,7 +90,6 @@ public class GameFrame extends JFrame {
             if (object.getAnimation().active) {
                 if (object instanceof UserTank) {
                     if (state.getPlayerTank().isForward()) {
-//                g2d.drawImage(state.getPlayerTank().getTankImages()[4],state.getPlayerTank().getCannonX(),state.getPlayerTank().getCannonY(),state.getPlayerTank().getCannonX() + 200, state.getPlayerTank().getCannonX() +200,0,0,200,200,null);
                         state.getPlayerTank().getAnimation().drawImages(g2d);
                     } else {
                         ((Animation) state.getPlayerTank().getAnimation()).drawImagesReverse(g2d);
