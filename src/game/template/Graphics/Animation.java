@@ -69,6 +69,10 @@ public class Animation extends MasterAnimation {
 
     private double cannonRotationDeg;
 
+    private BufferedImage cannon;
+
+    private BufferedImage rifle;
+
     private ArrayList<Bullet> bullets;
 
     /**
@@ -333,4 +337,12 @@ public class Animation extends MasterAnimation {
         }
     }
 
+
+    public void setCannon(BufferedImage cannon) {
+        this.cannon = cannon;
+    }
+
+    public void setRifle(BufferedImage rifle) {
+        this.rifle = rifle;
+    }
 }

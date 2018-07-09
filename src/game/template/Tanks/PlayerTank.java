@@ -4,17 +4,30 @@ import game.template.Bullet;
 import game.template.Graphics.Animation;
 import game.template.bufferstrategy.GameState;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
+import javax.imageio.ImageIO;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class PlayerTank extends Tank {
     private GameState state;
-    private AffineTransform tx;
-    private AffineTransformOp op;
+    private BufferedImage[] cannons;
+    private File cannonsLocation;
+    private File[] cannonsImages;
+    private BufferedImage[] rifles;
+    private File riflesLocation;
+    private File[] riflesImages;
     private int rotationDegree;
 
     public PlayerTank(GameState state) {
         super("./Move/Tank", "./Bullet/HeavyBullet.png");
+        cannons = new BufferedImage[4];
+        cannonsLocation = new File("./PlayerCannons");
+        cannonsImages = cannonsLocation.listFiles();
+        rifles = new BufferedImage[3];
+        riflesLocation = new File("./PlayersRifles");
+        riflesImages = riflesLocation.listFiles();
         this.state = state;
         rotationDegree = 90;
         setVelocity(10);
@@ -220,5 +233,24 @@ public class PlayerTank extends Tank {
             return bullet;
         }
         return null;
+    }
+
+    @Override
+    protected void readContents() {
+        super.readContents();
+        for (int i = 0; i < cannonsImages.length; i++) {
+            try {
+                cannons[i] = ImageIO.read(cannonsImages[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < riflesImages.length; i++) {
+            try {
+                rifles[i] = ImageIO.read(riflesImages[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

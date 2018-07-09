@@ -14,7 +14,7 @@ public abstract class Tank {
     protected Animation tankMove;
     protected Animation explosion;
     private File imageLocation;
-    private File[] imagesLocations;
+    private File[] tankImagesLocations;
     private File bulletLocation;
     private int health;
     private int damage;
@@ -31,8 +31,8 @@ public abstract class Tank {
     public Tank(String location, String bulletLocation) {
         imageLocation = new File(location);
         this.bulletLocation = new File(bulletLocation);
-        imagesLocations = imageLocation.listFiles();
-        tankImages = new BufferedImage[imagesLocations.length];
+        tankImagesLocations = imageLocation.listFiles();
+        tankImages = new BufferedImage[tankImagesLocations.length];
         forward = false;
         angle = 0;
         lastShootTime = 0;
@@ -81,9 +81,9 @@ public abstract class Tank {
     public abstract void move();
 
     protected void readContents() {
-        for (int i = 0; i < imagesLocations.length; i++) {
+        for (int i = 0; i < tankImagesLocations.length; i++) {
             try {
-                tankImages[i] = ImageIO.read(imagesLocations[i]);
+                tankImages[i] = ImageIO.read(tankImagesLocations[i]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
