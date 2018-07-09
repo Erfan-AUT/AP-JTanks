@@ -259,6 +259,19 @@ public class UserTank extends Tank {
         }
         if (gameState.isMouseRightClickPressed())
             changeWeapon();
+       // whichMap.updateCameraZeros();
     }
 
 }
+
+//TODO 1: Change cannon's and bullets looks with the right Click.
+//TODO 2: Tanks should be threads.
+//TODO 3: Explosion animation should be done.
+//TODO 4: Collision
+//TODO 5: when collecting throphies, they go out and be added to the user's repository.
+//TODO 6: status bar.
+//TODO 7: Sounds.
+//TODO 8: networking.
+//TODO 9: enhance AI.
+//TODO 10: transformation to actual coordiantes.
+//TODO 11: Mouse cursor.

@@ -31,6 +31,7 @@ public class Block extends GameObject {
                 isPassableByBullet = true;
                 break;
         }
+        displayTheAnimations();
        // animation = new MasterAnimation();
         //Any other means non-passable.
     }

@@ -1,5 +1,6 @@
 package game.template.logic;
 
+import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
 import game.template.logic.cellfillers.Block;
 import game.template.logic.cellfillers.ComputerTank;
@@ -23,8 +24,8 @@ public class Map implements Serializable {
     private int height = 500;
     private int width = 500;
     private UserTank mainTank;
-    private int cameraWidth = 100;
-    private int cameraHeight = 100;
+    private int cameraWidth = GameFrame.GAME_HEIGHT;
+    private int cameraHeight = GameFrame.GAME_WIDTH;
     //These two should change with movement.
     private int cameraZeroX = 0;
     private int cameraZeroY;
@@ -52,11 +53,14 @@ public class Map implements Serializable {
         String teazel = ".\\images\\teazel";
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
-            System.out.println(data.type);
+           System.out.println(data.type);
           //  Soon to be reloaded.
             switch (data.type) {
+                case "cf":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\CannonFood.png", true));
+                    break;
                 case "p":
-                    allObjects.add(new Block(y, x, false, 10, this, 0, ".\\images\\plant.png", false));
+                   //allObjects.add(new Block(y, x, false, 10, this, 0, ".\\images\\plant.png", false));
                     break;
                 case "t1":
                     allObjects.add(new Block(y, x, false, 10, this, 0, teazel + "1.png", false));
@@ -64,8 +68,8 @@ public class Map implements Serializable {
                 case "t2":
                     allObjects.add(new Block(y, x, false, 10, this, 0, teazel + "2.png", false));
                     break;
-                case "nd2":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\", true));
+                case "nd":
+                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\HardWall.png", false));
                     break;
                 case "d0":
                     allObjects.add(new Block(y, x, true, 10, this, 2, softWall + ".png", false));
@@ -103,7 +107,7 @@ public class Map implements Serializable {
                     break;
             }
         }
-
+        updateVisibleObjects();
     }
 
     //To Load from savedData, doing this in this way because we could add loading from multiple savedDatas later.
@@ -138,14 +142,15 @@ public class Map implements Serializable {
         for (String s : read) {
             StringBuilder value = new StringBuilder();
             for (char c : s.toCharArray()) {
-                if (c != ' ')
+                if ((c != ' ') && (c!= '\n'))
                     value.append(c);
                 else {
                     returnValue.add(new MapData(value.toString()));
                     value.delete(0, value.length());
                 }
-
             }
+            returnValue.add(new MapData(value.toString()));
+            value.delete(0, value.length());
         }
         return returnValue;
     }

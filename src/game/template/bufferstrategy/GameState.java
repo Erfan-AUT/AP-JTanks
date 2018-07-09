@@ -51,17 +51,19 @@ public class GameState {
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
         //playerTank = new UserTank(50, 50, 100, null, ".\\Move\\Tank", this);
-        playerTank = map.getMainTank();
+//        playerTank = map.getMainTank();
     }
 
     public void setMap(Map map)
     {
         this.map = map;
+        playerTank = map.getMainTank();
     }
     /**
      * The method which updates the game state.
      */
     public void update() {
+        playerTank.update();
 //        map.getMainTank().update();
 //        for (GameObject bullet : map.getVisibleObjects()) {
 //            for (GameObject target : map.getVisibleObjects()) {
@@ -78,7 +80,7 @@ public class GameState {
 //            }
 //        }
 
-        playerTank.update();
+//        playerTank.update();
         //
         // Update the state of all game elements
         //  based on user input and elapsed time ...

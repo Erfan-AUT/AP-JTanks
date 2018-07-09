@@ -27,6 +27,7 @@ public abstract class Tank extends GameObject {
         cannonCount = 50;
         forward = false;
         angle = 0;
+
     }
     public int avoidCollision()
     {

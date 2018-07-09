@@ -15,6 +15,7 @@ public class ComputerTank extends Tank {
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
+        displayTheAnimations();
     }
 
     /**

@@ -46,9 +46,11 @@ public abstract class GameObject {
             imagesLocations = new File[] {new File(location)};
         images = new BufferedImage[imagesLocations.length];
         //TODO: not actual values and need to be changed.
-        locY = y;
-        locX = x;
+        locY = (y+1) * 200;
+        locX = (x+1) * 200;
         readContents();
+
+//
     }
 
     public void update(){}
@@ -70,6 +72,13 @@ public abstract class GameObject {
 
     public MasterAnimation getAnimation() {
         return animation;
+    }
+
+    public void displayTheAnimations()
+    {
+        animation = new MasterAnimation(images, 250, 250, 1, 20,
+                false, locX, locY, 0);
+        animation.active = true;
     }
 
     public boolean isDestructible() {

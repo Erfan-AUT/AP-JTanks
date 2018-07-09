@@ -60,19 +60,23 @@ public class GameFrame extends JFrame {
      */
     public void render(GameState state) {
         // Get a new graphics context to render the current frame
-        Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
         try {
-            // Do the rendering
-            doRendering(graphics, state);
-        } finally {
-            // Dispose the graphics, because it is no more needed
-            graphics.dispose();
-        }
+            Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
+            try {
+                // Do the rendering
+                doRendering(graphics, state);
+            } finally {
+                // Dispose the graphics, because it is no more needed
+                graphics.dispose();
+            }
         // Display the buffer
         bufferStrategy.show();
         // Tell the system to do the drawing NOW;
         // otherwise it can take a few extra ms and will feel jerky!
         Toolkit.getDefaultToolkit().sync();
+        }
+        catch (NullPointerException ex)
+        {}
     }
 
     /**
@@ -86,7 +90,7 @@ public class GameFrame extends JFrame {
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         //TODO: should be visible ones.
-        for (GameObject object : state.getMap().getAllObjects()) {
+        for (GameObject object : state.getMap().getVisibleObjects()) {
             if (object.getAnimation().active) {
                 if (object instanceof UserTank) {
                     if (state.getPlayerTank().isForward()) {
@@ -97,7 +101,7 @@ public class GameFrame extends JFrame {
                     }
                 }
                 else
-                    object.getAnimation().drawImages(g2d);
+                    object.getAnimation().drawIt(g2d);
             } else {
                 ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
             }
