@@ -132,6 +132,8 @@ public class GameState {
                 mouseLeftClickPressed = true;
             } else if (e.getButton() == 3) {
                 mouseRightClickPressed = true;
+                playerTank.setOnCannon(!playerTank.isOnCannon());
+                playerTank.changeTheGun();
             }
         }
 

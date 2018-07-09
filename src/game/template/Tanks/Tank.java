@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public abstract class Tank {
     protected BufferedImage[] tankImages;
-    protected BufferedImage bulletImage;
+    protected BufferedImage heavyBulletImage;
     protected Animation tankMove;
     protected Animation explosion;
     private File imageLocation;
@@ -90,7 +90,7 @@ public abstract class Tank {
         }
 
         try {
-            bulletImage = ImageIO.read(bulletLocation);
+            heavyBulletImage = ImageIO.read(bulletLocation);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,5 +150,11 @@ public abstract class Tank {
     }
 
     protected abstract Bullet shoot(double deg);
+
+    public abstract void setOnCannon(boolean onCannon);
+
+    public abstract boolean isOnCannon();
+
+    public abstract void changeTheGun();
 
 }

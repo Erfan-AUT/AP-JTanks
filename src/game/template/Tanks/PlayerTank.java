@@ -18,10 +18,15 @@ public class PlayerTank extends Tank {
     private BufferedImage[] rifles;
     private File riflesLocation;
     private File[] riflesImages;
+    private BufferedImage lightBulletImage;
     private int rotationDegree;
+    private boolean isOnCannon;
+    private int currentRifle;
+    private int currentCannon;
 
     public PlayerTank(GameState state) {
         super("./Move/Tank", "./Bullet/HeavyBullet.png");
+        isOnCannon = true;
         cannons = new BufferedImage[4];
         cannonsLocation = new File("./PlayerCannons");
         cannonsImages = cannonsLocation.listFiles();
@@ -37,8 +42,9 @@ public class PlayerTank extends Tank {
         setCannonY(getY() + 75);
         readContents();
         tankMove = new Animation(tankImages, 250, 250, 4, 24, false, getX(), getY(), 0);
-        tankMove.setCannon(cannons[2]);
-        tankMove.setRifle(rifles[1]);
+        tankMove.setGun(cannons[0]);
+        currentRifle = 1;
+        currentCannon = 1;
     }
 
     @Override
@@ -227,12 +233,24 @@ public class PlayerTank extends Tank {
 //            xSign *= -1;
 //        System.out.println(deg % 360);
         long time = System.currentTimeMillis();
-        if (lastShootTime == 0 || time > lastShootTime + 1000) {
-            lastShootTime = time;
-            Bullet bullet = new Bullet(bulletImage, (int) (getX() + 67 + Math.cos(deg) * 100), (int) (getY() + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg);
-            Thread thread = new Thread(bullet);
-            thread.start();
-            return bullet;
+        if (isOnCannon) {
+            if (lastShootTime == 0 || time > lastShootTime + 1000) {
+                lastShootTime = time;
+                Bullet bullet;
+                bullet = new Bullet(heavyBulletImage, (int) (getX() + 67 + Math.cos(deg) * 100), (int) (getY() + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg);
+                Thread thread = new Thread(bullet);
+                thread.start();
+                return bullet;
+            }
+        } else {
+            if (lastShootTime == 0 || time > lastShootTime + 100) {
+                lastShootTime = time;
+                Bullet bullet;
+                bullet = new Bullet(lightBulletImage, (int) (getX() + 67 + Math.cos(deg) * 100), (int) (getY() + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg);
+                Thread thread = new Thread(bullet);
+                thread.start();
+                return bullet;
+            }
         }
         return null;
     }
@@ -253,6 +271,32 @@ public class PlayerTank extends Tank {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        try {
+            lightBulletImage = ImageIO.read(new File("./Bullet/LightBullet.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void setOnCannon(boolean onCannon) {
+        isOnCannon = onCannon;
+    }
+
+    @Override
+    public boolean isOnCannon() {
+        return isOnCannon;
+    }
+
+    @Override
+    public void changeTheGun() {
+        if (isOnCannon) {
+            tankMove.setGun(cannons[0]);
+        } else {
+            tankMove.setGun(rifles[0]);
         }
     }
 }

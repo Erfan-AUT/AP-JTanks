@@ -69,9 +69,7 @@ public class Animation extends MasterAnimation {
 
     private double cannonRotationDeg;
 
-    private BufferedImage cannon;
-
-    private BufferedImage rifle;
+    private BufferedImage gun;
 
     private ArrayList<Bullet> bullets;
 
@@ -311,7 +309,7 @@ public class Animation extends MasterAnimation {
         g2d.drawImage(animImages[currentFrameNumber], tx, null);
         tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
         tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
-        g2d.drawImage(rifle, tx, null);
+        g2d.drawImage(gun, tx, null);
         drawTheBullet(g2d);
     }
 
@@ -338,11 +336,8 @@ public class Animation extends MasterAnimation {
     }
 
 
-    public void setCannon(BufferedImage cannon) {
-        this.cannon = cannon;
+    public void setGun(BufferedImage gun) {
+        this.gun = gun;
     }
 
-    public void setRifle(BufferedImage rifle) {
-        this.rifle = rifle;
-    }
 }
