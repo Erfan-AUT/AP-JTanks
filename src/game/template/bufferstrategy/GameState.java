@@ -81,6 +81,7 @@ public class GameState {
 //        }
        for (GameObject object : map.getAllObjects())
             object.update();
+       //map.update();
         //playerTank.update();
         //
         // Update the state of all game elements

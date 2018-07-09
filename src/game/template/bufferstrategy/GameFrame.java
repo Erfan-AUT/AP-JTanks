@@ -96,7 +96,7 @@ public class GameFrame extends JFrame {
                     }
                 }
                 else
-                    object.getAnimation().drawImages(g2d);
+                    object.getAnimation().drawIt(g2d);
             } else {
                 ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
             }

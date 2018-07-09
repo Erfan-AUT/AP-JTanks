@@ -204,6 +204,11 @@ public class MasterAnimation {
 
     }
 
+    public void drawIt(Graphics2D g2d) {
+        g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+    }
+
+
     public int getFrameWidth() {
         return frameWidth;
     }

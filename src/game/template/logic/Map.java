@@ -70,17 +70,8 @@ public class Map implements Serializable {
                 case "nd2":
                     allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\", true));
                     break;
-                case "d0":
+                case "d":
                     allObjects.add(new Block(y, x, true, 10, this, 2, softWall + ".png", false));
-                    break;
-                case "d1":
-                    allObjects.add(new Block(y, x, true, 20, this, 2, softWall + "1.png", false));
-                    break;
-                case "d2":
-                    allObjects.add(new Block(y, x, true, 30, this, 2, softWall + "2.png", false));
-                    break;
-                case "d3":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, softWall + "3.png", false));
                     break;
                 case "w1":
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", true));
