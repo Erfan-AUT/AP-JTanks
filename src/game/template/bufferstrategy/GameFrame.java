@@ -94,18 +94,17 @@ public class GameFrame extends JFrame {
         for (GameObject object : state.getMap().getAllObjects()) {
             if (!(object instanceof UserTank)) {
                 object.getAnimation().drawIt(g2d);
-                //g2d.dispose();
             }
-            UserTank pTank = (UserTank) state.getPlayerTank();
-            if (pTank.getAnimation().active) {
-                if (pTank.isForward()) {
-                    pTank.getAnimation().drawImages(g2d);
-                } else {
-                    ((Animation) pTank.getAnimation()).drawImagesReverse(g2d);
-                }
+        }
+        UserTank pTank = (UserTank) state.getPlayerTank();
+        if (pTank.getAnimation().active) {
+            if (pTank.isForward()) {
+                pTank.getAnimation().drawImages(g2d);
             } else {
-                ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                ((Animation) pTank.getAnimation()).drawImagesReverse(g2d);
             }
+        } else {
+            ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
         }
     }
 }
