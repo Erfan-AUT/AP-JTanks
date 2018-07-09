@@ -37,6 +37,8 @@ public class PlayerTank extends Tank {
         setCannonY(getY() + 75);
         readContents();
         tankMove = new Animation(tankImages, 250, 250, 4, 20, false, getX(), getY(), 0);
+        tankMove.setCannon(cannons[2]);
+        tankMove.setRifle(rifles[0]);
     }
 
     @Override
