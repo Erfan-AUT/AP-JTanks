@@ -13,7 +13,7 @@ public class Bullet extends GameObject {
             damage = 200;
         else
             damage = 100;
-        //displayTheAnimations();
+        displayTheAnimations();
     }
 
     @Override

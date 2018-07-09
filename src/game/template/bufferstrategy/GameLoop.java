@@ -31,6 +31,7 @@ public class GameLoop implements Runnable {
 
 	public GameLoop(GameFrame frame) {
 		canvas = frame;
+        map = new Map(1, state);
 	}
 	
 	/**
@@ -39,11 +40,11 @@ public class GameLoop implements Runnable {
 	public void init() {
 		// Perform all initializations ...
 		state = new GameState();
+        map = new Map(1, state);
+        state.setMap(map);
 		canvas.addKeyListener(state.getKeyListener());
 		canvas.addMouseListener(state.getMouseListener());
 		canvas.addMouseMotionListener(state.getMouseMotionListener());
-		map = new Map(1, state);
-		state.setMap(map);
 	}
 
 	@Override

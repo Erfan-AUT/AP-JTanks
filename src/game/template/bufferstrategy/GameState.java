@@ -54,16 +54,15 @@ public class GameState {
 //        playerTank = map.getMainTank();
     }
 
-    public void setMap(Map map)
-    {
+    public void setMap(Map map) {
         this.map = map;
         playerTank = map.getMainTank();
     }
+
     /**
      * The method which updates the game state.
      */
     public void update() {
-        playerTank.update();
 //        map.getMainTank().update();
 //        for (GameObject bullet : map.getVisibleObjects()) {
 //            for (GameObject target : map.getVisibleObjects()) {
@@ -79,8 +78,9 @@ public class GameState {
 //                }
 //            }
 //        }
-
-//        playerTank.update();
+        for (GameObject object : map.getAllObjects())
+            object.update();
+       // playerTank.update();
         //
         // Update the state of all game elements
         //  based on user input and elapsed time ...
