@@ -38,18 +38,10 @@ public abstract class GameObject {
         this.isDestructible = isDestructible;
         this.health = health;
         this.whichMap = whichMap;
-        if (Files.isDirectory(Paths.get(location))) {
-            imageLocation = new File(location);
-            imagesLocations = imageLocation.listFiles();
-        }
-        else
-            imagesLocations = new File[] {new File(location)};
-        images = new BufferedImage[imagesLocations.length];
         //TODO: not actual values and need to be changed.
         locY = (y+1) * 200;
         locX = (x+1) * 200;
-
-        readContents();
+        readContents(location);
     }
 
     public void update(){}
@@ -97,7 +89,14 @@ public abstract class GameObject {
         return imagesLocations;
     }
 
-    protected void readContents() {
+    protected void readContents(String location) {
+        if (Files.isDirectory(Paths.get(location))) {
+            imageLocation = new File(location);
+            imagesLocations = imageLocation.listFiles();
+        }
+        else
+            imagesLocations = new File[] {new File(location)};
+        images = new BufferedImage[imagesLocations.length];
         for (int i = 0; i < imagesLocations.length; i++) {
             try {
                 images[i] = ImageIO.read(imagesLocations[i]);
@@ -129,7 +128,7 @@ public abstract class GameObject {
 
     public void displayTheAnimations()
     {
-        animation = new MasterAnimation(images, 250, 250, 1, 20,
+        animation = new MasterAnimation(images, 120, 120, 1, 20,
                 false, locX, locY, 0);
         animation.active = false;
     }

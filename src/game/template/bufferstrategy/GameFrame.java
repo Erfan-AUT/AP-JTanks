@@ -90,8 +90,9 @@ public class GameFrame extends JFrame {
         //
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        g2d.translate(-state.getMap().getCameraZeroX(), -state.getMap().getCameraZeroY());
         //TODO: should be visible ones.
-        for (GameObject object : state.getMap().getAllObjects()) {
+        for (GameObject object : state.getMap().getVisibleObjects()) {
             if (!(object instanceof UserTank)) {
                 object.getAnimation().drawIt(g2d);
             }

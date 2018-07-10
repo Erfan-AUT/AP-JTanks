@@ -27,19 +27,24 @@ public abstract class Tank extends GameObject {
         cannonCount = 50;
         forward = false;
         angle = 0;
+        animation = new Animation(images, 150, 150, 4, 20, false, x, y, 0);
+        animation.active = true;
     }
 
     public int avoidCollision() {
+        if (!whichMap.doesntGoOutOfMap(this, false))
+            return -velocity;
         for (GameObject object : whichMap.getVisibleObjects()) {
             if (object != this) {
                 if (GameState.checkIfTwoObjectsCollide(object, this)) {
                     if (object instanceof Block) {
-                        if (!((Block) object).isPassableByTank())
+                        if (!((Block) object).isPassableByTank()) {
+                            System.out.println("Collides with object.");
                             return -velocity;
-                    } else
+                        }
+                    } else if (object instanceof ComputerTank)
                         return -velocity;
-                } else if (!whichMap.doesntGoOutOfMap(this, false))
-                    return -velocity;
+                }
             }
         }
         return 0;
@@ -127,4 +132,7 @@ public abstract class Tank extends GameObject {
         this.angle = angle;
     }
 
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
 }

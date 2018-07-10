@@ -12,10 +12,10 @@ public class ComputerTank extends Tank {
 
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
         super(y, x, health, whichMap, location);
-        if (whichMap.doesntGoOutOfMap(this, true))
-            temporarilyDisabled = false;
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
         displayTheAnimations();
+        if (whichMap.doesntGoOutOfMap(this, true))
+            temporarilyDisabled = false;
     }
 
     /**
@@ -55,8 +55,8 @@ public class ComputerTank extends Tank {
     public void update() {
         if (isMobile && validateAbility())
             move();
-        if (!temporarilyDisabled)
-            shoot();
+        if (!temporarilyDisabled);
+            //shoot();
     }
 
     @Override

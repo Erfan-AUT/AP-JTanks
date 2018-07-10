@@ -28,32 +28,39 @@ public class Block extends GameObject {
             isDestructible = false;
         //TODO : Note that in collision of gift block and user tank, gift gets added to tank.
         //Jeez.
-        switch (pass)
-        {
+        switch (pass) {
             case 0:
                 isPassableByTank = true;
             case 1:
                 isPassableByBullet = true;
                 break;
         }
-       displayTheAnimations();
+        displayTheAnimations();
         //Any other means non-passable.
     }
 
-    public void update()
-    {
-        if (isDestructible())
-            if (initialHealth > getHealth());
-//                case "d1":
-//        allObjects.add(new Block(y, x, true, 20, this, 2, softWall + "1.png", false));
-//        break;
-//        case "d2":
-//        allObjects.add(new Block(y, x, true, 30, this, 2, softWall + "2.png", false));
-//        break;
-//        case "d3":
-//        allObjects.add(new Block(y, x, true, 40, this, 2, softWall + "3.png", false));
-//        break;
+    @Override
+    public void takeDamage(int damage) {
+        if (isDestructible()) {
+            super.takeDamage(damage);
+            readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
+            displayTheAnimations();
+        }
     }
+
+//    public void update() {
+//        if (isDestructible())
+//            if (initialHealth > getHealth()) ;
+////                case "d1":
+////        allObjects.add(new Block(y, x, true, 20, this, 2, softWall + "1.png", false));
+////        break;
+////        case "d2":
+////        allObjects.add(new Block(y, x, true, 30, this, 2, softWall + "2.png", false));
+////        break;
+////        case "d3":
+////        allObjects.add(new Block(y, x, true, 40, this, 2, softWall + "3.png", false));
+////        break;
+//    }
 
 
     public boolean isPassableByTank() {
@@ -62,5 +69,13 @@ public class Block extends GameObject {
 
     public boolean isPassableByBullet() {
         return isPassableByBullet;
+    }
+
+    public boolean isGift() {
+        return isGift;
+    }
+
+    public String getType() {
+        return type;
     }
 }

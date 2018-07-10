@@ -3,6 +3,8 @@ package game.template.logic.cellfillers;
 import game.template.bufferstrategy.GameState;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
+import game.template.logic.NetworkUser;
+import game.template.logic.User;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -13,24 +15,16 @@ public class UserTank extends Tank {
     private int lives = 3;
     private int initialHealth;
     private int rotationDegree;
-    private game.template.bufferstrategy.GameState gameState;
-    protected boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
+    private User user;
 
-    public UserTank(int y, int x, int health, Map whichMap, String location, game.template.bufferstrategy.GameState gameState) {
+    public UserTank(int y, int x, int health, Map whichMap, String location) {
         super(y, x, health, whichMap, location);
         initialHealth = health;
-        this.gameState = gameState;
         setVelocity(10);
-        animation = new Animation(images, 250, 250, 4, 20, false, x, y, 0);
-        animation.active = true;
     }
 
-    private class MouseObserver extends MouseAdapter {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-        }
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -68,38 +62,34 @@ public class UserTank extends Tank {
     @Override
     public void move() {
         boolean isMoving = false;
-        int x = locX;
-        int y = locY;
-        if (gameState.isKeyUP()) {
-            y -= velocity + avoidCollision();
+        if (user.isKeyUP()) {
+            locY -= velocity;
+            locY -= avoidCollision();
             isMoving = true;
-        } else if (gameState.isKeyDOWN()) {
-            y += velocity + avoidCollision();
-            isMoving = true;
-        }
-        if (gameState.isKeyRIGHT()) {
-            x += velocity + avoidCollision();
-            isMoving = true;
-        } else if (gameState.isKeyLEFT()) {
-            x -= velocity + avoidCollision();
+        } else if (user.isKeyDOWN()) {
+            locY += velocity;
+            locY += avoidCollision();
             isMoving = true;
         }
-        locX = x;
-        locY = y;
+        if (user.isKeyRIGHT()) {
+            locX += velocity;
+            locX += avoidCollision();
+            isMoving = true;
+        } else if (user.isKeyLEFT()) {
+            locX -= velocity;
+            locX -= avoidCollision();
+            isMoving = true;
+        }
 //        setCannonX(getX() + 75);
 //        setCannonY(getY() + 75);
         animation.changeCoordinates(locX, locY);
         if (isMoving) {
-            ((Animation)animation).setActive(true);
+            ((Animation) animation).setActive(true);
         } else {
-            ((Animation)animation).setActive(false);
+            ((Animation) animation).setActive(false);
         }
     }
 
-
-    public game.template.bufferstrategy.GameState getGameState() {
-        return gameState;
-    }
 
     public void rotate() {
         int tmp = getAngle() % 360;
@@ -112,7 +102,7 @@ public class UserTank extends Tank {
             setAngle(tmp);
         }
 
-        if (gameState.isKeyUP() && gameState.isKeyRIGHT() || gameState.isKeyRIGHT() && gameState.isKeyUP()) {
+        if (user.isKeyUP() && user.isKeyRIGHT() || user.isKeyRIGHT() && user.isKeyUP()) {
             if (getAngle() >= 180 && getAngle() < 305) {
                 crossRot(5);
             } else if (getAngle() == 305) {
@@ -120,7 +110,7 @@ public class UserTank extends Tank {
             } else {
                 crossRot(-5);
             }
-        } else if (gameState.isKeyUP() && gameState.isKeyLEFT() || gameState.isKeyLEFT() && gameState.isKeyUP()) {
+        } else if (user.isKeyUP() && user.isKeyLEFT() || user.isKeyLEFT() && user.isKeyUP()) {
             if ((getAngle() <= 360 && getAngle() > 215) || getAngle() == 0) {
                 crossRot(-5);
             } else if (getAngle() == 215) {
@@ -128,7 +118,7 @@ public class UserTank extends Tank {
             } else {
                 crossRot(5);
             }
-        } else if (gameState.isKeyDOWN() && gameState.isKeyLEFT()) {
+        } else if (user.isKeyDOWN() && user.isKeyLEFT()) {
             if (getAngle() >= 0 && getAngle() < 135) {
                 crossRot(5);
             } else if (getAngle() == 135) {
@@ -136,7 +126,7 @@ public class UserTank extends Tank {
             } else {
                 crossRot(-5);
             }
-        } else if (gameState.isKeyDOWN() && gameState.isKeyRIGHT()) {
+        } else if (user.isKeyDOWN() && user.isKeyRIGHT()) {
             if (getAngle() <= 180 && getAngle() > 45) {
                 crossRot(-5);
             } else if (getAngle() == 45) {
@@ -145,7 +135,7 @@ public class UserTank extends Tank {
                 crossRot(5);
             }
         }
-        if (gameState.isKeyRIGHT() && !(gameState.isKeyUP() || gameState.isKeyDOWN())) {
+        if (user.isKeyRIGHT() && !(user.isKeyUP() || user.isKeyDOWN())) {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(-5);
@@ -165,7 +155,7 @@ public class UserTank extends Tank {
                     System.out.println(getAngle());
                 }
             }
-        } else if (gameState.isKeyLEFT() && !(gameState.isKeyUP() || gameState.isKeyDOWN())) {
+        } else if (user.isKeyLEFT() && !(user.isKeyUP() || user.isKeyDOWN())) {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(5);
@@ -185,7 +175,7 @@ public class UserTank extends Tank {
                     System.out.println(getAngle());
                 }
             }
-        } else if (gameState.isKeyUP() && !(gameState.isKeyRIGHT() || gameState.isKeyLEFT())) {
+        } else if (user.isKeyUP() && !(user.isKeyRIGHT() || user.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(5);
@@ -205,7 +195,7 @@ public class UserTank extends Tank {
                     System.out.println(getAngle());
                 }
             }
-        } else if (gameState.isKeyDOWN() && !(gameState.isKeyRIGHT() || gameState.isKeyLEFT())) {
+        } else if (user.isKeyDOWN() && !(user.isKeyRIGHT() || user.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(-5);
@@ -241,28 +231,34 @@ public class UserTank extends Tank {
         setVelocity(0);
         rotationDegree = deg;
         setAngle(getAngle() + rotationDegree);
-        ((Animation)animation).setMovingRotationDeg(getAngle());
+        ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
     private void rotateTheCannon() {
-        int dx = gameState.getMouseX() - (locX + 10);
-        int dy = gameState.getMouseY() - (locY + 20);
+        int dx = user.getMouseX() - (locX + 10);
+        int dy = user.getMouseY() - (locY + 20);
         double deg = Math.atan2(dy, dx);
-        ((Animation)animation).setCannonRotationDeg(deg);
+        ((Animation) animation).setCannonRotationDeg(deg);
     }
 
     public void update() {
-        if (gameState.isKeyUP() || gameState.isKeyDOWN() || gameState.isKeyLEFT() || gameState.isKeyRIGHT()) {
+        if (user.isKeyUP() || user.isKeyDOWN() || user.isKeyLEFT() || user.isKeyRIGHT()) {
             rotate();
             move();
         }
-        if (gameState.isMouseMoved())
+        if (user.isMouseMoved())
             rotateTheCannon();
-        if (gameState.isMouseLeftClickPressed()) {
+        if (user.isMouseLeftClickPressed()) {
             shoot();
         }
-        if (gameState.isMouseRightClickPressed())
+        if (user.isMouseRightClickPressed())
             changeWeapon();
     }
+
+    public void recieveGift(String giftType) {
+
+    }
+
+
 
 }
