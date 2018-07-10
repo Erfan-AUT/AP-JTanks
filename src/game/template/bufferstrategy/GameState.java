@@ -149,16 +149,20 @@ public class GameState {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_W:
-                    keyUP = true;
+                    keyUP = false;
+                    GameFrame.y += 50;
                     break;
                 case KeyEvent.VK_D:
-                    keyRIGHT = true;
+                    keyRIGHT = false;
+                    GameFrame.x -= 50;
                     break;
                 case KeyEvent.VK_A:
-                    keyLEFT = true;
+                    keyLEFT = false;
+                    GameFrame.x += 50;
                     break;
                 case KeyEvent.VK_S:
-                    keyDOWN = true;
+                    keyDOWN = false;
+                    GameFrame.y -= 50;
                     break;
             }
         }
@@ -168,15 +172,19 @@ public class GameState {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_W:
                     keyUP = false;
+                    GameFrame.y += 50;
                     break;
                 case KeyEvent.VK_D:
                     keyRIGHT = false;
+                    GameFrame.x -= 50;
                     break;
                 case KeyEvent.VK_A:
                     keyLEFT = false;
+                    GameFrame.x += 50;
                     break;
                 case KeyEvent.VK_S:
                     keyDOWN = false;
+                    GameFrame.y -= 50;
                     break;
             }
         }
@@ -190,8 +198,8 @@ public class GameState {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-//            System.out.println(e.getX());
-//            System.out.println(e.getY());
+            System.out.println(e.getX());
+            System.out.println(e.getY());
         }
 
         @Override

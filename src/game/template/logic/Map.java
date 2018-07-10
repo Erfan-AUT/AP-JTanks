@@ -191,7 +191,7 @@ public class Map implements Serializable {
     }
 
     public void update() {
-        updateCameraZeros();
+//        updateCameraZeros();
         updateVisibleObjects();
     }
 

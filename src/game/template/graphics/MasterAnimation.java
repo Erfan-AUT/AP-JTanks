@@ -217,4 +217,8 @@ public class MasterAnimation {
     public int getFrameHeight() {
         return frameHeight;
     }
+
+    public boolean isActive() {
+        return active;
+    }
 }

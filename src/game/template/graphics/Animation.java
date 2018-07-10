@@ -151,6 +151,7 @@ public class Animation extends game.template.graphics.MasterAnimation {
         this.cannonRotationDeg = cannonRotationDeg;
     }
 
-
-
+    public boolean isActive() {
+        return active;
+    }
 }

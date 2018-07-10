@@ -22,7 +22,6 @@ public class UserTank extends Tank {
         this.gameState = gameState;
         setVelocity(10);
         animation = new Animation(images, 250, 250, 4, 20, false, x, y, 0);
-        animation.active = true;
     }
 
     private class MouseObserver extends MouseAdapter {
@@ -70,6 +69,7 @@ public class UserTank extends Tank {
         boolean isMoving = false;
         int x = locX;
         int y = locY;
+        System.out.println(locX);
         if (gameState.isKeyUP()) {
             y -= velocity + avoidCollision();
             isMoving = true;
@@ -90,9 +90,9 @@ public class UserTank extends Tank {
 //        setCannonY(getY() + 75);
         animation.changeCoordinates(locX, locY);
         if (isMoving) {
-            ((Animation)animation).setActive(true);
+            ((Animation) animation).setActive(true);
         } else {
-            ((Animation)animation).setActive(false);
+            ((Animation) animation).setActive(false);
         }
     }
 
@@ -241,28 +241,29 @@ public class UserTank extends Tank {
         setVelocity(0);
         rotationDegree = deg;
         setAngle(getAngle() + rotationDegree);
-        ((Animation)animation).setMovingRotationDeg(getAngle());
+        ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
     private void rotateTheCannon() {
+//        System.out.println(locX);
         int dx = gameState.getMouseX() - (locX + 10);
-        int dy = gameState.getMouseY() - (locY + 20);
+        int dy = gameState.getMouseY() - (locY + 20) + 2400;
         double deg = Math.atan2(dy, dx);
-        ((Animation)animation).setCannonRotationDeg(deg);
+        ((Animation) animation).setCannonRotationDeg(deg);
     }
 
     public void update() {
-        if (gameState.isKeyUP() || gameState.isKeyDOWN() || gameState.isKeyLEFT() || gameState.isKeyRIGHT()) {
-            rotate();
-            move();
-        }
-        if (gameState.isMouseMoved())
-            rotateTheCannon();
-        if (gameState.isMouseLeftClickPressed()) {
-            shoot();
-        }
-        if (gameState.isMouseRightClickPressed())
-            changeWeapon();
+//        if (gameState.isKeyUP() || gameState.isKeyDOWN() || gameState.isKeyLEFT() || gameState.isKeyRIGHT()) {
+        rotate();
+//        move();
+        rotateTheCannon();
+//        }
+//        if (gameState.isMouseMoved())
+//        if (gameState.isMouseLeftClickPressed()) {
+//            shoot();
+//        }
+//        if (gameState.isMouseRightClickPressed())
+//            changeWeapon();
     }
 
 }
