@@ -21,8 +21,8 @@ public class Map implements Serializable {
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
-    private int height = 3000;
-    private int width = 2000;
+    private int height = 4800;
+    private int width = 3500;
     private UserTank mainTank;
     private ArrayList<UserTank> mainTanks = new ArrayList<>();
     private int cameraWidth = GameFrame.GAME_WIDTH;
@@ -59,7 +59,7 @@ public class Map implements Serializable {
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\CannonFood.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\images\\CannonFood.png", true, data.type));
                     break;
                 case "p":
                     allObjects.add(new Block(y, x, false, 0, this, 0, ".\\images\\plant.png", false, data.type));
@@ -71,16 +71,16 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "2.png", false, data.type));
                     break;
                 case "nd":
-                    allObjects.add(new Block(y, x, true, 0, this, 2, ".\\images\\HardWall.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 0, this, 2, ".\\images\\HardWall.png", false, data.type));
                     break;
                 case "d":
                     allObjects.add(new Block(y, x, true, 40, this, 2, softWall + ".png", false, data.type));
                     break;
                 case "w1":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", false, data.type));
                     break;
                 case "w2":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
                     allObjects.add(new ComputerTank(y, x, 100, this, false, eTank));
@@ -95,6 +95,7 @@ public class Map implements Serializable {
                     allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot"));
                     break;
                 case "u":
+                    // UserTank userTank = new UserTank(y, x, 100, this, )
                     UserTank userTank = new UserTank(y, x, 100, this, ".\\Move\\Tank");
                     mainTanks.add(userTank);
                     allObjects.add(userTank);
@@ -150,21 +151,44 @@ public class Map implements Serializable {
         return returnValue;
     }
 
+    public void updateWidth() {
+//        int maxX = 0;
+//        for (GameObject object : visibleObjects) {
+//            if (object.locX + object.getWidth() > maxX)
+//                maxX = object.locX + object.getWidth();
+//        }
+//        if (width > maxX)
+//            width = maxX;
+        int maxX = 0;
+        for (GameObject object : allObjects)
+        {
+            if (object != mainTank)
+            {
+                int felan = object.locY - (object.getHeight() / 2);
+                if ((felan <= mainTank.locY) && (felan >= mainTank.locY - mainTank.getHeight()))
+                    if (object.locX > maxX)
+                        maxX = object.locX + object.getWidth();
+            }
+        }
+        width = maxX;
+    }
+
+
     public void updateCameraZeros() {
         if (mainTank.isMoving()) {
             int i = 1;
         }
         if (mainTank.locX + cameraWidth <= width) {
-            if (mainTank.locX > 200)
-                cameraZeroX = mainTank.locX - 200;
+            if (mainTank.locX > 300)
+                cameraZeroX = mainTank.locX - 300;
             else
                 cameraZeroX = 0;
         } else
             cameraZeroX = width - cameraWidth;
         //int animHeight = GameState.getRelativeHeightWidth(mainTank).height;
         if (mainTank.locY + cameraHeight <= height) {
-            if (mainTank.locY > 200)
-                cameraZeroY = mainTank.locY - 200;
+            if (mainTank.locY > 300)
+                cameraZeroY = mainTank.locY - 300;
             else
                 cameraZeroY = 0;
         } else
@@ -181,7 +205,7 @@ public class Map implements Serializable {
             int y = object.locY;
             int x = object.locX;
             if ((y >= cameraZeroY - object.getHeight()) && (y <= cameraZeroY + cameraHeight))
-                if ((x >= cameraZeroX - object.getWidth()) && (y <= cameraZeroX + cameraWidth))
+                if ((x >= cameraZeroX - object.getWidth()) && (x <= cameraZeroX + cameraWidth))
                     visibleObjects.add(object);
         }
     }
@@ -210,6 +234,7 @@ public class Map implements Serializable {
         if (!isOnNetwork) {
             updateCameraZeros();
             updateVisibleObjects();
+            updateWidth();
             for (GameObject object : getAllObjects())
                 object.update();
         }

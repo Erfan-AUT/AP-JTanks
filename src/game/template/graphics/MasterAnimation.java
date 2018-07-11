@@ -209,6 +209,9 @@ public class MasterAnimation {
         g2d.drawImage(animImages[currentFrameNumber], x, y, null);
     }
 
+    public boolean isActive() {
+        return active;
+    }
 
     public int getFrameWidth() {
         return frameWidth;

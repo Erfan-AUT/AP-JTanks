@@ -57,6 +57,11 @@ public class GameState {
 //        playerTank = map.getMainTank();
     }
 
+    public GameState(int i)
+    {
+        i = 12;
+    }
+
     public void setMap(Map map) {
         this.map = map;
         playerTank = map.getMainTank();

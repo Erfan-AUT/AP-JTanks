@@ -28,7 +28,7 @@ public class GameLoop implements Runnable {
     public static final int FPS = 30;
 
     private GameFrame canvas;
-    private GameState state;
+    private GameState state = new GameState();
     private User user;
     private Map map;
     private boolean isOnNetwork = false;
@@ -44,7 +44,7 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-        state = new GameState();
+       // state = new GameState();
         //For now false.
         map = new Map(1, isOnNetwork);
         if (isOnNetwork)

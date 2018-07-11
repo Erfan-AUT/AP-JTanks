@@ -22,6 +22,12 @@ public class UserTank extends Tank {
         initialHealth = health;
         setVelocity(10);
     }
+    public UserTank(int y, int x, int health, Map whichMap, String location, GameState state) {
+        super(y, x, health, whichMap, location);
+        initialHealth = health;
+        setVelocity(10);
+    }
+
 
     public void setUser(User user) {
         this.user = user;

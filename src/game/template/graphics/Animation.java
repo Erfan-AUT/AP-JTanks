@@ -152,5 +152,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
     }
 
 
-
+    @Override
+    public boolean isActive() {
+        return active;
+    }
 }

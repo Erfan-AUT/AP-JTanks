@@ -153,8 +153,8 @@ public class User {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            mouseX = e.getX();
-            mouseY = e.getY();
+            mouseX = e.getX() + map.getCameraZeroX();
+            mouseY = e.getY() + map.getCameraZeroY();
             mouseMoved = true;
         }
     }

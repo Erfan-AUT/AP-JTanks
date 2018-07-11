@@ -39,8 +39,8 @@ public abstract class GameObject {
         this.health = health;
         this.whichMap = whichMap;
         //TODO: not actual values and need to be changed.
-        locY = (y+1) * 200;
-        locX = (x+1) * 200;
+        locY = (y) * 120;
+        locX = (x) * 120;
         readContents(location);
     }
 
