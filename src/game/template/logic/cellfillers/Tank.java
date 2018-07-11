@@ -4,7 +4,10 @@ import game.template.bufferstrategy.GameState;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class Tank extends GameObject {
 
@@ -17,18 +20,24 @@ public abstract class Tank extends GameObject {
     private int rifleCount;
     protected boolean rotating;
     protected boolean moving;
+    private File bulletLocation;
+    protected long lastShootTime;
+    protected BufferedImage[] tankImages;
+    protected BufferedImage heavyBulletImage;
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
 
-    public Tank(int y, int x, int health, Map whichMap, String location) {
+    public Tank(int y, int x, int health, Map whichMap, String location, String bulletLocation) {
         super(y, x, true, health, whichMap, location);
+        this.bulletLocation = new File(bulletLocation);
         rifleCount = 300;
         cannonCount = 50;
         forward = false;
         angle = 0;
         animation = new Animation(images, 150, 150, 4, 20, false, x, y, 0);
         animation.active = true;
+        lastShootTime = 0;
     }
 
     public int avoidCollision() {
@@ -66,7 +75,7 @@ public abstract class Tank extends GameObject {
     }
 
 
-    protected abstract void shoot();
+    protected abstract Bullet shoot(double deg);
 
     protected abstract void move();
 
@@ -134,5 +143,27 @@ public abstract class Tank extends GameObject {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    @Override
+    public void readContents(String location) {
+        super.readContents(location);
+        try {
+            heavyBulletImage = ImageIO.read(new File(".\\Bullet\\HeavyBullet.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected Bullet finalizeShoot(BufferedImage image, double deg )
+    {
+        long time = System.currentTimeMillis();
+        lastShootTime = time;
+        Bullet bullet;
+        bullet = new Bullet(image, (int) (locX + 67 + Math.cos(deg) * 100),
+                (int) (locY + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg, whichMap);
+//        Thread thread = new Thread(bullet);
+//        thread.start();
+        return bullet;
     }
 }

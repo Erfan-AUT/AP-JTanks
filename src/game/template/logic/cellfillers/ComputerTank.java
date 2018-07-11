@@ -11,7 +11,7 @@ public class ComputerTank extends Tank {
     private int damageInCaseCollisionIsDestructive = 2;
 
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
-        super(y, x, health, whichMap, location);
+        super(y, x, health, whichMap, location, ".\\Images\\EnemyBullet1.png");
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
         displayTheAnimations();
         if (whichMap.doesntGoOutOfMap(this, true))
@@ -44,10 +44,11 @@ public class ComputerTank extends Tank {
     }
 
     @Override
-    public void shoot() {
+    public Bullet shoot(double deg) {
         findEnemyTank();
-        double angle = Math.atan((enemyTank.locY - locY) / (enemyTank.locX - locX));
-        new Bullet(locY, locX, this.whichMap, angle, getCurrentWeaponType(), "Bullet Location");
+
+        return new Bullet(heavyBulletImage, (int) (locX + 67 + Math.cos(deg) * 100),
+                (int) (locY + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg, whichMap);
     }
 
 
@@ -56,6 +57,10 @@ public class ComputerTank extends Tank {
         if (isMobile && validateAbility())
             move();
         if (!temporarilyDisabled);
+        {
+            double deg = Math.atan((enemyTank.locY - locY) / (enemyTank.locX - locX));
+            shoot(deg);
+        }
             //shoot();
     }
 

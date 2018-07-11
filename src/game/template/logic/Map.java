@@ -2,15 +2,13 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
-import game.template.logic.cellfillers.Block;
-import game.template.logic.cellfillers.ComputerTank;
-import game.template.logic.cellfillers.GameObject;
-import game.template.logic.cellfillers.UserTank;
+import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Map implements Serializable {
     /**
@@ -102,6 +100,8 @@ public class Map implements Serializable {
                     break;
             }
         }
+//        for (GameObject object: allObjects)
+//            object.readContents();
         mainTank = mainTanks.get(0);
     }
 
@@ -160,10 +160,8 @@ public class Map implements Serializable {
 //        if (width > maxX)
 //            width = maxX;
         int maxX = 0;
-        for (GameObject object : allObjects)
-        {
-            if (object != mainTank)
-            {
+        for (GameObject object : allObjects) {
+            if (object != mainTank) {
                 int felan = object.locY - (object.getHeight() / 2);
                 if ((felan <= mainTank.locY) && (felan >= mainTank.locY - mainTank.getHeight()))
                     if (object.locX > maxX)
@@ -230,13 +228,22 @@ public class Map implements Serializable {
     }
 
 
-    public void update() {
+    public synchronized void update() {
         if (!isOnNetwork) {
             updateCameraZeros();
             updateVisibleObjects();
             updateWidth();
-            for (GameObject object : getAllObjects())
-                object.update();
+            for (Iterator it = allObjects.iterator(); it.hasNext();) {
+//                if (object instanceof Bullet)
+//                {
+//                    int i = 12;
+//                }
+                try {
+                    ((GameObject)(it.next())).update();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

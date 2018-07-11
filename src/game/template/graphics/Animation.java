@@ -19,6 +19,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
 
     private double cannonRotationDeg;
 
+    private BufferedImage gun;
+
     /**
      * Creates animation.
      *
@@ -155,5 +157,9 @@ public class Animation extends game.template.graphics.MasterAnimation {
     @Override
     public boolean isActive() {
         return active;
+    }
+
+    public void setGun(BufferedImage gun) {
+        this.gun = gun;
     }
 }

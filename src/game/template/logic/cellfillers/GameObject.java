@@ -32,32 +32,37 @@ public abstract class GameObject {
     public int locX;
     public int locY;
     protected int velocity;
+   // String location;
 
 
     public GameObject(int y, int x, boolean isDestructible, int health, Map whichMap, String location) {
+        this(y, x, isDestructible, health, whichMap);
+        //this.location = location;
+        readContents(location);
+    }
+
+    public GameObject(int y, int x, boolean isDestructible, int health, Map whichMap) {
         this.isDestructible = isDestructible;
         this.health = health;
         this.whichMap = whichMap;
         //TODO: not actual values and need to be changed.
         locY = (y) * 120;
         locX = (x) * 120;
-        readContents(location);
     }
 
-    public void update(){}
+    public void update() {
+    }
 
     public void takeDamage(int damage) {
         if (isDestructible)
             health -= damage;
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return animation.getFrameHeight();
     }
 
-    public int getWidth()
-    {
+    public int getWidth() {
         return animation.getFrameWidth();
     }
 
@@ -89,13 +94,12 @@ public abstract class GameObject {
         return imagesLocations;
     }
 
-    protected void readContents(String location) {
+    public void readContents(String location) {
         if (Files.isDirectory(Paths.get(location))) {
             imageLocation = new File(location);
             imagesLocations = imageLocation.listFiles();
-        }
-        else
-            imagesLocations = new File[] {new File(location)};
+        } else
+            imagesLocations = new File[]{new File(location)};
         images = new BufferedImage[imagesLocations.length];
         for (int i = 0; i < imagesLocations.length; i++) {
             try {
@@ -106,7 +110,9 @@ public abstract class GameObject {
         }
     }
 
-    public int getDamage(){return  0;}
+    public int getDamage() {
+        return 0;
+    }
     //    protected void changeDimension(int x, int y) {
 //        int secX = this.x + x, secY = this.y + y;
 //        if ((whichMap.getHeight() >= secY) && (0 <= secY))
@@ -126,8 +132,7 @@ public abstract class GameObject {
         return Math.PI / 2;
     }
 
-    public void displayTheAnimations()
-    {
+    public void displayTheAnimations() {
         animation = new MasterAnimation(images, 120, 120, 1, 20,
                 false, locX, locY, 0);
         animation.active = false;

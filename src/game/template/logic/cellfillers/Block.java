@@ -43,6 +43,7 @@ public class Block extends GameObject {
     public void takeDamage(int damage) {
         if (isDestructible()) {
             super.takeDamage(damage);
+            //location = ;
             readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
             displayTheAnimations();
         }
