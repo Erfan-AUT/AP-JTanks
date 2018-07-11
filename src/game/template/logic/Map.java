@@ -29,6 +29,7 @@ public class Map implements Serializable {
     private int cameraZeroX = 0;
     private int cameraZeroY;
     private boolean isOnNetwork;
+    public static ArrayList<Bullet> bullets;
 
     /**
      * To load from scratch,
@@ -44,6 +45,7 @@ public class Map implements Serializable {
      */
     public Map(int level, boolean isOnNetwork) {
         // cameraZeroY = height;
+        bullets = new ArrayList<>();
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
@@ -279,4 +281,10 @@ public class Map implements Serializable {
     public boolean isOnNetwork() {
         return isOnNetwork;
     }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+  //  public static
 }

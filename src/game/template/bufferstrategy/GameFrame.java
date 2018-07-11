@@ -144,6 +144,7 @@ public class GameFrame extends JFrame {
         } else {
             ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
         }
+        ((Animation)pTank.getAnimation()).drawTheBullets(g2d);
         //g2d.translate(pTank.locX, pTank.locY);
     }
 }

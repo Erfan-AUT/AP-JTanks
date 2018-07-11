@@ -1,6 +1,7 @@
 /*** In The Name of Allah ***/
 package game.template.bufferstrategy;
 
+import game.template.graphics.Animation;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.*;
 

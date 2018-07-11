@@ -4,7 +4,7 @@ import game.template.logic.Map;
 
 import java.awt.image.BufferedImage;
 
-public class Bullet extends GameObject{
+public class Bullet extends GameObject implements Runnable {
     private char type;
     private int damage;
     private BufferedImage bullet;
@@ -15,13 +15,19 @@ public class Bullet extends GameObject{
     private boolean isActive;
 
     public Bullet(BufferedImage bullet, int x, int y, double coeX, double coeY, double deg, Map whichMap) {
-        super(y, x, true, 0, whichMap);
+        //super(y, x, true, 0, whichMap);
+        locY = y;
+        locX = x;
+//        locX = (int) (locX + 67 + Math.cos(deg) * 100);
+//        locY = (int) (locY + 75 + Math.sin(deg) * (100));
         isActive = true;
         this.bullet = bullet;
         this.deg = deg;
-        this.velocity = 2;
+        this.velocity = 20;
         this.coeX = coeX;
         this.coeY = coeY;
+        this.whichMap = whichMap;
+        setAlive(true);
         displayTheAnimations();
     }
 //
@@ -30,17 +36,19 @@ public class Bullet extends GameObject{
 //        y += coeY * velocity;
 //    }
 
-//    @Override
-//    public void run() {
-//        while (isActive) {
-//            update();
-//            try {
-//                Thread.sleep(24);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Override
+    public void run() {
+        while (isActive) {
+            if (!isAlive())
+            update();
+
+            try {
+                Thread.sleep(24);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 //    public Bullet(int y, int x, Map whichMap, double shootingAngle, char type, String location) {
 //        super(y, x, true, 0, whichMap, location);
@@ -57,16 +65,28 @@ public class Bullet extends GameObject{
         return damage;
     }
 
+    @Override
+    public void displayTheAnimations() {
+        super.displayTheAnimations();
+        animation.active = true;
+    }
+
     /**
      * Shoots the bullet in the specified direction.
      */
     @Override
     public void update() {
-        locX += velocity * Math.cos(getAngleInRadians());
-        locY += velocity * Math.sin(getAngleInRadians());
+        locX += velocity * coeX;
+        locY += velocity * coeY;
         if (!whichMap.doesntGoOutOfMap(this, true))
             setAlive(false);
     }
 
+    public double getDeg() {
+        return deg;
+    }
 
+    public BufferedImage getBullet() {
+        return bullet;
+    }
 }

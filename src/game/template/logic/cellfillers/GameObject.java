@@ -50,6 +50,9 @@ public abstract class GameObject {
         locX = (x) * 120;
     }
 
+    public GameObject() {
+    }
+
     public void update() {
     }
 

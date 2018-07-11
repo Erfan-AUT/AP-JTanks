@@ -49,8 +49,8 @@ public class UserTank extends Tank {
        // readContents(location);
         //animation = new Animation(tankImages, 250, 250, 4, 24, false, locX, locY, 0);
         ((Animation)animation).setGun(cannons[0]);
-        currentRifle = 1;
-        currentCannon = 1;
+        currentRifle = 0;
+        currentCannon = 0;
     //    readContents(location);
         for (int i = 0; i < cannonsImages.length; i++) {
             try {
@@ -72,6 +72,8 @@ public class UserTank extends Tank {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        ((Animation)animation).setGun(cannons[currentCannon]);
     }
 
     public UserTank(int y, int x, int health, Map whichMap, String location, GameState state) {
@@ -319,9 +321,13 @@ public class UserTank extends Tank {
         if (user.isMouseMoved())
             deg = rotateTheCannon();
         if (user.isMouseLeftClickPressed()) {
-            synchronized(whichMap) {
-                whichMap.getAllObjects().add(shoot(deg));
+            Bullet bullet = shoot(deg);
+            if (bullet != null) {
+                ((Animation)animation).getBullets().add(bullet);
             }
+//            synchronized(whichMap) {
+//                whichMap.getAllObjects().add(shoot(deg));
+//            }
         }
         if (user.isMouseRightClickPressed())
             changeWeapon();
@@ -336,5 +342,25 @@ public class UserTank extends Tank {
 
     }
 
+    public void changeTheGun() {
+        if (isOnCannon) {
+            ((Animation)animation).setGun(cannons[currentCannon]);
+        } else {
+            ((Animation)animation).setGun(rifles[currentRifle]);
+        }
+    }
 
+    public boolean isOnCannon() {
+        return isOnCannon;
+    }
+
+    public void setOnCannon(boolean onCannon) {
+        isOnCannon = onCannon;
+    }
+
+    @Override
+    protected void changeWeapon() {
+        setOnCannon(!isOnCannon);
+        changeTheGun();
+    }
 }

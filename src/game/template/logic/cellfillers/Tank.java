@@ -81,10 +81,11 @@ public abstract class Tank extends GameObject {
 
 
     protected void changeWeapon() {
-        if (currentWeaponType == 'c')
-            currentWeaponType = 'r';
-        else
-            currentWeaponType = 'c';
+
+//        if (currentWeaponType == 'c')
+//            currentWeaponType = 'r';
+//        else
+//            currentWeaponType = 'c';
     }
 
     public char getCurrentWeaponType() {
@@ -160,10 +161,13 @@ public abstract class Tank extends GameObject {
         long time = System.currentTimeMillis();
         lastShootTime = time;
         Bullet bullet;
-        bullet = new Bullet(image, (int) (locX + 67 + Math.cos(deg) * 100),
-                (int) (locY + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg, whichMap);
-//        Thread thread = new Thread(bullet);
-//        thread.start();
+        int x =  (int) (locX + 67 + Math.cos(deg) * 100);
+        int y = (int) (locY + 75 + Math.sin(deg) * (100));
+        bullet = new Bullet(image, x,
+              y, Math.cos(deg), Math.sin(deg), deg, whichMap);
+        Thread thread = new Thread(bullet);
+        thread.start();
+        whichMap.getBullets().add(bullet);
         return bullet;
     }
 }
