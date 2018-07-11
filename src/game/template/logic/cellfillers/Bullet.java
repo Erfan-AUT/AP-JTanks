@@ -14,7 +14,7 @@ public class Bullet extends GameObject implements Runnable {
     private double deg;
     private boolean isActive;
 
-    public Bullet(BufferedImage bullet, int x, int y, double coeX, double coeY, double deg, Map whichMap) {
+    public Bullet(BufferedImage bullet, int x, int y, double coeX, double coeY, double deg, Map whichMap, int damage) {
         //super(y, x, true, 0, whichMap);
         locY = y;
         locX = x;
@@ -29,6 +29,7 @@ public class Bullet extends GameObject implements Runnable {
         this.whichMap = whichMap;
         setAlive(true);
         displayTheAnimations();
+        this.damage = damage;
     }
 //
 //    public void move() {
@@ -40,6 +41,7 @@ public class Bullet extends GameObject implements Runnable {
     public void run() {
         while (isActive) {
             if (!isAlive())
+                Thread.currentThread().stop();
             update();
 
             try {

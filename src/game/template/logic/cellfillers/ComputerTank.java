@@ -48,7 +48,7 @@ public class ComputerTank extends Tank {
         findEnemyTank();
 
         return new Bullet(heavyBulletImage, (int) (locX + 67 + Math.cos(deg) * 100),
-                (int) (locY + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg, whichMap);
+                (int) (locY + 75 + Math.sin(deg) * (100)), Math.cos(deg), Math.sin(deg), deg, whichMap, 5);
     }
 
 

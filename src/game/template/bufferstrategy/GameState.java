@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class holds the state of the game and all of its elements.
@@ -21,7 +23,7 @@ import java.awt.image.BufferedImage;
  */
 public class GameState {
 
-//    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
+    //    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
 //    private boolean mouseRightClickPressed;
 //    private boolean mouseLeftClickPressed;
 //    private boolean mouseMoved;
@@ -58,8 +60,7 @@ public class GameState {
 //        playerTank = map.getMainTank();
     }
 
-    public GameState(int i)
-    {
+    public GameState(int i) {
         i = 12;
     }
 
@@ -73,12 +74,11 @@ public class GameState {
      */
     public void update() {
 
-        for (GameObject bullet : map.getVisibleObjects()) {
-            for (GameObject target : map.getVisibleObjects()) {
+        for (GameObject target : map.getVisibleObjects()) {
+            for (GameObject bullet : map.getVisibleObjects()) {
                 if (target.isDestructible()) {
-                    if ((bullet instanceof Bullet) ||
-                            ((target instanceof UserTank) && (bullet instanceof ComputerTank)
-                                    && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
+                    if (((target instanceof UserTank) && (bullet instanceof ComputerTank)
+                            && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
                         if (checkIfTwoObjectsCollide(bullet, target)) {
                             target.takeDamage(bullet.getDamage());
                             break;
@@ -89,6 +89,17 @@ public class GameState {
                             ((UserTank) bullet).recieveGift(((Block) target).getType());
                 }
             }
+            ArrayList<Bullet> removed = new ArrayList<>();
+            for (Iterator it = Map.bullets.iterator(); it.hasNext();) {
+                Bullet bullet = (Bullet) it.next();
+                if (target.isDestructible()) {
+                    if (checkIfTwoObjectsCollide(bullet, target)) {
+                        target.takeDamage(bullet.getDamage());
+                        removed.add(bullet);
+                    }
+                }
+            }
+            Map.bullets.removeAll(removed);
         }
         map.update();
         //map.update();

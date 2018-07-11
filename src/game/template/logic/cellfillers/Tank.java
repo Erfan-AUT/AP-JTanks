@@ -164,7 +164,7 @@ public abstract class Tank extends GameObject {
         int x =  (int) (locX + 67 + Math.cos(deg) * 100);
         int y = (int) (locY + 75 + Math.sin(deg) * (100));
         bullet = new Bullet(image, x,
-              y, Math.cos(deg), Math.sin(deg), deg, whichMap);
+              y, Math.cos(deg), Math.sin(deg), deg, whichMap, 5);
         Thread thread = new Thread(bullet);
         thread.start();
         whichMap.getBullets().add(bullet);

@@ -26,8 +26,8 @@ public class Map implements Serializable {
     private int cameraWidth = GameFrame.GAME_WIDTH;
     private int cameraHeight = GameFrame.GAME_HEIGHT;
     //These two should change with movement.
-    private int cameraZeroX = 0;
-    private int cameraZeroY;
+    private int[] cameraZeroX = {0, 0};
+    private int[] cameraZeroY = new int[2];
     private boolean isOnNetwork;
     public static ArrayList<Bullet> bullets;
 
@@ -71,10 +71,10 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "2.png", false, data.type));
                     break;
                 case "nd":
-                    allObjects.add(new Block(y, x, true, 0, this, 2, ".\\images\\HardWall.png", false, data.type));
+                    allObjects.add(new Block(y, x, false, 0, this, 2, ".\\images\\HardWall.png", false, data.type));
                     break;
                 case "d":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, softWall + ".png", false, data.type));
+                    allObjects.add(new Block(y, x, true, 4, this, 2, softWall + ".png", false, data.type));
                     break;
                 case "w1":
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", false, data.type));
@@ -174,7 +174,7 @@ public class Map implements Serializable {
     }
 
 
-    public void updateCameraZeros() {
+    public void updateCameraZeros(int user) {
         if (mainTank.isMoving()) {
             int i = 1;
         }
