@@ -45,10 +45,12 @@ public class Block extends GameObject {
         if (isDestructible()) {
             super.takeDamage(damage / 40);
             //location = ;
-            readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
-            displayTheAnimations();
             if (getHealth() <= 0)
                 whichMap.getAllObjects().remove(this);
+            else {
+                readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
+                displayTheAnimations();
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package game.template.logic.cellfillers;
 
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 
 import java.awt.image.BufferedImage;
@@ -69,7 +70,8 @@ public class Bullet extends GameObject implements Runnable {
 
     @Override
     public void displayTheAnimations() {
-        super.displayTheAnimations();
+        animation = new MasterAnimation(images, 20, 20, 1, 20,
+                false, locX, locY, 0);
         animation.active = true;
     }
 

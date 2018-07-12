@@ -98,12 +98,9 @@ public class GameState {
             ArrayList<Bullet> removed = new ArrayList<>();
             for (Iterator it = Map.bullets.iterator(); it.hasNext(); ) {
                 Bullet bullet = (Bullet) it.next();
-                int i;
-                if (checkIfTwoObjectsCollide(bullet, target)) {
-                    if (target instanceof Block)
-                    {
-                        if (((Block)target).getType() == "d")
-                            i = 0;
+                if (checkIfBulletCollides(bullet, target)) {
+                    //  checkIfTwoObjectsCollide(bullet, target)
+                    if (target instanceof Block) {
                         if (!((Block) target).isPassableByBullet()) {
                             if (target.isDestructible())
                                 target.takeDamage(bullet.getDamage());
@@ -149,7 +146,10 @@ public class GameState {
         int deltaX = Math.abs(one.locX - two.locX);
         int deltaY = Math.abs(one.locY - two.locY);
         //Soon to be replaced when the rotating angle is considered.
-        Dimension d1 = getRelativeHeightWidth(one), d2 = getRelativeHeightWidth(two);
+        // Dimension d1 = getRelativeHeightWidth(one), d2 = getRelativeHeightWidth(two);
+        Dimension d1 = new Dimension(one.getWidth(), one.getHeight()),
+                d2 = new Dimension(two.getWidth(), two.getHeight());
+
         int height1 = (d1.height < d2.height) ? d1.height : d2.height;
         int width1 = (d1.width < d2.width) ? d1.width : d2.width;
 //        System.out.println("Y dif:");
@@ -160,6 +160,15 @@ public class GameState {
             return true;
         return false;
     }
+
+    private boolean checkIfBulletCollides(Bullet bullet, GameObject target)
+    {
+        if ((bullet.locY >= target.locY) && (bullet.locY <= target.locY + target.getHeight())
+            && (bullet.locX >= target.locX) && (bullet.locX <= target.locX + target.getWidth()))
+            return true;
+        return false;
+    }
+
 
     public static Dimension getRelativeHeightWidth(GameObject object) {
         Dimension d = new Dimension();
