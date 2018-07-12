@@ -80,7 +80,7 @@ public class Bullet extends GameObject implements Runnable {
     public void update() {
         locX += velocity * coeX;
         locY += velocity * coeY;
-        if (!whichMap.doesntGoOutOfMap(this, true))
+        if (!whichMap.doesntGoOutOfMap(this, false, 0))
             setAlive(false);
     }
 
@@ -92,9 +92,9 @@ public class Bullet extends GameObject implements Runnable {
         return bullet;
     }
 
-    public void stopThread()
-    {
-        Thread.currentThread().stop();
-    }
+//    public void stopThread()
+//    {
+//        Thread.currentThread().stop();
+//    }
 
 }

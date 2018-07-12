@@ -19,17 +19,17 @@ public class Map implements Serializable {
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
-    private int height = 4800;
-    private int width = 3500;
+    private int height = 4700;
+    private int width = 3600;
     private UserTank mainTank;
     private ArrayList<UserTank> mainTanks = new ArrayList<>();
     private int cameraWidth = GameFrame.GAME_WIDTH;
     private int cameraHeight = GameFrame.GAME_HEIGHT;
     //These two should change with movement.
-    private int cameraZeroX = 0;
-    private int cameraZeroY;
+    private int[] cameraZeroXs = {0, 0};
+    private int[] cameraZeroYs = new int[2];
     private boolean isOnNetwork;
-    public static ArrayList<Bullet> bullets;
+    public static ArrayList<Bullet> bullets = new ArrayList<>(0);
 
     /**
      * To load from scratch,
@@ -45,7 +45,7 @@ public class Map implements Serializable {
      */
     public Map(int level, boolean isOnNetwork) {
         // cameraZeroY = height;
-        bullets = new ArrayList<>();
+       // bullets = new ArrayList<>();
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
@@ -153,7 +153,7 @@ public class Map implements Serializable {
         return returnValue;
     }
 
-    public void updateWidth() {
+    public void updateWidth(int user) {
 //        int maxX = 0;
 //        for (GameObject object : visibleObjects) {
 //            if (object.locX + object.getWidth() > maxX)
@@ -163,9 +163,9 @@ public class Map implements Serializable {
 //            width = maxX;
         int maxX = 0;
         for (GameObject object : allObjects) {
-            if (object != mainTank) {
+            if (object != mainTanks.get(user)) {
                 int felan = object.locY - (object.getHeight() / 2);
-                if ((felan <= mainTank.locY) && (felan >= mainTank.locY - mainTank.getHeight()))
+                if ((felan <= mainTanks.get(user).locY) && (felan >= mainTanks.get(user).locY - mainTanks.get(user).getHeight()))
                     if (object.locX > maxX)
                         maxX = object.locX + object.getWidth();
             }
@@ -174,44 +174,44 @@ public class Map implements Serializable {
     }
 
 
-    public void updateCameraZeros() {
-        if (mainTank.isMoving()) {
-            int i = 1;
-        }
-        if (mainTank.locX + cameraWidth <= width) {
-            if (mainTank.locX > 300)
-                cameraZeroX = mainTank.locX - 300;
+    public void updateCameraZeros(int user) {
+//        if (mainTank.isMoving()) {
+//            int i = 1;
+//        }
+        if (mainTanks.get(user).locX + cameraWidth <= width) {
+            if (mainTanks.get(user).locX > 300)
+                cameraZeroXs[user] = mainTanks.get(user).locX - 300;
             else
-                cameraZeroX = 0;
+                cameraZeroXs[user] = 0;
         } else
-            cameraZeroX = width - cameraWidth;
+            cameraZeroXs[user] = width - cameraWidth;
         //int animHeight = GameState.getRelativeHeightWidth(mainTank).height;
-        if (mainTank.locY + cameraHeight <= height) {
-            if (mainTank.locY > 300)
-                cameraZeroY = mainTank.locY - 300;
+        if (mainTanks.get(user).locY + cameraHeight <= height) {
+            if (mainTanks.get(user).locY > 300)
+                cameraZeroYs[user] = mainTanks.get(user).locY - 300;
             else
-                cameraZeroY = 0;
+                cameraZeroYs[user] = 0;
         } else
-            cameraZeroY = height - cameraHeight;
+            cameraZeroYs[user] = height - cameraHeight;
 //        System.out.println("Camera x is:" + cameraZeroX);
 //        System.out.println("Camera y is:" + cameraZeroY);
     }
 
 
-    public void updateVisibleObjects() {
+    public void updateVisibleObjects(int user) {
         //Resets everything in order to see what has been renewed.
         visibleObjects.clear();
         for (GameObject object : allObjects) {
             int y = object.locY;
             int x = object.locX;
-            if ((y >= cameraZeroY - object.getHeight()) && (y <= cameraZeroY + cameraHeight))
-                if ((x >= cameraZeroX - object.getWidth()) && (x <= cameraZeroX + cameraWidth))
+            if ((y >= cameraZeroYs[user] - object.getHeight()) && (y <= cameraZeroYs[user] + cameraHeight))
+                if ((x >= cameraZeroXs[user] - object.getWidth()) && (x <= cameraZeroXs[user] + cameraWidth))
                     visibleObjects.add(object);
         }
         //
     }
 
-    public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll) {
+    public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll, int user) {
         Dimension d = GameState.getRelativeHeightWidth(one);
         int y = one.locY;
         int x = one.locX;
@@ -219,11 +219,11 @@ public class Map implements Serializable {
         int width1 = d.width;
 
         if (!trueForVisibleFalseForAll) {
-            if ((y + height1 <= height) && (y >= 10) && ((x >= 0) && (x + width1 <= width)))
+            if ((y + height1 <= height) && (y >= 20) && ((x >= 0) && (x + width1 <= width)))
                 return true;
         } else {
-            if ((y - height1 >= cameraZeroY) && (y <= cameraZeroY + cameraHeight) &&
-                    ((x >= cameraZeroX) && (x + width1 <= cameraZeroX + cameraWidth)))
+            if ((y - height1 >= cameraZeroYs[user]) && (y <= cameraZeroYs[user] + cameraHeight) &&
+                    ((x >= cameraZeroXs[user]) && (x + width1 <= cameraZeroXs[user] + cameraWidth)))
                 return true;
         }
         System.out.println("Goes out of map.");
@@ -233,11 +233,11 @@ public class Map implements Serializable {
     }
 
 
-    public synchronized void update() {
+    public synchronized void update(int user) {
         if (!isOnNetwork) {
-            updateCameraZeros();
-            updateVisibleObjects();
-            updateWidth();
+            updateCameraZeros(user);
+            updateVisibleObjects(user);
+            updateWidth(user);
             for (Iterator it = allObjects.iterator(); it.hasNext();) {
 //                if (object instanceof Bullet)
 //                {
@@ -269,12 +269,12 @@ public class Map implements Serializable {
         }
     }
 
-    public int getCameraZeroX() {
-        return cameraZeroX;
+    public int getCameraZeroX(int user) {
+        return cameraZeroXs[user];
     }
 
-    public int getCameraZeroY() {
-        return cameraZeroY;
+    public int getCameraZeroY(int user) {
+        return cameraZeroYs[user];
     }
 
     public ArrayList<UserTank> getMainTanks() {

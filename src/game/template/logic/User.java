@@ -16,6 +16,7 @@ public class User {
     private int mouseX, mouseY;
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
+    private int number;
 
     public User(Map map, boolean trueForServerFalseForClient) {
         this.map = map;
@@ -25,6 +26,10 @@ public class User {
             tank = map.getMainTanks().get(1);
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
+        if (trueForServerFalseForClient)
+            number = 0;
+        else
+            number = 1;
     }
 
     public boolean isKeyUP() {
@@ -153,8 +158,8 @@ public class User {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            mouseX = e.getX() + map.getCameraZeroX();
-            mouseY = e.getY() + map.getCameraZeroY();
+            mouseX = e.getX() + map.getCameraZeroX(number);
+            mouseY = e.getY() + map.getCameraZeroY(number);
             mouseMoved = true;
         }
     }
@@ -203,4 +208,7 @@ public class User {
         this.mouseY = mouseY;
     }
 
+    public int getNumber() {
+        return number;
+    }
 }

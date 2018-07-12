@@ -24,10 +24,11 @@ public class NetworkUser extends User implements Runnable {
                 ByteArrayInputStream bis = new ByteArrayInputStream(maxSized);
                 try (ObjectInputStream tempIn = new ObjectInputStream(bis)) {
                     try {
+                        //Thread.sleep until the game state has refreshed?
                         NetworkData newData = (NetworkData) tempIn.readObject();
                         updateFromNetwork(newData);
                     } catch (Exception ex) {
-
+                        ex.printStackTrace();
                     }
                 }
                 byte[] mapBytes = createMapBytes();
@@ -35,7 +36,7 @@ public class NetworkUser extends User implements Runnable {
                     client.getOutputStream().write(mapBytes);
 
             } catch (IOException ex) {
-                System.err.println(ex);
+                ex.printStackTrace();
             }
         } else {
             try (Socket server = new Socket("127.0.0.1", 7654)) {
@@ -51,7 +52,7 @@ public class NetworkUser extends User implements Runnable {
                         try {
                             map = (Map) tempIn.readObject();
                         } catch (Exception ex) {
-
+                            ex.printStackTrace();
                         }
                     }
                 }

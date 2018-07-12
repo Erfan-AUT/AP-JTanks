@@ -41,11 +41,11 @@ public abstract class Tank extends GameObject {
     }
 
     public int avoidCollision() {
-        if (!whichMap.doesntGoOutOfMap(this, false))
+        if (!whichMap.doesntGoOutOfMap(this, false, 0))
             return -velocity;
-        if (this instanceof UserTank)
-            if ((locX / 120 <= 0) || (locY / 120 <= 20))
-                return -velocity;
+//        if (this instanceof UserTank)
+//            if ((locX / 120 <= 0) || (locY / 120 <= 20))
+//                return -velocity;
 //        if (this instanceof UserTank)
 //            if (!whichMap.doesntGoOutOfMap(this, true))
 //                return -velocity;

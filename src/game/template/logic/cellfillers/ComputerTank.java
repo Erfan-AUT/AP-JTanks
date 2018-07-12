@@ -14,7 +14,7 @@ public class ComputerTank extends Tank {
         super(y, x, health, whichMap, location, ".\\Images\\EnemyBullet1.png");
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
         displayTheAnimations();
-        if (whichMap.doesntGoOutOfMap(this, true))
+        if (whichMap.doesntGoOutOfMap(this, false, 0))
             temporarilyDisabled = false;
     }
 
@@ -72,7 +72,7 @@ public class ComputerTank extends Tank {
     }
 
     private boolean validateAbility() {
-        if (whichMap.doesntGoOutOfMap(this, true))
+        if (whichMap.doesntGoOutOfMap(this, false, 0))
             temporarilyDisabled = false;
         else
             temporarilyDisabled = true;

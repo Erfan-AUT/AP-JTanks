@@ -73,7 +73,7 @@ public class GameState {
      * The method which updates the game state.
      */
     public void update() {
-
+        map.update(0);
         for (GameObject target : map.getVisibleObjects()) {
             for (GameObject bullet : map.getVisibleObjects()) {
                 if (target != bullet) {
@@ -98,12 +98,18 @@ public class GameState {
             ArrayList<Bullet> removed = new ArrayList<>();
             for (Iterator it = Map.bullets.iterator(); it.hasNext(); ) {
                 Bullet bullet = (Bullet) it.next();
-                if (target.isDestructible()) {
-                    if (checkIfTwoObjectsCollide(bullet, target)) {
-                        if (((target instanceof Block) && !((Block) target).isPassableByBullet()))
-                            target.takeDamage(bullet.getDamage());
-                        removed.add(bullet);
-                        bullet.setAlive(false);
+                int i;
+                if (checkIfTwoObjectsCollide(bullet, target)) {
+                    if (target instanceof Block)
+                    {
+                        if (((Block)target).getType() == "d")
+                            i = 0;
+                        if (!((Block) target).isPassableByBullet()) {
+                            if (target.isDestructible())
+                                target.takeDamage(bullet.getDamage());
+                            removed.add(bullet);
+                            bullet.setAlive(false);
+                        }
                     }
                 }
             }
@@ -113,7 +119,7 @@ public class GameState {
 //            if (object instanceof Block)
 //                if (((Block)object).getType() =="cf")
 //                    System.out.println("Found it!");
-        map.update();
+        //map.update(0);
         //map.update();
         //playerTank.update();
         //

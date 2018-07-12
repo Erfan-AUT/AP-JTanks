@@ -27,24 +27,25 @@ import javax.swing.JFrame;
  */
 public class GameFrame extends JFrame {
 
-    public static final int GAME_HEIGHT = 1080;                  // 720p game resolution
+    public static final int GAME_HEIGHT = 1080;                  // 1080p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
     //    private BufferedImage expAnimImage;
 //    private File expAnimImageLocation;
     Block wideAreaBlock;
-    Block wideAreaBlock1;
-    Block wideAreaBlock2;
-    Block wideAreaBlock3;
-    Block wideAreaBlock4;
-    Block wideAreaBlock5;
-    Block wideAreaBlock6;
-    Block wideAreaBlock7;
+//    Block wideAreaBlock1;
+//    Block wideAreaBlock2;
+//    Block wideAreaBlock3;
+//    Block wideAreaBlock4;
+//    Block wideAreaBlock5;
+//    Block wideAreaBlock6;
+//    Block wideAreaBlock7;
     boolean first = true;
     private BufferStrategy bufferStrategy;
-    private BufferedImage[] expAnimImages;
-    private Animation expAnim;
-    private File expAnimImageLocation;
-    private File[] expAnimImageLocations;
+//    private BufferedImage[] expAnimImages;
+//    private Animation expAnim;
+//    private File expAnimImageLocation;
+//    private File[] expAnimImageLocations;
+    private int user;
 
     //    private Animation expAnim;
     public GameFrame(String title) {
@@ -124,7 +125,8 @@ public class GameFrame extends JFrame {
 //            g2d.translate(0, -3600);
 //            first = false;
 //        } else;
-        g2d.translate(-state.getMap().getCameraZeroX(), -state.getMap().getCameraZeroY());
+       // user = state.getMap().get
+        g2d.translate(-state.getMap().getCameraZeroX(0), -state.getMap().getCameraZeroY(0));
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getVisibleObjects()) {
             if (!(object instanceof UserTank)) {

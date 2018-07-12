@@ -30,11 +30,12 @@ public class UserTank extends Tank {
     private int currentRifle;
     private int currentCannon;
     private User user;
+    private int primeVelocity = 50;
 
     public UserTank(int y, int x, int health, Map whichMap, String location) {
         super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
         initialHealth = health;
-        setVelocity(10);
+        //setVelocity(10);
         isOnCannon = true;
         cannons = new BufferedImage[4];
         cannonsLocation = new File(".\\PlayerCannons");
@@ -43,7 +44,7 @@ public class UserTank extends Tank {
         riflesLocation = new File(".\\PlayersRifles");
         riflesImages = riflesLocation.listFiles();
         rotationDegree = 90;
-        setVelocity(10);
+        setVelocity(primeVelocity);
 //        setCannonX(getX() + 75);
 //        setCannonY(getY() + 75);
        // readContents(location);
@@ -79,7 +80,7 @@ public class UserTank extends Tank {
     public UserTank(int y, int x, int health, Map whichMap, String location, GameState state) {
         super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
         initialHealth = health;
-        setVelocity(10);
+        setVelocity(primeVelocity);
     }
 
     public void setUser(User user) {
@@ -176,7 +177,7 @@ public class UserTank extends Tank {
             if (getAngle() >= 180 && getAngle() < 305) {
                 crossRot(5);
             } else if (getAngle() == 305) {
-                setVelocity(10);
+                setVelocity(primeVelocity);
             } else {
                 crossRot(-5);
             }
@@ -184,7 +185,7 @@ public class UserTank extends Tank {
             if ((getAngle() <= 360 && getAngle() > 215) || getAngle() == 0) {
                 crossRot(-5);
             } else if (getAngle() == 215) {
-                setVelocity(10);
+                setVelocity(primeVelocity);
             } else {
                 crossRot(5);
             }
@@ -192,7 +193,7 @@ public class UserTank extends Tank {
             if (getAngle() >= 0 && getAngle() < 135) {
                 crossRot(5);
             } else if (getAngle() == 135) {
-                setVelocity(10);
+                setVelocity(primeVelocity);
             } else {
                 crossRot(-5);
             }
@@ -200,7 +201,7 @@ public class UserTank extends Tank {
             if (getAngle() <= 180 && getAngle() > 45) {
                 crossRot(-5);
             } else if (getAngle() == 45) {
-                setVelocity(10);
+                setVelocity(primeVelocity);
             } else {
                 crossRot(5);
             }
@@ -217,11 +218,11 @@ public class UserTank extends Tank {
             } else {
                 if (getAngle() == 0) {
                     setForward(true);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                     //System.out.println(getAngle());
                 } else {
                     setForward(false);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 }
             }
@@ -237,11 +238,11 @@ public class UserTank extends Tank {
             } else {
                 if (getAngle() == 0) {
                     setForward(false);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 } else {
                     setForward(true);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                     //System.out.println(getAngle());
                 }
             }
@@ -257,11 +258,11 @@ public class UserTank extends Tank {
             } else {
                 if (getAngle() == 270) {
                     setForward(true);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 } else {
                     setForward(false);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 }
             }
@@ -277,11 +278,11 @@ public class UserTank extends Tank {
             } else {
                 if (getAngle() == 90) {
                     setForward(true);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 } else {
                     setForward(false);
-                    setVelocity(10);
+                    setVelocity(primeVelocity);
                    // System.out.println(getAngle());
                 }
             }
