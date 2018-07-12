@@ -43,12 +43,18 @@ public abstract class Tank extends GameObject {
     public int avoidCollision() {
         if (!whichMap.doesntGoOutOfMap(this, false))
             return -velocity;
+        if (this instanceof UserTank)
+            if ((locX / 120 <= 0) || (locY / 120 <= 20))
+                return -velocity;
+//        if (this instanceof UserTank)
+//            if (!whichMap.doesntGoOutOfMap(this, true))
+//                return -velocity;
         for (GameObject object : whichMap.getVisibleObjects()) {
             if (object != this) {
                 if (GameState.checkIfTwoObjectsCollide(object, this)) {
                     if (object instanceof Block) {
                         if (!((Block) object).isPassableByTank()) {
-                            System.out.println("Collides with object.");
+                          //  System.out.println("Collides with object.");
                             return -velocity;
                         }
                     } else if (object instanceof ComputerTank)
@@ -164,10 +170,20 @@ public abstract class Tank extends GameObject {
         int x =  (int) (locX + 67 + Math.cos(deg) * 100);
         int y = (int) (locY + 75 + Math.sin(deg) * (100));
         bullet = new Bullet(image, x,
-              y, Math.cos(deg), Math.sin(deg), deg, whichMap, 5);
+              y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
         Thread thread = new Thread(bullet);
         thread.start();
         whichMap.getBullets().add(bullet);
         return bullet;
+    }
+
+    protected void increaseCannonCount(int plus)
+    {
+        cannonCount += plus;
+    }
+
+    protected void increaseRifleCount(int plus)
+    {
+        rifleCount += plus;
     }
 }

@@ -26,8 +26,8 @@ public class Map implements Serializable {
     private int cameraWidth = GameFrame.GAME_WIDTH;
     private int cameraHeight = GameFrame.GAME_HEIGHT;
     //These two should change with movement.
-    private int[] cameraZeroX = {0, 0};
-    private int[] cameraZeroY = new int[2];
+    private int cameraZeroX = 0;
+    private int cameraZeroY;
     private boolean isOnNetwork;
     public static ArrayList<Bullet> bullets;
 
@@ -55,11 +55,11 @@ public class Map implements Serializable {
         this.isOnNetwork = isOnNetwork;
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
-            System.out.println(data.type);
+           // System.out.println(data.type);
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
-                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\images\\CannonFood.png", true, data.type));
+                    allObjects.add(new Block(y, x, false, 40, this, 0, ".\\images\\CannonFood.png", true, data.type));
                     break;
                 case "p":
                     allObjects.add(new Block(y, x, false, 0, this, 0, ".\\images\\plant.png", false, data.type));
@@ -174,7 +174,7 @@ public class Map implements Serializable {
     }
 
 
-    public void updateCameraZeros(int user) {
+    public void updateCameraZeros() {
         if (mainTank.isMoving()) {
             int i = 1;
         }
@@ -208,6 +208,7 @@ public class Map implements Serializable {
                 if ((x >= cameraZeroX - object.getWidth()) && (x <= cameraZeroX + cameraWidth))
                     visibleObjects.add(object);
         }
+        //
     }
 
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll) {
@@ -226,6 +227,8 @@ public class Map implements Serializable {
                 return true;
         }
         System.out.println("Goes out of map.");
+        System.out.println("y:" + y);
+        System.out.println("x:" + x);
         return false;
     }
 

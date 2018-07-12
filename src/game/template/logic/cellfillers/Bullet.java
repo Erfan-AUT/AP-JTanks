@@ -91,4 +91,10 @@ public class Bullet extends GameObject implements Runnable {
     public BufferedImage getBullet() {
         return bullet;
     }
+
+    public void stopThread()
+    {
+        Thread.currentThread().stop();
+    }
+
 }

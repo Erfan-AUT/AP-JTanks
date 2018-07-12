@@ -209,80 +209,80 @@ public class UserTank extends Tank {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(-5);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     rot(5);
-                    System.out.println(getAngle());
+                    //System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 0) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                    //System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 }
             }
         } else if (user.isKeyLEFT() && !(user.isKeyUP() || user.isKeyDOWN())) {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(5);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     rot(-5);
-                    System.out.println(getAngle());
+                  //  System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 0) {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                    //System.out.println(getAngle());
                 }
             }
         } else if (user.isKeyUP() && !(user.isKeyRIGHT() || user.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(5);
-                    System.out.println(getAngle());
+                 //   System.out.println(getAngle());
                 } else {
                     rot(-5);
-                    System.out.println(getAngle());
+                    //System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 270) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 }
             }
         } else if (user.isKeyDOWN() && !(user.isKeyRIGHT() || user.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(-5);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     rot(5);
-                    System.out.println(getAngle());
+                    //System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 90) {
                     setForward(true);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(10);
-                    System.out.println(getAngle());
+                   // System.out.println(getAngle());
                 }
             }
         }
@@ -338,7 +338,11 @@ public class UserTank extends Tank {
         super.readContents(location);
     }
 
-    public void recieveGift(String giftType) {
+    public void recieveGift(Block gift) {
+        if (gift.getType() == "cf")
+            increaseCannonCount(20);
+
+        whichMap.getAllObjects().remove(gift);
 
     }
 

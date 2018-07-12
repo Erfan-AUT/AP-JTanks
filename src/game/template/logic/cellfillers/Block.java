@@ -20,12 +20,13 @@ public class Block extends GameObject {
         super(y, x, isDestructible, health, whichMap, location);
         this.type = type;
         initialHealth = health;
+        this.isGift = isGift;
+        if (pass == 0)
+            setDestructible(false);
         if (isGift) {
             pass = 0;
-            isDestructible = true;
+            setDestructible(true);
         }
-        if (pass == 0)
-            isDestructible = false;
         //TODO : Note that in collision of gift block and user tank, gift gets added to tank.
         //Jeez.
         switch (pass) {
@@ -42,10 +43,12 @@ public class Block extends GameObject {
     @Override
     public void takeDamage(int damage) {
         if (isDestructible()) {
-            super.takeDamage(damage);
+            super.takeDamage(damage / 40);
             //location = ;
             readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
             displayTheAnimations();
+            if (getHealth() <= 0)
+                whichMap.getAllObjects().remove(this);
         }
     }
 

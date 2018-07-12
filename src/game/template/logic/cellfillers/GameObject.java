@@ -38,6 +38,7 @@ public abstract class GameObject {
     public GameObject(int y, int x, boolean isDestructible, int health, Map whichMap, String location) {
         this(y, x, isDestructible, health, whichMap);
         //this.location = location;
+        isAlive = true;
         readContents(location);
     }
 
@@ -147,5 +148,9 @@ public abstract class GameObject {
 
     public Map getWhichMap() {
         return whichMap;
+    }
+
+    public void setDestructible(boolean destructible) {
+        isDestructible = destructible;
     }
 }

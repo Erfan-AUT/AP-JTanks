@@ -52,7 +52,7 @@ public class GameFrame extends JFrame {
         setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
         wideAreaBlock = new Block(0, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-       // wideAreaBlock.readContents();
+        // wideAreaBlock.readContents();
 //        wideAreaBlock1 = new Block(21, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
 //        wideAreaBlock2 = new Block(12, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
 //        wideAreaBlock3 = new Block(10, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
@@ -85,12 +85,9 @@ public class GameFrame extends JFrame {
             try {
                 // Do the rendering
                 doRendering(graphics, state);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ex.printStackTrace();
-            }
-            finally {
+            } finally {
                 // Dispose the graphics, because it is no more needed
                 graphics.dispose();
             }
@@ -131,7 +128,8 @@ public class GameFrame extends JFrame {
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getVisibleObjects()) {
             if (!(object instanceof UserTank)) {
-                object.getAnimation().drawIt(g2d);
+                if (object.isAlive())
+                    object.getAnimation().drawIt(g2d);
             }
         }
         UserTank pTank = (UserTank) state.getPlayerTank();
@@ -144,7 +142,7 @@ public class GameFrame extends JFrame {
         } else {
             ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
         }
-        ((Animation)pTank.getAnimation()).drawTheBullets(g2d);
+        ((Animation) pTank.getAnimation()).drawTheBullets(g2d);
         //g2d.translate(pTank.locX, pTank.locY);
     }
 }

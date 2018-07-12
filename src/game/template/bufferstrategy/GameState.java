@@ -76,31 +76,43 @@ public class GameState {
 
         for (GameObject target : map.getVisibleObjects()) {
             for (GameObject bullet : map.getVisibleObjects()) {
-                if (target.isDestructible()) {
-                    if (((target instanceof UserTank) && (bullet instanceof ComputerTank)
-                            && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
-                        if (checkIfTwoObjectsCollide(bullet, target)) {
-                            target.takeDamage(bullet.getDamage());
-                            break;
+                if (target != bullet) {
+                    if (target.isDestructible()) {
+                        if (((target instanceof UserTank) && (bullet instanceof ComputerTank)
+                                && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
+                            if (checkIfTwoObjectsCollide(bullet, target)) {
+                                target.takeDamage(bullet.getDamage());
+                                break;
+                            }
                         }
+//                        if (target instanceof Block)
+//                            if (((Block) target).isGift())
+//                                System.out.println(target);
+                        if ((bullet instanceof UserTank) && (target instanceof Block))
+                            if (((Block) target).isGift())
+                                if (checkIfTwoObjectsCollide(bullet, target))
+                                    ((UserTank) bullet).recieveGift(((Block) target));
                     }
-                    if ((bullet instanceof UserTank) && (target instanceof Block))
-                        if (((Block) target).isGift())
-                            ((UserTank) bullet).recieveGift(((Block) target).getType());
                 }
             }
             ArrayList<Bullet> removed = new ArrayList<>();
-            for (Iterator it = Map.bullets.iterator(); it.hasNext();) {
+            for (Iterator it = Map.bullets.iterator(); it.hasNext(); ) {
                 Bullet bullet = (Bullet) it.next();
                 if (target.isDestructible()) {
                     if (checkIfTwoObjectsCollide(bullet, target)) {
-                        target.takeDamage(bullet.getDamage());
+                        if (((target instanceof Block) && !((Block) target).isPassableByBullet()))
+                            target.takeDamage(bullet.getDamage());
                         removed.add(bullet);
+                        bullet.setAlive(false);
                     }
                 }
             }
             Map.bullets.removeAll(removed);
         }
+//        for (GameObject object : map.getVisibleObjects())
+//            if (object instanceof Block)
+//                if (((Block)object).getType() =="cf")
+//                    System.out.println("Found it!");
         map.update();
         //map.update();
         //playerTank.update();
@@ -134,10 +146,10 @@ public class GameState {
         Dimension d1 = getRelativeHeightWidth(one), d2 = getRelativeHeightWidth(two);
         int height1 = (d1.height < d2.height) ? d1.height : d2.height;
         int width1 = (d1.width < d2.width) ? d1.width : d2.width;
-        System.out.println("Y dif:");
-        System.out.println(deltaY - height1);
-        System.out.println("X dif:");
-        System.out.println(deltaX - width1);
+//        System.out.println("Y dif:");
+//        System.out.println(deltaY - height1);
+//        System.out.println("X dif:");
+//        System.out.println(deltaX - width1);
         if ((0 >= deltaY - height1) && (0 >= deltaX - width1))
             return true;
         return false;
