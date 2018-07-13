@@ -73,6 +73,9 @@ public class GameState {
      * The method which updates the game state.
      */
     public void update() {
+        int i;
+        if (map.getMainTank().getUser().isKeyUP())
+            i = 0;
         map.update(0);
         for (GameObject target : map.getVisibleObjects()) {
             for (GameObject bullet : map.getVisibleObjects()) {

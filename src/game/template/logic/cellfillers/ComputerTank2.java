@@ -74,10 +74,10 @@ public class ComputerTank2 extends ComputerTank {
 
     }
 
-    @Override
-    public void findEnemyTank() {
-        super.findEnemyTank();
-    }
+    //    @Override
+//    public void findEnemyTank() {
+//        super.findEnemyTank();
+//    }
 
     @Override
     public void update() {
@@ -87,28 +87,28 @@ public class ComputerTank2 extends ComputerTank {
             moveIt();
     }
 
-    @Override
-    public void takeDamage(int damage) {
-        super.takeDamage(damage);
-    }
-
-    @Override
-    public boolean isDoesCollisionDamageUserTank() {
-        return super.isDoesCollisionDamageUserTank();
-    }
-
-    @Override
-    public int getDamage() {
-        return super.getDamage();
-    }
-
-    @Override
-    public MasterAnimation getAnimation() {
-        return super.getAnimation();
-    }
-
-    @Override
-    protected boolean validateAbility() {
-        return super.validateAbility();
-    }
+//    @Override
+//    public void takeDamage(int damage) {
+//        super.takeDamage(damage);
+//    }
+//
+//    @Override
+//    public boolean isDoesCollisionDamageUserTank() {
+//        return super.isDoesCollisionDamageUserTank();
+//    }
+//
+//    @Override
+//    public int getDamage() {
+//        return super.getDamage();
+//    }
+//
+//    @Override
+//    public MasterAnimation getAnimation() {
+//        return super.getAnimation();
+//    }
+//
+//    @Override
+//    protected boolean validateAbility() {
+//        return super.validateAbility();
+//    }
 }

@@ -2,10 +2,12 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,6 +35,9 @@ public class Map implements Serializable {
     private int initialHeight = 3600;
     private GameObject highestObject;
     public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
+    public transient static MasterAnimation explosion;
+    private transient static BufferedImage exp;
+    public transient static ArrayList<MasterAnimation> explosions;
 
     /**
      * To load from scratch,
@@ -86,16 +91,16 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
-                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png", true, 5, 2000));
                     break;
                 case "c2":
-                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2"));
+                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
-                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3"));
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
-                    allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot"));
+                    allObjects.add(new ComputerTank2(y, x, 50, this, true, ".\\Move\\Robot", true));
                     break;
                 case "u":
                     // UserTank userTank = new UserTank(y, x, 100, this, )
@@ -126,6 +131,7 @@ public class Map implements Serializable {
             if (object instanceof UserTank)
                 ((UserTank) object).loadTransientFields();
         }
+        mainTank.setOnCannon(true);
         findTheHighestAllowedHeight();
         orig = null;
     }
@@ -178,14 +184,8 @@ public class Map implements Serializable {
     }
 
     public void updateWidth(int user) {
-//        int maxX = 0;
-//        for (GameObject object : visibleObjects) {
-//            if (object.locX + object.getWidth() > maxX)
-//                maxX = object.locX + object.getWidth();
-//        }
-//        if (width > maxX)
-//            width = maxX;
         int maxX = 0;
+        int w0 = width;
         for (GameObject object : allObjects) {
             if (object != mainTanks.get(user)) {
                 int felan = object.locY - (object.getHeight() / 2);
@@ -195,13 +195,15 @@ public class Map implements Serializable {
             }
         }
         width = maxX;
+        if (width != w0)
+        {
+            System.out.println("PrevWidth: " + w0);
+            System.out.println("CurrWidth: " + width);
+        }
     }
 
 
     public void updateCameraZeros(int user) {
-//        if (mainTank.isMoving()) {
-//            int i = 1;
-//        }
         if (mainTanks.get(user).locX + cameraWidth <= width) {
             if (mainTanks.get(user).locX > 300)
                 cameraZeroXs[user] = mainTanks.get(user).locX - 300;
@@ -209,7 +211,6 @@ public class Map implements Serializable {
                 cameraZeroXs[user] = 0;
         } else
             cameraZeroXs[user] = width - cameraWidth;
-        //int animHeight = GameState.getRelativeHeightWidth(mainTank).height;
         if (mainTanks.get(user).locY + cameraHeight <= height) {
             if (mainTanks.get(user).locY > 300)
                 cameraZeroYs[user] = mainTanks.get(user).locY - 300;
@@ -234,7 +235,6 @@ public class Map implements Serializable {
                         visibleObjects.add(object);
             }
         }
-        //
     }
 
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll, int user) {
@@ -275,10 +275,6 @@ public class Map implements Serializable {
             updateVisibleObjects(user);
             updateWidth(user);
             for (Iterator it = allObjects.iterator(); it.hasNext(); ) {
-//                if (object instanceof Bullet)
-//                {
-//                    int i = 12;
-//                }
                 try {
                     ((GameObject) (it.next())).update();
                 } catch (Exception e) {
@@ -327,6 +323,11 @@ public class Map implements Serializable {
 
     public GameObject getHighestObject() {
         return highestObject;
+    }
+
+    public static void addANewExp(int x, int y) {
+        explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
+        explosions.add(explosion);
     }
 
     //  public static

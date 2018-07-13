@@ -406,4 +406,8 @@ public class UserTank extends Tank {
     public void displayTheAnimations() {
         super.displayTheAnimations();
     }
+
+    public User getUser() {
+        return user;
+    }
 }
