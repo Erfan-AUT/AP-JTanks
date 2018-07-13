@@ -25,15 +25,15 @@ public class Main {
 			public void run() {
               //  Map map = new Map(1, null);
 				OpeningPage openingPage = new OpeningPage();
-				GameFrame frame = new GameFrame("Game Title");
-				frame.setLocationRelativeTo(null); // put frame at center of screen
-				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.setVisible(true);
-				frame.initBufferStrategy();
-				// Create and execute the game-loop
-				GameLoop game = new GameLoop(frame);
-				game.init();
-				ThreadPool.execute(game);
+//				GameFrame frame = new GameFrame("Game Title");
+//				frame.setLocationRelativeTo(null); // put frame at center of screen
+//				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//				frame.setVisible(true);
+//				frame.initBufferStrategy();
+//				// Create and execute the game-loop
+//				GameLoop game = new GameLoop(frame);
+//				game.init();
+//				ThreadPool.execute(game);
 				// and the game starts ...
 			}
 		});

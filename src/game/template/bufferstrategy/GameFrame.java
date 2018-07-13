@@ -32,7 +32,7 @@ public class GameFrame extends JFrame {
     //    private BufferedImage expAnimImage;
 //    private File expAnimImageLocation;
     Block wideAreaBlock;
-//    Block wideAreaBlock1;
+    //    Block wideAreaBlock1;
 //    Block wideAreaBlock2;
 //    Block wideAreaBlock3;
 //    Block wideAreaBlock4;
@@ -41,7 +41,7 @@ public class GameFrame extends JFrame {
 //    Block wideAreaBlock7;
     boolean first = true;
     private BufferStrategy bufferStrategy;
-//    private BufferedImage[] expAnimImages;
+    //    private BufferedImage[] expAnimImages;
 //    private Animation expAnim;
 //    private File expAnimImageLocation;
 //    private File[] expAnimImageLocations;
@@ -52,7 +52,13 @@ public class GameFrame extends JFrame {
         super(title);
         setResizable(false);
         setSize(GAME_WIDTH, GAME_HEIGHT);
-        wideAreaBlock = new Block(0, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage(".\\Images\\gunPoint.png");
+        Cursor c = toolkit.createCustomCursor(image, new Point(this.getX(),
+                this.getY()), "img");
+        this.setCursor(c);
+        wideAreaBlock = new Block(0, 0, false, 0, null, 2,
+                ".\\Stuffs\\WideArea.png", false, "WA");
         // wideAreaBlock.readContents();
 //        wideAreaBlock1 = new Block(21, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
 //        wideAreaBlock2 = new Block(12, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
@@ -125,7 +131,7 @@ public class GameFrame extends JFrame {
 //            g2d.translate(0, -3600);
 //            first = false;
 //        } else;
-       // user = state.getMap().get
+        // user = state.getMap().get
         g2d.translate(-state.getMap().getCameraZeroX(0), -state.getMap().getCameraZeroY(0));
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getVisibleObjects()) {
