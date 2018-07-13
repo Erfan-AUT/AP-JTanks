@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 public class Bullet extends GameObject implements Runnable {
     private char type;
     private int damage;
-    private BufferedImage bullet;
+    private transient BufferedImage bullet;
     private int velocity;
     private double coeX;
     private double coeY;

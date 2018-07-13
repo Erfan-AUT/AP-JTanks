@@ -1,6 +1,7 @@
 package game.template.logic.utils;
 
 import game.template.logic.Map;
+import game.template.logic.cellfillers.GameObject;
 
 import java.io.*;
 import java.nio.file.Files;

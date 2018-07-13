@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -16,13 +17,13 @@ import java.nio.file.Paths;
  * Basically is the blueprint for every visible thing in the game.
  */
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
 
     // Its animation.
-    protected game.template.graphics.MasterAnimation animation;
+    protected transient game.template.graphics.MasterAnimation animation;
     private boolean isDestructible;
     private boolean isAlive;
-    protected BufferedImage[] images;
+    protected transient BufferedImage[] images;
     private int health;
     private File imageLocation;
     private File[] imagesLocations;
@@ -32,12 +33,13 @@ public abstract class GameObject {
     public int locX;
     public int locY;
     protected int velocity;
+    private String location;
    // String location;
 
 
     public GameObject(int y, int x, boolean isDestructible, int health, Map whichMap, String location) {
         this(y, x, isDestructible, health, whichMap);
-        //this.location = location;
+        this.location = location;
         isAlive = true;
         readContents(location);
     }
@@ -152,5 +154,9 @@ public abstract class GameObject {
 
     public void setDestructible(boolean destructible) {
         isDestructible = destructible;
+    }
+
+    public String getLocation() {
+        return location;
     }
 }

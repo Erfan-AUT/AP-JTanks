@@ -15,7 +15,7 @@ public class Map implements Serializable {
      * is the base map for everything that happens in the game.
      */
     private ArrayList<GameObject> allObjects = new ArrayList<>();
-    private transient ArrayList<GameObject> visibleObjects = new ArrayList<>();
+    private ArrayList<GameObject> visibleObjects = new ArrayList<>();
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
@@ -29,7 +29,10 @@ public class Map implements Serializable {
     private int[] cameraZeroXs = {0, 0};
     private int[] cameraZeroYs = new int[2];
     private boolean isOnNetwork;
-    public static ArrayList<Bullet> bullets = new ArrayList<>(0);
+    private int initialWidth = 4700;
+    private int initialHeight = 3600;
+    private GameObject highestObject;
+    public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
 
     /**
      * To load from scratch,
@@ -45,7 +48,7 @@ public class Map implements Serializable {
      */
     public Map(int level, boolean isOnNetwork) {
         // cameraZeroY = height;
-       // bullets = new ArrayList<>();
+        // bullets = new ArrayList<>();
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
@@ -55,7 +58,7 @@ public class Map implements Serializable {
         this.isOnNetwork = isOnNetwork;
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
-           // System.out.println(data.type);
+            // System.out.println(data.type);
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
@@ -105,6 +108,7 @@ public class Map implements Serializable {
 //        for (GameObject object: allObjects)
 //            object.readContents();
         mainTank = mainTanks.get(0);
+        findTheHighestAllowedHeight();
     }
 
     //To Load from savedData, doing this in this way because we could add loading from multiple savedDatas later.
@@ -114,8 +118,28 @@ public class Map implements Serializable {
         visibleObjects = orig.visibleObjects;
         height = orig.height;
         width = orig.width;
+        mainTanks = orig.mainTanks;
+        mainTank = mainTanks.get(0);
+        for (GameObject object : allObjects) {
+            object.readContents(object.getLocation());
+            object.displayTheAnimations();
+            if (object instanceof UserTank)
+                ((UserTank) object).loadTransientFields();
+        }
+        findTheHighestAllowedHeight();
         orig = null;
     }
+
+    public void findTheHighestAllowedHeight() {
+        int maxY = height / 2;
+        for (GameObject object : allObjects) {
+            if (object.locY < maxY) {
+                maxY = object.locY;
+                highestObject = object;
+            }
+        }
+    }
+
 
     public int getHeight() {
         return height;
@@ -200,13 +224,15 @@ public class Map implements Serializable {
 
     public void updateVisibleObjects(int user) {
         //Resets everything in order to see what has been renewed.
-        visibleObjects.clear();
-        for (GameObject object : allObjects) {
-            int y = object.locY;
-            int x = object.locX;
-            if ((y >= cameraZeroYs[user] - object.getHeight()) && (y <= cameraZeroYs[user] + cameraHeight))
-                if ((x >= cameraZeroXs[user] - object.getWidth()) && (x <= cameraZeroXs[user] + cameraWidth))
-                    visibleObjects.add(object);
+        if (visibleObjects != null) {
+            visibleObjects.clear();
+            for (GameObject object : allObjects) {
+                int y = object.locY;
+                int x = object.locX;
+                if ((y >= cameraZeroYs[user] - object.getHeight()) && (y <= cameraZeroYs[user] + cameraHeight))
+                    if ((x >= cameraZeroXs[user] - object.getWidth()) && (x <= cameraZeroXs[user] + cameraWidth))
+                        visibleObjects.add(object);
+            }
         }
         //
     }
@@ -217,10 +243,19 @@ public class Map implements Serializable {
         int x = one.locX;
         int height1 = d.height;
         int width1 = d.width;
-
+        if (one.locY < highestObject.locY)
+            return false;
         if (!trueForVisibleFalseForAll) {
             if ((y + height1 <= height) && (y >= 20) && ((x >= 0) && (x + width1 <= width)))
                 return true;
+            if (width < initialWidth) {
+                width = initialWidth;
+                return doesntGoOutOfMap(one, trueForVisibleFalseForAll, user);
+            }
+            if (height < initialHeight) {
+                height = initialHeight;
+                return doesntGoOutOfMap(one, trueForVisibleFalseForAll, user);
+            }
         } else {
             if ((y - height1 >= cameraZeroYs[user]) && (y <= cameraZeroYs[user] + cameraHeight) &&
                     ((x >= cameraZeroXs[user]) && (x + width1 <= cameraZeroXs[user] + cameraWidth)))
@@ -229,6 +264,7 @@ public class Map implements Serializable {
         System.out.println("Goes out of map.");
         System.out.println("y:" + y);
         System.out.println("x:" + x);
+
         return false;
     }
 
@@ -238,13 +274,13 @@ public class Map implements Serializable {
             updateCameraZeros(user);
             updateVisibleObjects(user);
             updateWidth(user);
-            for (Iterator it = allObjects.iterator(); it.hasNext();) {
+            for (Iterator it = allObjects.iterator(); it.hasNext(); ) {
 //                if (object instanceof Bullet)
 //                {
 //                    int i = 12;
 //                }
                 try {
-                    ((GameObject)(it.next())).update();
+                    ((GameObject) (it.next())).update();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -289,5 +325,9 @@ public class Map implements Serializable {
         return bullets;
     }
 
-  //  public static
+    public GameObject getHighestObject() {
+        return highestObject;
+    }
+
+    //  public static
 }

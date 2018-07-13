@@ -6,14 +6,17 @@ import game.template.logic.Map;
 import game.template.logic.cellfillers.Block;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
+import game.template.logic.utils.FileUtils;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 /**
  * The window on which the rendering is performed.
@@ -31,7 +34,8 @@ public class GameFrame extends JFrame {
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
     //    private BufferedImage expAnimImage;
 //    private File expAnimImageLocation;
-    Block wideAreaBlock;
+    private Block wideAreaBlock;
+    private GameState state;
     //    Block wideAreaBlock1;
 //    Block wideAreaBlock2;
 //    Block wideAreaBlock3;
@@ -59,15 +63,8 @@ public class GameFrame extends JFrame {
         this.setCursor(c);
         wideAreaBlock = new Block(0, 0, false, 0, null, 2,
                 ".\\Stuffs\\WideArea.png", false, "WA");
-        // wideAreaBlock.readContents();
-//        wideAreaBlock1 = new Block(21, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock2 = new Block(12, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock3 = new Block(10, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock4 = new Block(15, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock5 = new Block(9, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock6 = new Block(1, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-//        wideAreaBlock7 = new Block(1, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        //
+        addWindowListener(new WinListener(this));
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         // Initialize the JFrame ...
     }
 
@@ -116,6 +113,7 @@ public class GameFrame extends JFrame {
         // Draw all game elements according
         //  to the game 'state' using 'g2d' ...
         //
+        this.state = state;
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         wideAreaBlock.getAnimation().drawIt(g2d);
@@ -152,6 +150,29 @@ public class GameFrame extends JFrame {
         }
         ((Animation) pTank.getAnimation()).drawTheBullets(g2d);
         //g2d.translate(pTank.locX, pTank.locY);
+    }
+
+    class WinListener extends WindowAdapter {
+        public WinListener(JFrame frame) {
+            this.frame = frame;
+        }
+
+        JFrame frame;
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            int i = JOptionPane.showConfirmDialog(frame, "Would you like to save the game or not?");
+            switch (i) {
+                case JOptionPane.YES_OPTION:
+                    FileUtils.writeMap(state.getMap(), ".\\maps\\savedMap.txt");
+                case JOptionPane.NO_OPTION:
+                    System.exit(0);
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    break;
+            }
+
+        }
     }
 }
 

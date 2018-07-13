@@ -44,9 +44,10 @@ public class GameLoop implements Runnable {
      */
     public void init() {
         // Perform all initializations ...
-       // state = new GameState();
+        // state = new GameState();
         //For now false.
         map = new Map(1, isOnNetwork);
+        //map = new Map(".\\maps\\savedMap.txt");
         if (isOnNetwork)
             user = new NetworkUser(map, trueForServerFalseForClient);
         else

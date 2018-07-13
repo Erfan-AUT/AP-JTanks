@@ -18,13 +18,13 @@ public class UserTank extends Tank {
 
     private int lives = 3;
     private int initialHealth;
-    private BufferedImage[] cannons;
+    private transient BufferedImage[] cannons;
     private File cannonsLocation;
     private File[] cannonsImages;
-    private BufferedImage[] rifles;
+    private transient BufferedImage[] rifles;
     private File riflesLocation;
     private File[] riflesImages;
-    private BufferedImage lightBulletImage;
+    private transient BufferedImage lightBulletImage;
     private int rotationDegree;
     private boolean isOnCannon;
     private int currentRifle;
@@ -86,6 +86,35 @@ public class UserTank extends Tank {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public void loadTransientFields()
+    {
+        cannons = new BufferedImage[4];
+        rifles = new BufferedImage[3];
+        for (int i = 0; i < cannonsImages.length; i++) {
+            try {
+                cannons[i] = ImageIO.read(cannonsImages[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < riflesImages.length; i++) {
+            try {
+                rifles[i] = ImageIO.read(riflesImages[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            lightBulletImage = ImageIO.read(new File("./Bullet/LightBullet.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ((Animation) animation).setGun(cannons[currentCannon]);
+    }
+
 
     @Override
     public Bullet shoot(double deg) {
@@ -371,5 +400,10 @@ public class UserTank extends Tank {
     protected void changeWeapon() {
         setOnCannon(!isOnCannon);
         changeTheGun();
+    }
+
+    @Override
+    public void displayTheAnimations() {
+        super.displayTheAnimations();
     }
 }

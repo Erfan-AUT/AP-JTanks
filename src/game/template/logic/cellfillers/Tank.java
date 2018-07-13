@@ -22,8 +22,7 @@ public abstract class Tank extends GameObject {
     protected boolean moving;
     private File bulletLocation;
     protected long lastShootTime;
-    protected BufferedImage[] tankImages;
-    protected BufferedImage heavyBulletImage;
+    protected transient BufferedImage heavyBulletImage;
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
@@ -63,6 +62,10 @@ public abstract class Tank extends GameObject {
             }
         }
         return 0;
+    }
+
+    public void loadTransientFields() {
+
     }
 
     public boolean isRotating() {
@@ -185,5 +188,11 @@ public abstract class Tank extends GameObject {
     protected void increaseRifleCount(int plus)
     {
         rifleCount += plus;
+    }
+
+    @Override
+    public void displayTheAnimations() {
+        animation = new Animation(images, 150, 150, 4, 20, false, locX, locY, 0);
+        animation.active = true;
     }
 }

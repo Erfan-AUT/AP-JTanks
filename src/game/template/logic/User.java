@@ -4,8 +4,9 @@ import game.template.bufferstrategy.GameState;
 import game.template.logic.cellfillers.UserTank;
 
 import java.awt.event.*;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
     protected Map map;
     protected UserTank tank;
     protected boolean trueForServerFalseForClient;
@@ -68,7 +69,7 @@ public class User {
         return mouseY;
     }
 
-    class KeyHandler implements KeyListener {
+    class KeyHandler implements KeyListener, Serializable {
 
         @Override
         public void keyTyped(KeyEvent e) {
@@ -117,7 +118,7 @@ public class User {
     /**
      * The mouse handler.
      */
-    class MouseHandler implements MouseListener, MouseMotionListener {
+    class MouseHandler implements MouseListener, MouseMotionListener, Serializable {
 
         @Override
         public void mouseClicked(MouseEvent e) {
