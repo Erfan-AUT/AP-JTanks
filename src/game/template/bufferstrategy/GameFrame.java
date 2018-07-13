@@ -2,6 +2,7 @@
 package game.template.bufferstrategy;
 
 import game.template.graphics.Animation;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.*;
 
@@ -131,17 +132,21 @@ public class GameFrame extends JFrame {
             if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
                 object.getAnimation().drawIt(g2d);
             } else if (object instanceof ComputerTank) {
-                Tank tank = ((Tank) object);
-                ((Animation) tank.getAnimation()).drawTheBullets(g2d);
+                if (object.isAlive()) {
+                    Tank tank = ((Tank) object);
+                    ((Animation) tank.getAnimation()).drawTheBullets(g2d);
 //                tank.getAnimation().drawIt(g2d);
-                if (tank.getAnimation().active) {
-                    if (tank.isForward()) {
-                        tank.getAnimation().drawImages(g2d);
+                    if (tank.getAnimation().active) {
+                        if (tank.isForward()) {
+                            tank.getAnimation().drawImages(g2d);
+                        } else {
+                            ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                        }
                     } else {
-                        ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                        ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
                     }
                 } else {
-                    ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                    state.getMap().getAllObjects().remove(object);
                 }
             }
         }
@@ -157,7 +162,17 @@ public class GameFrame extends JFrame {
         }
         ((Animation)pTank.getAnimation()).drawTheBullets(g2d);
         //g2d.translate(pTank.locX, pTank.locY);
+
+        for (MasterAnimation masterAnimation : Map.explosions) {
+            if (masterAnimation.isActive()) {
+                masterAnimation.Draw(g2d);
+            } else {
+                Map.explosions.remove(masterAnimation);
+            }
+        }
+
     }
+
 }
 
 

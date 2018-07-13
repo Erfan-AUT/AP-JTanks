@@ -10,9 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class ComputerTank extends Tank {
-    private boolean isMobile;
+    protected boolean isMobile;
     private char type;
-    private UserTank enemyTank = null;
+    protected UserTank enemyTank = null;
     private boolean temporarilyDisabled = true;
     private boolean doesCollisionDamageUserTank;
     private int damageInCaseCollisionIsDestructive = 2;
@@ -24,6 +24,7 @@ public class ComputerTank extends Tank {
     //constructor changed
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location, String gunLocation, String bulletLocation, boolean isMobile, int velocity, int shootLatency) {
         super(y, x, health, whichMap, location, bulletLocation);
+        setAlive(true);
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
 //        displayTheAnimations();
         //here
@@ -44,6 +45,11 @@ public class ComputerTank extends Tank {
         setVelocity(velocity);
         this.shootLatency = shootLatency;
         deg = 0;
+    }
+    //here
+    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
+        super(y,x,health,whichMap,location);
+        this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
     }
 
     /**
@@ -169,8 +175,7 @@ public class ComputerTank extends Tank {
         animation.active = false;
         if (isMobile && validateAbility())
             move();
-        if (!temporarilyDisabled) ;
-        {
+        if (!temporarilyDisabled) {
             //till here
             findEnemyTank();
             double deg = Math.atan2((-enemyTank.locY + locY), (enemyTank.locX - locX));
@@ -196,7 +201,7 @@ public class ComputerTank extends Tank {
             setAlive(false);
     }
 
-    private boolean validateAbility() {
+    protected boolean validateAbility() {
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
         else

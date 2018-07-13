@@ -28,6 +28,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
 
     private ArrayList<Bullet> bullets;
 
+    private boolean isShooting;
+
     /**
      * Creates animation.
      *
@@ -49,6 +51,7 @@ public class Animation extends game.template.graphics.MasterAnimation {
         super(animImages, frameWidth, frameHeight, numberOfFrames, frameTime, loop, x, y, showDelay);
         bullets = new ArrayList<>();
         active = false;
+        isShooting = false;
     }
 
     /**
@@ -146,9 +149,11 @@ public class Animation extends game.template.graphics.MasterAnimation {
         tx = AffineTransform.getTranslateInstance(x, y);
         tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
         g2d.drawImage(animImages[currentFrameNumber], tx, null);
-        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, gun.getWidth() / 2 - 20, gun.getHeight() / 2);
-        g2d.drawImage(gun, tx, null);
+        if (gun != null) {
+            tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
+            tx.rotate(cannonRotationDeg, gun.getWidth() / 2 - 20, gun.getHeight() / 2);
+            g2d.drawImage(gun, tx, null);
+        }
 //        drawTheBullets(g2d);
     }
 

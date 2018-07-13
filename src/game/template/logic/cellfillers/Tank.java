@@ -46,6 +46,11 @@ public abstract class Tank extends GameObject {
         lastShootTime = 0;
     }
 
+    //here
+    public Tank(int y, int x, int health, Map whichMap, String location) {
+        super(y,x,true,health,whichMap,location);
+    }
+
     public int avoidCollision() {
         if (!whichMap.doesntGoOutOfMap(this, false))
             return -velocity;

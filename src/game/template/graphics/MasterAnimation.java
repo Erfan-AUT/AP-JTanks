@@ -91,7 +91,7 @@ public class MasterAnimation {
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
-        active = false;
+        active = true;
     }
 
     public MasterAnimation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {

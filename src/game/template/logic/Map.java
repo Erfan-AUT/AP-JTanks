@@ -2,10 +2,15 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +34,10 @@ public class Map implements Serializable {
     private int cameraZeroX = 0;
     private int cameraZeroY;
     private boolean isOnNetwork;
+    public static MasterAnimation explosion;
+    private static BufferedImage exp;
     public static ArrayList<Bullet> bullets;
+    public static ArrayList<MasterAnimation> explosions;
 
     /**
      * To load from scratch,
@@ -45,7 +53,13 @@ public class Map implements Serializable {
      */
     public Map(int level, boolean isOnNetwork) {
         // cameraZeroY = height;
+        explosions = new ArrayList<>();
         bullets = new ArrayList<>();
+        try {
+            exp = ImageIO.read(new File("explosion_anim.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
@@ -83,16 +97,16 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
-                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png",true, 5, 2000));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png", true, 5, 2000));
                     break;
                 case "c2":
                     allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
-                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false,0,3000));
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
-                    allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot", "", "", true,15,0));
+                    allObjects.add(new ComputerTank2(y, x, 50, this, true, ".\\Move\\Robot", true));
                     break;
                 case "u":
                     // UserTank userTank = new UserTank(y, x, 100, this, )
@@ -284,6 +298,11 @@ public class Map implements Serializable {
 
     public ArrayList<Bullet> getBullets() {
         return bullets;
+    }
+
+    public static void addANewExp(int x, int y) {
+        explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
+        explosions.add(explosion);
     }
 
     //  public static
