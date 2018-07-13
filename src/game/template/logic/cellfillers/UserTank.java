@@ -47,12 +47,12 @@ public class UserTank extends Tank {
         setVelocity(primeVelocity);
 //        setCannonX(getX() + 75);
 //        setCannonY(getY() + 75);
-       // readContents(location);
+        // readContents(location);
         //animation = new Animation(tankImages, 250, 250, 4, 24, false, locX, locY, 0);
-        ((Animation)animation).setGun(cannons[0]);
+        ((Animation) animation).setGun(cannons[0]);
         currentRifle = 0;
         currentCannon = 0;
-    //    readContents(location);
+        //    readContents(location);
         for (int i = 0; i < cannonsImages.length; i++) {
             try {
                 cannons[i] = ImageIO.read(cannonsImages[i]);
@@ -74,7 +74,7 @@ public class UserTank extends Tank {
             e.printStackTrace();
         }
 
-        ((Animation)animation).setGun(cannons[currentCannon]);
+        ((Animation) animation).setGun(cannons[currentCannon]);
     }
 
     public UserTank(int y, int x, int health, Map whichMap, String location, GameState state) {
@@ -210,7 +210,7 @@ public class UserTank extends Tank {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(-5);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     rot(5);
                     //System.out.println(getAngle());
@@ -223,23 +223,23 @@ public class UserTank extends Tank {
                 } else {
                     setForward(false);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 }
             }
         } else if (user.isKeyLEFT() && !(user.isKeyUP() || user.isKeyDOWN())) {
             if (getAngle() != 0 && getAngle() != 180) {
                 if (getAngle() < 180) {
                     rot(5);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     rot(-5);
-                  //  System.out.println(getAngle());
+                    //  System.out.println(getAngle());
                 }
             } else {
                 if (getAngle() == 0) {
                     setForward(false);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     setForward(true);
                     setVelocity(primeVelocity);
@@ -250,7 +250,7 @@ public class UserTank extends Tank {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(5);
-                 //   System.out.println(getAngle());
+                    //   System.out.println(getAngle());
                 } else {
                     rot(-5);
                     //System.out.println(getAngle());
@@ -259,18 +259,18 @@ public class UserTank extends Tank {
                 if (getAngle() == 270) {
                     setForward(true);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 }
             }
         } else if (user.isKeyDOWN() && !(user.isKeyRIGHT() || user.isKeyLEFT())) {
             if (getAngle() != 90 && getAngle() != 270) {
                 if (getAngle() > 90 && getAngle() < 270) {
                     rot(-5);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     rot(5);
                     //System.out.println(getAngle());
@@ -279,11 +279,11 @@ public class UserTank extends Tank {
                 if (getAngle() == 90) {
                     setForward(true);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 } else {
                     setForward(false);
                     setVelocity(primeVelocity);
-                   // System.out.println(getAngle());
+                    // System.out.println(getAngle());
                 }
             }
         }
@@ -314,9 +314,12 @@ public class UserTank extends Tank {
     }
 
     public void update() {
+
         if (user.isKeyUP() || user.isKeyDOWN() || user.isKeyLEFT() || user.isKeyRIGHT()) {
             rotate();
             move();
+        } else {
+            ((Animation) animation).setActive(false);
         }
         double deg = 0;
         if (user.isMouseMoved())
@@ -324,7 +327,7 @@ public class UserTank extends Tank {
         if (user.isMouseLeftClickPressed()) {
             Bullet bullet = shoot(deg);
             if (bullet != null) {
-                ((Animation)animation).getBullets().add(bullet);
+                ((Animation) animation).getBullets().add(bullet);
             }
 //            synchronized(whichMap) {
 //                whichMap.getAllObjects().add(shoot(deg));
@@ -332,6 +335,7 @@ public class UserTank extends Tank {
         }
         if (user.isMouseRightClickPressed())
             changeWeapon();
+
     }
 
     @Override
@@ -349,9 +353,9 @@ public class UserTank extends Tank {
 
     public void changeTheGun() {
         if (isOnCannon) {
-            ((Animation)animation).setGun(cannons[currentCannon]);
+            ((Animation) animation).setGun(cannons[currentCannon]);
         } else {
-            ((Animation)animation).setGun(rifles[currentRifle]);
+            ((Animation) animation).setGun(rifles[currentRifle]);
         }
     }
 
