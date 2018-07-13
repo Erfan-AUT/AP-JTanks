@@ -2,12 +2,15 @@
 package game.template.bufferstrategy;
 
 import game.template.graphics.Animation;
-import game.template.logic.cellfillers.Block;
-import game.template.logic.cellfillers.GameObject;
-import game.template.logic.cellfillers.UserTank;
+import game.template.logic.Map;
+import game.template.logic.cellfillers.*;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 /**
@@ -24,7 +27,8 @@ public class GameFrame extends JFrame {
 
     public static final int GAME_HEIGHT = 1080;                  // 720p game resolution
     public static final int GAME_WIDTH = 16 * GAME_HEIGHT / 9;  // wide aspect ratio
-    private BufferStrategy bufferStrategy;
+    //    private BufferedImage expAnimImage;
+//    private File expAnimImageLocation;
     Block wideAreaBlock;
     Block wideAreaBlock1;
     Block wideAreaBlock2;
@@ -33,23 +37,27 @@ public class GameFrame extends JFrame {
     Block wideAreaBlock5;
     Block wideAreaBlock6;
     Block wideAreaBlock7;
-    public static int x = 0;
-    public static int y = -3600;
+    boolean first = true;
+    private BufferStrategy bufferStrategy;
+    private BufferedImage[] expAnimImages;
+    private Animation expAnim;
+    private File expAnimImageLocation;
+    private File[] expAnimImageLocations;
 
+    //    private Animation expAnim;
     public GameFrame(String title) {
         super(title);
-        wideAreaBlock = new Block(30, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock1 = new Block(21, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock2 = new Block(12, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock3 = new Block(10, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock4 = new Block(15, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock5 = new Block(9, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock6 = new Block(1, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
-        wideAreaBlock7 = new Block(1, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
         setResizable(false);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-//        setSize(GAME_WIDTH, GAME_HEIGHT);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
+        wideAreaBlock = new Block(0, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+       // wideAreaBlock.readContents();
+//        wideAreaBlock1 = new Block(21, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock2 = new Block(12, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock3 = new Block(10, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock4 = new Block(15, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock5 = new Block(9, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock6 = new Block(1, 0, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
+//        wideAreaBlock7 = new Block(1, 16, false, 0, null, 2, ".\\Stuffs\\WideArea.png", false, "WA");
         //
         // Initialize the JFrame ...
     }
@@ -75,7 +83,12 @@ public class GameFrame extends JFrame {
             try {
                 // Do the rendering
                 doRendering(graphics, state);
-            } finally {
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
+            finally {
                 // Dispose the graphics, because it is no more needed
                 graphics.dispose();
             }
@@ -99,21 +112,37 @@ public class GameFrame extends JFrame {
         //
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+//        wideAreaBlock.getAnimation().drawIt(g2d);
+//        wideAreaBlock1.getAnimation().drawIt(g2d);
+//        wideAreaBlock2.getAnimation().drawIt(g2d);
+//        wideAreaBlock3.getAnimation().drawIt(g2d);
+//        wideAreaBlock4.getAnimation().drawIt(g2d);
+//        wideAreaBlock5.getAnimation().drawIt(g2d);
+//        wideAreaBlock6.getAnimation().drawIt(g2d);
+//        wideAreaBlock7.getAnimation().drawIt(g2d);
+
+//        if (first) {
+//            g2d.translate(0, -3600);
+//            first = false;
+//        } else;
+        g2d.translate(-state.getMap().getCameraZeroX(), -state.getMap().getCameraZeroY());
         //TODO: should be visible ones.
-//        Block block = new Block(5, 5, true, 0, null, 2, ".\\images\\HardWall.png", false, "nd");
-//        block.getAnimation().drawIt(g2d);
-        g2d.translate(x, y);
-        wideAreaBlock.getAnimation().drawIt(g2d);
-        wideAreaBlock1.getAnimation().drawIt(g2d);
-        wideAreaBlock2.getAnimation().drawIt(g2d);
-        wideAreaBlock3.getAnimation().drawIt(g2d);
-        wideAreaBlock4.getAnimation().drawIt(g2d);
-        wideAreaBlock5.getAnimation().drawIt(g2d);
-        wideAreaBlock6.getAnimation().drawIt(g2d);
-        wideAreaBlock7.getAnimation().drawIt(g2d);
-        for (GameObject object : state.getMap().getAllObjects()) {
-            if (!(object instanceof UserTank)) {
+        for (GameObject object : state.getMap().getVisibleObjects()) {
+            if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
                 object.getAnimation().drawIt(g2d);
+            } else if (object instanceof ComputerTank) {
+                Tank tank = ((Tank) object);
+                ((Animation) tank.getAnimation()).drawTheBullets(g2d);
+//                tank.getAnimation().drawIt(g2d);
+                if (tank.getAnimation().active) {
+                    if (tank.isForward()) {
+                        tank.getAnimation().drawImages(g2d);
+                    } else {
+                        ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                    }
+                } else {
+                    ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                }
             }
         }
         UserTank pTank = (UserTank) state.getPlayerTank();
@@ -126,5 +155,15 @@ public class GameFrame extends JFrame {
         } else {
             ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
         }
+        ((Animation)pTank.getAnimation()).drawTheBullets(g2d);
+        //g2d.translate(pTank.locX, pTank.locY);
     }
 }
+
+
+//        if (expAnim.active) {
+//            expAnim.drawImages(g2d);
+//        } else {
+//            expAnim.drawOnlyTheCurrentFrame(g2d);
+//        }
+

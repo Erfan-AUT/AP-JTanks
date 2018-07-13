@@ -1,6 +1,13 @@
 package game.template.logic.cellfillers;
 
+import game.template.graphics.Animation;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ComputerTank extends Tank {
     private boolean isMobile;
@@ -9,28 +16,134 @@ public class ComputerTank extends Tank {
     private boolean temporarilyDisabled = true;
     private boolean doesCollisionDamageUserTank;
     private int damageInCaseCollisionIsDestructive = 2;
-
-    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
-        super(y, x, health, whichMap, location);
+    private int deg;
+    //here
+    private BufferedImage gun;
+    private int velocity;
+    private int shootLatency;
+    //constructor changed
+    public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location, String gunLocation, String bulletLocation, boolean isMobile, int velocity, int shootLatency) {
+        super(y, x, health, whichMap, location, bulletLocation);
+        this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
+//        displayTheAnimations();
+        //here
+        animation = new Animation(images, 120, 120, 5, 20,
+                false, locX, locY, 0);
+        //here
+        try {
+            gun = ImageIO.read(new File(gunLocation));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ((Animation) getAnimation()).setGun(gun);
+        //till here
         if (whichMap.doesntGoOutOfMap(this, true))
             temporarilyDisabled = false;
-        this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
-        displayTheAnimations();
+        this.isMobile = isMobile;
+        this.velocity = velocity;
+        setVelocity(velocity);
+        this.shootLatency = shootLatency;
+        deg = 0;
     }
 
     /**
      * Remember to update only objects that ARE visible.
      */
     public void move() {
-        if (isMobile) {
-            findEnemyTank();
-            int ySign = (locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
-            int plusY = velocity * ySign;
-            locY += plusY;
-            locY += avoidCollision() * ySign;
-            int xSign = (locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
+        this.animation.active = true;
+        deg %= 360;
+        if (deg < 0) {
+            deg = 360 + deg;
+        }
+        findEnemyTank();
+        if (Math.abs(locX - enemyTank.locX) > 240) {
+            int xSign = -(locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
             int plusX = velocity * xSign;
             locX += plusX + avoidCollision() * xSign;
+            animation.changeCoordinates(locX, locY);
+            if (deg != 0 && deg != 180) {
+                if (locX > enemyTank.locX) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locX > enemyTank.locX) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
+        }
+        else if (Math.abs(locX - enemyTank.locX) < 240){
+            int xSign = (locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
+            int plusX = velocity * xSign;
+            System.out.println(xSign);
+            locX += plusX + avoidCollision() * xSign;
+            animation.changeCoordinates(locX, locY);
+            if (deg != 0 && deg != 180) {
+                if (locX > enemyTank.locX) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locX > enemyTank.locX) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
+        }
+        else if (Math.abs(locY - enemyTank.locY) > 240) {
+            int ySign = -(locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
+            int plusY = velocity * ySign;
+            locY += plusY + avoidCollision() * ySign;
+            animation.changeCoordinates(locX, locY);
+            if (deg != 90 && deg != 270) {
+                if (locY > enemyTank.locY) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locY > enemyTank.locY) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
+        }
+        else if (Math.abs(locY - enemyTank.locY) < 240){
+            int ySign = (locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
+            int plusY = velocity * ySign;
+            locY += plusY + avoidCollision() * ySign;
+            animation.changeCoordinates(locX, locY);
+            if (deg != 90 && deg != 270) {
+                if (locY > enemyTank.locY) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locY > enemyTank.locY) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
         }
     }
 
@@ -44,19 +157,36 @@ public class ComputerTank extends Tank {
     }
 
     @Override
-    public void shoot() {
+    public Bullet shoot(double deg) {
         findEnemyTank();
-        double angle = Math.atan((enemyTank.locY - locY) / (enemyTank.locX - locX));
-        new Bullet(locY, locX, this.whichMap, angle, getCurrentWeaponType(), "Bullet Location");
+        return new Bullet(heavyBulletImage, (int) (locX + 67 + Math.cos(-deg) * 110),
+                (int) (locY + 75 + Math.sin(-deg) * (110)), Math.cos(-deg), Math.sin(-deg), -deg, whichMap);
     }
 
 
     @Override
     public void update() {
+        animation.active = false;
         if (isMobile && validateAbility())
             move();
-        if (!temporarilyDisabled)
-            shoot();
+        if (!temporarilyDisabled) ;
+        {
+            //till here
+            findEnemyTank();
+            double deg = Math.atan2((-enemyTank.locY + locY), (enemyTank.locX - locX));
+            ((Animation) animation).setCannonRotationDeg(-deg);
+            Bullet bullet = null;
+            long time = System.currentTimeMillis();
+            if (lastShootTime == 0 || time - lastShootTime > shootLatency) {
+                lastShootTime = time;
+                bullet = shoot(deg);
+            }
+            if (bullet != null) {
+                ((Animation) animation).getBullets().add(bullet);
+            }
+
+        }
+        //shoot();
     }
 
     @Override
@@ -83,6 +213,10 @@ public class ComputerTank extends Tank {
         return damageInCaseCollisionIsDestructive;
     }
 
+    @Override
+    public MasterAnimation getAnimation() {
+        return animation;
+    }
 }
 
 

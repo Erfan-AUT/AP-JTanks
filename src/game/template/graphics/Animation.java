@@ -1,8 +1,13 @@
 package game.template.graphics;
 
+import game.template.logic.Map;
+import game.template.logic.cellfillers.Bullet;
+
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Animation extends game.template.graphics.MasterAnimation {
 
@@ -18,6 +23,10 @@ public class Animation extends game.template.graphics.MasterAnimation {
     private AffineTransform tx;
 
     private double cannonRotationDeg;
+
+    private BufferedImage gun;
+
+    private ArrayList<Bullet> bullets;
 
     /**
      * Creates animation.
@@ -38,6 +47,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
 
     public Animation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
         super(animImages, frameWidth, frameHeight, numberOfFrames, frameTime, loop, x, y, showDelay);
+        bullets = new ArrayList<>();
+        active = false;
     }
 
     /**
@@ -103,14 +114,7 @@ public class Animation extends game.template.graphics.MasterAnimation {
     }
 
     public void drawOnlyTheCurrentFrame(Graphics2D g2d) {
-        tx = AffineTransform.getTranslateInstance(x, y);
-        tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
-        g2d.drawImage(animImages[currentFrameNumber], tx, null);
-        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
-        g2d.drawImage(animImages[4], tx, null);
-
-
+        drawIt(g2d);
     }
 
     public void setActive(boolean active) {
@@ -143,15 +147,43 @@ public class Animation extends game.template.graphics.MasterAnimation {
         tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
         g2d.drawImage(animImages[currentFrameNumber], tx, null);
         tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2 - 5);
-        g2d.drawImage(animImages[4], tx, null);
+        tx.rotate(cannonRotationDeg, gun.getWidth() / 2 - 20, gun.getHeight() / 2);
+        g2d.drawImage(gun, tx, null);
+//        drawTheBullets(g2d);
+    }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public void drawTheBullets(Graphics2D g2d) {
+        for (Iterator it = bullets.iterator(); it.hasNext(); ) {
+            Bullet bullet = (Bullet) it.next();
+           if (bullet.isAlive()) {
+                tx = AffineTransform.getTranslateInstance(bullet.locX, bullet.locY);
+                tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
+                g2d.drawImage(bullet.getBullet(), tx, null);
+            } else {
+                it.remove();
+               Map.bullets.remove(bullet);
+            }
+        }
     }
 
     public void setCannonRotationDeg(double cannonRotationDeg) {
         this.cannonRotationDeg = cannonRotationDeg;
     }
 
+
+    @Override
     public boolean isActive() {
         return active;
     }
+
+    public void setGun(BufferedImage gun) {
+        this.gun = gun;
+    }
+
+
+
 }

@@ -2,15 +2,13 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
-import game.template.logic.cellfillers.Block;
-import game.template.logic.cellfillers.ComputerTank;
-import game.template.logic.cellfillers.GameObject;
-import game.template.logic.cellfillers.UserTank;
+import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Map implements Serializable {
     /**
@@ -21,15 +19,17 @@ public class Map implements Serializable {
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
-    private int height = 3000;
-    private int width = 2000;
+    private int height = 4800;
+    private int width = 3500;
     private UserTank mainTank;
+    private ArrayList<UserTank> mainTanks = new ArrayList<>();
     private int cameraWidth = GameFrame.GAME_WIDTH;
     private int cameraHeight = GameFrame.GAME_HEIGHT;
     //These two should change with movement.
     private int cameraZeroX = 0;
     private int cameraZeroY;
-    private GameState state;
+    private boolean isOnNetwork;
+    public static ArrayList<Bullet> bullets;
 
     /**
      * To load from scratch,
@@ -43,21 +43,23 @@ public class Map implements Serializable {
      * empty blocks don't matter because the only image there is its background
      * (Which is to be loaded later.)
      */
-    public Map(int level, GameState state) {
+    public Map(int level, boolean isOnNetwork) {
         // cameraZeroY = height;
+        bullets = new ArrayList<>();
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = ".\\images\\softWall";
-        String eTank = ".\\Move\\Etank";
+        String eTank = ".\\Move\\ETank";
         String wicket = ".\\images\\wicket";
         String teazel = ".\\images\\teazel";
+        this.isOnNetwork = isOnNetwork;
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
             System.out.println(data.type);
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, ".\\images\\CannonFood.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\images\\CannonFood.png", true, data.type));
                     break;
                 case "p":
                     allObjects.add(new Block(y, x, false, 0, this, 0, ".\\images\\plant.png", false, data.type));
@@ -69,36 +71,40 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "2.png", false, data.type));
                     break;
                 case "nd":
-                    allObjects.add(new Block(y, x, true, 0, this, 2, ".\\images\\HardWall.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 0, this, 2, ".\\images\\HardWall.png", false, data.type));
                     break;
                 case "d":
                     allObjects.add(new Block(y, x, true, 40, this, 2, softWall + ".png", false, data.type));
                     break;
                 case "w1":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "1.png", false, data.type));
                     break;
                 case "w2":
-                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
-                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank + "1.png"));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png",true, 5, 2000));
                     break;
                 case "c2":
-                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2.png"));
+                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
-                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3.png"));
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false,0,3000));
                     break;
                 case "r":
-                    allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot"));
+                    allObjects.add(new ComputerTank(y, x, 50, this, true, ".\\Move\\Robot", "", "", true,15,0));
                     break;
                 case "u":
-                    mainTank = new UserTank(y, x, 100, this, ".\\Move\\Tank", state);
-                    allObjects.add(mainTank);
+                    // UserTank userTank = new UserTank(y, x, 100, this, )
+                    UserTank userTank = new UserTank(y, x, 100, this, ".\\Move\\Tank");
+                    mainTanks.add(userTank);
+                    allObjects.add(userTank);
                     break;
             }
         }
-
+//        for (GameObject object: allObjects)
+//            object.readContents();
+        mainTank = mainTanks.get(0);
     }
 
     //To Load from savedData, doing this in this way because we could add loading from multiple savedDatas later.
@@ -147,6 +153,50 @@ public class Map implements Serializable {
         return returnValue;
     }
 
+    public void updateWidth() {
+//        int maxX = 0;
+//        for (GameObject object : visibleObjects) {
+//            if (object.locX + object.getWidth() > maxX)
+//                maxX = object.locX + object.getWidth();
+//        }
+//        if (width > maxX)
+//            width = maxX;
+        int maxX = 0;
+        for (GameObject object : allObjects) {
+            if (object != mainTank) {
+                int felan = object.locY - (object.getHeight() / 2);
+                if ((felan <= mainTank.locY) && (felan >= mainTank.locY - mainTank.getHeight()))
+                    if (object.locX > maxX)
+                        maxX = object.locX + object.getWidth();
+            }
+        }
+        width = maxX;
+    }
+
+
+    public void updateCameraZeros() {
+        if (mainTank.isMoving()) {
+            int i = 1;
+        }
+        if (mainTank.locX + cameraWidth <= width) {
+            if (mainTank.locX > 300)
+                cameraZeroX = mainTank.locX - 300;
+            else
+                cameraZeroX = 0;
+        } else
+            cameraZeroX = width - cameraWidth;
+        //int animHeight = GameState.getRelativeHeightWidth(mainTank).height;
+        if (mainTank.locY + cameraHeight <= height) {
+            if (mainTank.locY > 300)
+                cameraZeroY = mainTank.locY - 300;
+            else
+                cameraZeroY = 0;
+        } else
+            cameraZeroY = height - cameraHeight;
+//        System.out.println("Camera x is:" + cameraZeroX);
+//        System.out.println("Camera y is:" + cameraZeroY);
+    }
+
 
     public void updateVisibleObjects() {
         //Resets everything in order to see what has been renewed.
@@ -154,8 +204,8 @@ public class Map implements Serializable {
         for (GameObject object : allObjects) {
             int y = object.locY;
             int x = object.locX;
-            if ((y >= cameraZeroY) && (y <= cameraZeroY + cameraHeight))
-                if ((x >= cameraZeroX) && (y <= cameraZeroX + cameraWidth))
+            if ((y >= cameraZeroY - object.getHeight()) && (y <= cameraZeroY + cameraHeight))
+                if ((x >= cameraZeroX - object.getWidth()) && (x <= cameraZeroX + cameraWidth))
                     visibleObjects.add(object);
         }
     }
@@ -168,31 +218,35 @@ public class Map implements Serializable {
         int width1 = d.width;
 
         if (!trueForVisibleFalseForAll) {
-            if ((y - height1 >= 0) && (y <= height) && ((x >= 0) && (x + width1 <= width)))
+            if ((y + height1 <= height) && (y >= 10) && ((x >= 0) && (x + width1 <= width)))
                 return true;
         } else {
             if ((y - height1 >= cameraZeroY) && (y <= cameraZeroY + cameraHeight) &&
                     ((x >= cameraZeroX) && (x + width1 <= cameraZeroX + cameraWidth)))
                 return true;
         }
+        System.out.println("Goes out of map.");
         return false;
     }
 
-    public void updateCameraZeros() {
-        if (mainTank.locX + cameraWidth <= width)
-            cameraZeroX = mainTank.locX;
-        else
-            cameraZeroX = width - cameraWidth;
-        int animHeight = GameState.getRelativeHeightWidth(mainTank).height;
-        if (mainTank.locY - animHeight + cameraHeight <= height)
-            cameraZeroY = mainTank.locY - animHeight;
-        else
-            cameraZeroY = height - cameraHeight;
-    }
 
-    public void update() {
-//        updateCameraZeros();
-        updateVisibleObjects();
+    public synchronized void update() {
+        if (!isOnNetwork) {
+            updateCameraZeros();
+            updateVisibleObjects();
+            updateWidth();
+            for (Iterator it = allObjects.iterator(); it.hasNext(); ) {
+//                if (object instanceof Bullet)
+//                {
+//                    int i = 12;
+//                }
+                try {
+                    ((GameObject) (it.next())).update();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public UserTank getMainTank() {
@@ -219,4 +273,18 @@ public class Map implements Serializable {
     public int getCameraZeroY() {
         return cameraZeroY;
     }
+
+    public ArrayList<UserTank> getMainTanks() {
+        return mainTanks;
+    }
+
+    public boolean isOnNetwork() {
+        return isOnNetwork;
+    }
+
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    //  public static
 }

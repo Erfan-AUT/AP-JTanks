@@ -91,7 +91,7 @@ public class MasterAnimation {
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
-        active = true;
+        active = false;
     }
 
     public MasterAnimation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
@@ -116,7 +116,7 @@ public class MasterAnimation {
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
-        active = true;
+        active = false;
     }
 
     /**
@@ -209,6 +209,9 @@ public class MasterAnimation {
         g2d.drawImage(animImages[currentFrameNumber], x, y, null);
     }
 
+    public boolean isActive() {
+        return active;
+    }
 
     public int getFrameWidth() {
         return frameWidth;
@@ -216,9 +219,5 @@ public class MasterAnimation {
 
     public int getFrameHeight() {
         return frameHeight;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 }

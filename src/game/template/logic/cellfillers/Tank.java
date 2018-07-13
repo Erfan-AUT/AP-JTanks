@@ -4,7 +4,10 @@ import game.template.bufferstrategy.GameState;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public abstract class Tank extends GameObject {
 
@@ -17,30 +20,46 @@ public abstract class Tank extends GameObject {
     private int rifleCount;
     protected boolean rotating;
     protected boolean moving;
+    private File bulletLocation;
+    protected long lastShootTime;
+    protected BufferedImage[] tankImages;
+    protected BufferedImage heavyBulletImage;
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
 
-    public Tank(int y, int x, int health, Map whichMap, String location) {
+    public Tank(int y, int x, int health, Map whichMap, String location, String bulletLocation) {
         super(y, x, true, health, whichMap, location);
+        this.bulletLocation = new File(bulletLocation);
+        //here
+        try {
+            heavyBulletImage = ImageIO.read(new File(bulletLocation));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         rifleCount = 300;
         cannonCount = 50;
         forward = false;
         angle = 0;
-        moving = false;
+        animation = new Animation(images, 150, 150, 4, 20, false, locX, locY, 0);
+        animation.active = true;
+        lastShootTime = 0;
     }
 
     public int avoidCollision() {
+        if (!whichMap.doesntGoOutOfMap(this, false))
+            return -velocity;
         for (GameObject object : whichMap.getVisibleObjects()) {
             if (object != this) {
                 if (GameState.checkIfTwoObjectsCollide(object, this)) {
                     if (object instanceof Block) {
-                        if (!((Block) object).isPassableByTank())
+                        if (!((Block) object).isPassableByTank()) {
+                            System.out.println("Collides with object.");
                             return -velocity;
-                    } else
+                        }
+                    } else if (object instanceof ComputerTank)
                         return -velocity;
-                } else if (!whichMap.doesntGoOutOfMap(this, false))
-                    return -velocity;
+                }
             }
         }
         return 0;
@@ -62,16 +81,17 @@ public abstract class Tank extends GameObject {
     }
 
 
-    protected abstract void shoot();
+    protected abstract Bullet shoot(double deg);
 
     protected abstract void move();
 
 
-    protected void changeWeapon() {
-        if (currentWeaponType == 'c')
-            currentWeaponType = 'r';
-        else
-            currentWeaponType = 'c';
+    public void changeWeapon() {
+
+//        if (currentWeaponType == 'c')
+//            currentWeaponType = 'r';
+//        else
+//            currentWeaponType = 'c';
     }
 
     public char getCurrentWeaponType() {
@@ -127,5 +147,32 @@ public abstract class Tank extends GameObject {
     public void setAngle(int angle) {
         this.angle = angle;
     }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    @Override
+    public void readContents(String location) {
+        super.readContents(location);
+        //here
+    }
+
+    protected Bullet finalizeShoot(BufferedImage image, double deg )
+    {
+        long time = System.currentTimeMillis();
+        lastShootTime = time;
+        Bullet bullet;
+        int x =  (int) (locX + 67 + Math.cos(deg) * 100);
+        int y = (int) (locY + 75 + Math.sin(deg) * (100));
+        bullet = new Bullet(image, x,
+              y, Math.cos(deg), Math.sin(deg), deg, whichMap);
+        Thread thread = new Thread(bullet);
+        thread.start();
+        whichMap.getBullets().add(bullet);
+        return bullet;
+    }
+
+
 
 }
