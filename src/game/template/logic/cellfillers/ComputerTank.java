@@ -1,8 +1,10 @@
 package game.template.logic.cellfillers;
 
+import game.template.bufferstrategy.ThreadPool;
 import game.template.graphics.Animation;
 import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
+import game.template.logic.utils.Music;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -55,7 +57,7 @@ public class ComputerTank extends Tank {
     }
 
     /**
-     * Remember to update only objects that ARE visible.
+     * moves the tank using its internal parameters.
      */
     public void move() {
         this.animation.active = true;
@@ -161,6 +163,12 @@ public class ComputerTank extends Tank {
         }
     }
 
+
+    /**
+     * shoots a new bullet at a certain degree of rotation
+     * @param deg the degree
+     * @return the bullet.
+     */
     @Override
     public Bullet shoot(double deg) {
         findEnemyTank();
@@ -214,6 +222,11 @@ public class ComputerTank extends Tank {
             Map.addANewExp(locX,locY);
             setAlive(false);
         }
+        else
+        {
+            Music music = new Music(".\\Sounds\\enemyshot.mp3");
+            ThreadPool.execute(music);
+        }
 
     }
 
@@ -237,6 +250,11 @@ public class ComputerTank extends Tank {
     @Override
     public MasterAnimation getAnimation() {
         return animation;
+    }
+
+    @Override
+    public void loadTransientFields() {
+
     }
 }
 

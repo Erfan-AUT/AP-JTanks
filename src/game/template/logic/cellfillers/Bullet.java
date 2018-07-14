@@ -15,6 +15,17 @@ public class Bullet extends GameObject implements Runnable {
     private double deg;
     private boolean isActive;
 
+    /**
+     * creates a new bullet using the given parameters.
+     * @param bullet its image
+     * @param x
+     * @param y
+     * @param coeX coefficient of it, has been done by trigonometrical calculations.
+     * @param coeY same as coeX
+     * @param deg the degree at which it is shot.
+     * @param whichMap the map it belongs to/
+     * @param damage the damage it has taken.
+     */
     public Bullet(BufferedImage bullet, int x, int y, double coeX, double coeY, double deg, Map whichMap, int damage) {
         //super(y, x, true, 0, whichMap);
         locY = y;
@@ -32,11 +43,6 @@ public class Bullet extends GameObject implements Runnable {
         displayTheAnimations();
         this.damage = damage;
     }
-//
-//    public void move() {
-//        x += coeX * velocity;
-//        y += coeY * velocity;
-//    }
 
     @Override
     public void run() {
@@ -66,10 +72,10 @@ public class Bullet extends GameObject implements Runnable {
 //        displayTheAnimations();
 //    }
 
-    @Override
-    public int getDamage() {
-        return damage;
-    }
+//    @Override
+//    public int getDamage() {
+//        return damage;
+//    }
 
     @Override
     public void displayTheAnimations() {
@@ -97,7 +103,12 @@ public class Bullet extends GameObject implements Runnable {
         return bullet;
     }
 
-//    public void stopThread()
+    @Override
+    public int getDamage() {
+        return damage;
+    }
+
+    //    public void stopThread()
 //    {
 //        Thread.currentThread().stop();
 //    }

@@ -6,6 +6,8 @@ import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -13,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -184,6 +188,12 @@ public class GameFrame extends JFrame {
                 100, 100);
         //g2d.translate(pTank.locX, pTank.locY);
     }
+
+    public static void playMusic(String loc)
+    {
+
+    }
+
 
     class WinListener extends WindowAdapter {
         public WinListener(JFrame frame) {

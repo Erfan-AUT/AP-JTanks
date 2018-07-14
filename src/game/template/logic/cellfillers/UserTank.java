@@ -1,10 +1,12 @@
 package game.template.logic.cellfillers;
 
 import game.template.bufferstrategy.GameState;
+import game.template.bufferstrategy.ThreadPool;
 import game.template.graphics.Animation;
 import game.template.logic.Map;
 import game.template.logic.NetworkUser;
 import game.template.logic.User;
+import game.template.logic.utils.Music;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -82,6 +84,10 @@ public class UserTank extends Tank {
         this.user = user;
     }
 
+    /**
+     * loads the transient fields of the tank after it has been loaded from a
+     * serialized file.
+     */
     public void loadTransientFields() {
         cannons = new BufferedImage[4];
         rifles = new BufferedImage[3];
@@ -110,20 +116,41 @@ public class UserTank extends Tank {
     }
 
 
+    /**
+     * shoots a new bullet at a certain degree of rotation
+     * @param deg the degree
+     * @return the bullet.
+     */
     @Override
     public Bullet shoot(double deg) {
         long time = System.currentTimeMillis();
         if (isOnCannon) {
             if (lastShootTime == 0 || time > lastShootTime + 1000) {
                 decreaseCannonCount();
-                if (getCannonCount() >= 0)
+                if (getCannonCount() >= 0) {
+                    Music music = new Music(".\\Sounds\\heavygun.mp3");
+                    ThreadPool.execute(music);
                     return finalizeShoot(heavyBulletImage, deg);
+                }
+                else
+                {
+                    Music music = new Music(".\\Sounds\\emptyGun.mp3");
+                    ThreadPool.execute(music);
+                }
             }
         } else {
             if (lastShootTime == 0 || time > lastShootTime + 100) {
                 decreaseRifleCount();
-                if (getRifleCount() >= 0)
+                if (getRifleCount() >= 0) {
+                    Music music = new Music(".\\Sounds\\lightgun.mp3");
+                    ThreadPool.execute(music);
                     return finalizeShoot(lightBulletImage, deg);
+                }
+                else
+                {
+                    Music music = new Music(".\\Sounds\\emptyGun.mp3");
+                    ThreadPool.execute(music);
+                }
             }
         }
         return null;
@@ -132,6 +159,8 @@ public class UserTank extends Tank {
     @Override
     public void takeDamage(int damage) {
         setHealth(getHealth() - damage);
+        Music music = new Music(".\\Sounds\\enemybullettomytank.mp3");
+        ThreadPool.execute(music);
         if (getHealth() < 0) {
             lives--;
             setHealth(initialHealth);
@@ -142,6 +171,9 @@ public class UserTank extends Tank {
         }
     }
 
+    /**
+     * moves the tank using its internal parameters.
+     */
     @Override
     public void move() {
         boolean isMoving = false;
@@ -363,7 +395,9 @@ public class UserTank extends Tank {
         whichMap.getVolatileObjects().remove(gift);
 
     }
-
+    /**
+     * changes the tank's weapon's animation.
+     */
     public void changeTheGun() {
         if (isOnCannon) {
             ((Animation) animation).setGun(cannons[currentCannon]);
@@ -380,16 +414,19 @@ public class UserTank extends Tank {
         isOnCannon = onCannon;
     }
 
+    /**
+     * changes the tank's weapon.
+     */
     @Override
     public void changeWeapon() {
         setOnCannon(!isOnCannon);
         changeTheGun();
     }
 
-    @Override
-    public void displayTheAnimations() {
-        super.displayTheAnimations();
-    }
+//    @Override
+//    public void displayTheAnimations() {
+//        super.displayTheAnimations();
+//    }
 
     public User getUser() {
         return user;

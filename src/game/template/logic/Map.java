@@ -2,9 +2,11 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
+import game.template.bufferstrategy.ThreadPool;
 import game.template.graphics.MasterAnimation;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
+import game.template.logic.utils.Music;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -109,7 +111,7 @@ public class Map implements Serializable {
                     allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
-                    allObjects.add(new ComputerTank2(y, x, 50, this, true, ".\\Move\\Robot", true));
+                    allObjects.add(new ComputerTank2(y, x, 40, this, true, ".\\Move\\Robot", true));
                     break;
 
                 case "u":
@@ -346,6 +348,8 @@ public class Map implements Serializable {
     public static synchronized void addANewExp(int x, int y) {
         explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
         explosions.add(explosion);
+        Music music = new Music(".\\Sounds\\enemydestroyed.mp3");
+        ThreadPool.execute(music);
     }
 
     public ArrayList<GameObject> getVolatileObjects() {

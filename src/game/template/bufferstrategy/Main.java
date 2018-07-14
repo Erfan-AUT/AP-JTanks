@@ -33,6 +33,7 @@ public class Main {
 //                    e.printStackTrace();
 //                }
                 GameFrame frame = new GameFrame("Game Title");
+                GameFrame.playMusic("");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
 				//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.setVisible(false);
