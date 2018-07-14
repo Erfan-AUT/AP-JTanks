@@ -1,6 +1,9 @@
 package game.template.bufferstrategy;
 
 
+import game.template.logic.Map;
+import game.template.logic.NetworkUser;
+import game.template.logic.User;
 import game.template.logic.utils.MapEditor.EditorMain;
 import game.template.logic.utils.Music;
 import javazoom.jl.player.Player;
@@ -19,6 +22,7 @@ public class OpeningPage extends JFrame implements Runnable {
 
     public static int level;
     public static String mapName;
+    private User user;
     // private ArrayList<JRadioButton> buttons = new ArrayList<>()
     private JFrame th = this;
     private ArrayList<JRadioButton> buttons;
@@ -35,6 +39,7 @@ public class OpeningPage extends JFrame implements Runnable {
     private GameLoop game;
     private GameFrame frame;
     private Music music;
+    private Map map;
     //private Runnable main;
     private KeyListener l;
     //private ArrayList<JComponent> components;
@@ -108,6 +113,17 @@ public class OpeningPage extends JFrame implements Runnable {
         //while (!isGameStarted);
     }
 
+    public void dispose() {
+        //op.dispose();
+        isGameStarted = true;
+        game.setGameOver(false);
+        game.init(map);
+        ThreadPool.execute(game);
+        frame.setVisible(true);
+        music.close();
+        game.getState().setGame(game);
+    }
+
 
     class KeyListener extends KeyAdapter {
         JPanel currentPanel;
@@ -167,6 +183,9 @@ public class OpeningPage extends JFrame implements Runnable {
                         } else if (playAsClient.isSelected()) {
                             trueForServerFalseForClient = false;
                             isOnNetwork = true;
+                            game.setUser(new NetworkUser());
+                            op.dispose();
+                            dispose();
                         } else if (playAsServer.isSelected()) {
                             isOnNetwork = true;
                             trueForServerFalseForClient = true;
@@ -177,8 +196,7 @@ public class OpeningPage extends JFrame implements Runnable {
                             op.dispose();
                         }
                     }
-                    if (setCount == 1)
-                    {
+                    if (setCount == 1) {
                         for (JRadioButton radioButton : mapButtons)
                             if (radioButton.isSelected())
                                 mapName = radioButton.getText();
@@ -189,6 +207,19 @@ public class OpeningPage extends JFrame implements Runnable {
                         for (int i = 0; i < buttons.size(); i++)
                             if (buttons.get(i).isSelected())
                                 level = i;
+
+                        if (OpeningPage.trueForSoloFalseForSaved)
+                            map = new Map(OpeningPage.level, isOnNetwork, game.getState());
+                        else
+                            map = new Map("." + File.separator + "maps" + File.separator + "savedMap.txt");
+                        if (isOnNetwork) {
+                            if (trueForServerFalseForClient)
+                                game.setUser(new NetworkUser(map));
+                            else
+                                game.setUser(new NetworkUser());
+                        } else
+                            game.setUser(new User(map));
+                        op.dispose();
                         dispose();
                     }
 
@@ -227,15 +258,5 @@ public class OpeningPage extends JFrame implements Runnable {
         }
 
 
-        private void dispose() {
-            op.dispose();
-            isGameStarted = true;
-            game.setGameOver(false);
-            game.init();
-            ThreadPool.execute(game);
-            frame.setVisible(true);
-            music.close();
-            game.getState().setGame(game);
-        }
     }
 }

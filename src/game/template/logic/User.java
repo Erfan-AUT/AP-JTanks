@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class User implements Serializable{
     protected Map map;
     protected UserTank tank;
-    protected boolean trueForServerFalseForClient;
+    //protected boolean trueForServerFalseForClient;
     private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
     private boolean mouseRightClickPressed;
     private boolean mouseLeftClickPressed;
@@ -22,18 +22,16 @@ public class User implements Serializable{
     public User()
     {}
 
-    public User(Map map, boolean trueForServerFalseForClient) {
+    public User(Map map) {
         this.map = map;
-        if (trueForServerFalseForClient)
-            tank = map.getMainTanks().get(0);
-        else
-            tank = map.getMainTanks().get(1);
+        number = 0;
         keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
-        if (trueForServerFalseForClient)
-            number = 0;
-        else
-            number = 1;
+        tank = map.getMainTank();
+//        if (trueForServerFalseForClient)
+//            number = 0;
+//        else
+//            number = 1;
     }
 
     public boolean isKeyUP() {

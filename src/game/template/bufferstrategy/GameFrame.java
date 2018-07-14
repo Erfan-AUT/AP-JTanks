@@ -152,29 +152,33 @@ public class GameFrame extends JFrame {
         int user = state.getUser();
         g2d.translate(-state.getMap().getCameraZeroX(user), -state.getMap().getCameraZeroY(user));
         //TODO: should be visible ones.
-        for (GameObject object : state.getMap().getVisibleObjects()) {
-            //if (!(object instanceof Tank)) {
-            if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
-                if (object.isAlive())
-                    object.getAnimation().drawIt(g2d);
-            } else if (object instanceof ComputerTank) {
-                if (object.isAlive()) {
-                    Tank tank = ((Tank) object);
-                    ((Animation) tank.getAnimation()).drawTheBullets(g2d);
-//                tank.getAnimation().drawIt(g2d);
-                    if (tank.getAnimation().active) {
-                        if (tank.isForward()) {
-                            tank.getAnimation().drawImages(g2d);
+        try {
+            for (GameObject object : state.getMap().getVisibleObjects()) {
+                if (!(object instanceof Tank)) {
+               // if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
+                    if (object.isAlive())
+                        object.getAnimation().drawIt(g2d);
+                } else if (object instanceof ComputerTank) {
+                    if (object.isAlive()) {
+                        Tank tank = ((Tank) object);
+                        ((Animation) tank.getAnimation()).drawTheBullets(g2d);
+    //                tank.getAnimation().drawIt(g2d);
+                        if (tank.getAnimation().active) {
+                            if (tank.isForward()) {
+                                tank.getAnimation().drawImages(g2d);
+                            } else {
+                                ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                            }
                         } else {
-                            ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                            ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
                         }
                     } else {
-                        ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                        state.getMap().getAllObjects().remove(object);
                     }
-                } else {
-                    state.getMap().getAllObjects().remove(object);
                 }
             }
+        } catch (Exception e) {
+          //  e.printStackTrace();
         }
 
         UserTank pTank = (UserTank) state.getPlayerTank();

@@ -41,7 +41,7 @@ public class Map implements Serializable {
     private int initialWidth = 4700;
     private int initialHeight = 3600;
     private GameObject highestObject;
-   // private int enemyCount = 0;
+    // private int enemyCount = 0;
     private GameState state;
     public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
     public transient static MasterAnimation explosion;
@@ -64,7 +64,7 @@ public class Map implements Serializable {
         // cameraZeroY = height;
         // bullets = new ArrayList<>();
         String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps"
-                + File.separator + OpeningPage.mapName + "0" + level +".txt"; //"map" + level + ".txt";
+                + File.separator + OpeningPage.mapName + "0" + level + ".txt"; //"map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = "." + File.separator + "Images" + File.separator + "softWall";
         String eTank = "." + File.separator + "Move" + File.separator + "ETank";
@@ -174,8 +174,7 @@ public class Map implements Serializable {
      * @param fileName
      * @param user
      */
-    public Map(String fileName, int user)
-    {
+    public Map(String fileName, int user) {
         this(fileName);
         update(user);
     }
@@ -184,9 +183,11 @@ public class Map implements Serializable {
     public void findTheHighestAllowedHeight() {
         int maxY = height / 2;
         for (GameObject object : allObjects) {
-            if (object.locY <= maxY) {
-                maxY = object.locY;
-                highestObject = object;
+            if (object instanceof Block) {
+                if (object.locY <= maxY) {
+                    maxY = object.locY;
+                    highestObject = object;
+                }
             }
         }
     }
@@ -242,8 +243,7 @@ public class Map implements Serializable {
         width = maxX;
     }
 
-    public void updateHeight(int user)
-    {
+    public void updateHeight(int user) {
         int maxX = 0;
         for (GameObject object : allObjects) {
             if (object != mainTanks.get(user)) {
@@ -255,7 +255,6 @@ public class Map implements Serializable {
         }
         height = maxX;
     }
-
 
 
     public void updateCameraZeros(int user) {
@@ -300,6 +299,7 @@ public class Map implements Serializable {
         int width1 = d.width;
         if (highestObject != null)
             if (one.locY < highestObject.locY) {
+                System.out.println("Moved all the way.");
                 System.exit(0);
                 return false;
             }

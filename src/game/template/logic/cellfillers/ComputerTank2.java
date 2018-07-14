@@ -31,7 +31,8 @@ public class ComputerTank2 extends ComputerTank {
             int xSign = -(locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
             int plusX = getVelocity() * xSign;
             System.out.println(avoidCollision());
-            locX += plusX + xSign * avoidCollision();
+            locX += plusX;
+            locX += xSign * avoidCollision();
             animation.changeCoordinates(locX, locY);
             if (deg != 0 && deg != 180) {
                 if (locX > enemyTank.locX) {
@@ -52,7 +53,8 @@ public class ComputerTank2 extends ComputerTank {
         } else if (Math.abs(locY - enemyTank.locY) > 0) {
             int ySign = -(locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
             int plusY = getVelocity() * ySign;
-            locY += plusY + ySign * avoidCollision();
+            locY += plusY;
+            locY += ySign * avoidCollision();
             animation.changeCoordinates(locX, locY);
             if (deg != 90 && deg != 270) {
                 if (locY > enemyTank.locY) {

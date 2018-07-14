@@ -82,52 +82,57 @@ public class GameState implements Serializable {
      * The method which updates the game state.
      */
     public void update() {
-        int i;
-        if (map.getMainTank().getUser().isKeyUP())
-            i = 0;
-        map.update(0);
-        for (GameObject target : map.getVisibleObjects()) {
-            for (GameObject bullet : map.getVisibleObjects()) {
-                if (target != bullet) {
-                    if (target.isDestructible()) {
-                        if (((target instanceof UserTank) && (bullet instanceof ComputerTank2)
-                                && ((ComputerTank2) bullet).isDoesCollisionDamageUserTank())) {
-                            if (checkIfTwoObjectsCollide(bullet, target)) {
-                                target.takeDamage(bullet.getDamage());
-                                break;
+//        int i;
+//        if (map.getMainTank().getUser().isKeyUP())
+//            i = 0;
+        if (user == 0) {
+            map.update(0);
+            if (OpeningPage.isOnNetwork)
+                map.update(1);
+            for (GameObject target : map.getVisibleObjects()) {
+                for (GameObject bullet : map.getVisibleObjects()) {
+                    if (target != bullet) {
+                        if (target.isDestructible()) {
+                            if (((target instanceof UserTank) && (bullet instanceof ComputerTank2)
+                                    && ((ComputerTank2) bullet).isDoesCollisionDamageUserTank())) {
+                                if (checkIfTwoObjectsCollide(bullet, target)) {
+                                    target.takeDamage(bullet.getDamage());
+                                    break;
+                                }
                             }
-                        }
 //                        if (target instanceof Block)
 //                            if (((Block) target).isGift())
 //                                System.out.println(target);
-                        if ((bullet instanceof UserTank) && (target instanceof Block))
-                            if (((Block) target).isGift())
-                                if (checkIfTwoObjectsCollide(bullet, target))
-                                    ((UserTank) bullet).recieveGift(((Block) target));
+                            if ((bullet instanceof UserTank) && (target instanceof Block))
+                                if (((Block) target).isGift())
+                                    if (checkIfTwoObjectsCollide(bullet, target))
+                                        ((UserTank) bullet).recieveGift(((Block) target));
+                        }
                     }
                 }
-            }
-            ArrayList<Bullet> removed = new ArrayList<>();
-            for (Iterator it = Map.bullets.iterator(); it.hasNext(); ) {
-                Bullet bullet = (Bullet) it.next();
-                if (checkIfBulletCollides(bullet, target)) {
-                    //  checkIfTwoObjectsCollide(bullet, target)
-                    if (target instanceof Block) {
-                        if (!((Block) target).isPassableByBullet()) {
-                            if (target.isDestructible())
-                                target.takeDamage(bullet.getDamage());
+                ArrayList<Bullet> removed = new ArrayList<>();
+                for (Iterator it = Map.bullets.iterator(); it.hasNext(); ) {
+                    Bullet bullet = (Bullet) it.next();
+                    if (checkIfBulletCollides(bullet, target)) {
+                        //  checkIfTwoObjectsCollide(bullet, target)
+                        if (target instanceof Block) {
+                            if (!((Block) target).isPassableByBullet()) {
+                                if (target.isDestructible())
+                                    target.takeDamage(bullet.getDamage());
+                                removed.add(bullet);
+                                bullet.setAlive(false);
+                            }
+                        } else if (target instanceof Tank) {
+                            target.takeDamage(bullet.getDamage());
                             removed.add(bullet);
                             bullet.setAlive(false);
                         }
-                    } else if (target instanceof Tank) {
-                        target.takeDamage(bullet.getDamage());
-                        removed.add(bullet);
-                        bullet.setAlive(false);
                     }
                 }
+                Map.bullets.removeAll(removed);
             }
-            Map.bullets.removeAll(removed);
         }
+    }
 //        if (map.getEnemyCount() == 0)
 //            game.setGameOver(true);
 
@@ -143,7 +148,6 @@ public class GameState implements Serializable {
         // Update the state of all game elements
         //  based on user input and elapsed time ...
         //
-    }
 
 
 //    public KeyListener getKeyListener() {

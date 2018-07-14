@@ -42,26 +42,30 @@ public class GameLoop implements Runnable, Serializable {
 
     public GameLoop(GameFrame frame) {
         canvas = frame;
+        //this.user = user;
         //   map = new Map(1, state);
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 
     /**
      * This must be called before the game loop starts.
      */
-    public void init() {
+    public void init(Map map) {
         // Perform all initializations ...
         // state = new GameState();
         //For now false.
         music = new Music("." + File.separator + "sick.mp3", true);
         ThreadPool.execute(music);
-        if (OpeningPage.trueForSoloFalseForSaved)
-            map = new Map(OpeningPage.level, isOnNetwork, state);
-        else
-            map = new Map("." + File.separator + "maps" + File.separator + "savedMap.txt");
-        if (isOnNetwork)
-            user = new NetworkUser(map, trueForServerFalseForClient);
-        else
-            user = new User(map, true);
+
+//        if (isOnNetwork)
+//            user = new NetworkUser(map, trueForServerFalseForClient);
+//        else
+//            user = new User(map, true);
+        this.map = map;
         map.getMainTank().setUser(user);
         state.setMap(map);
         canvas.addKeyListener(user.getKeyHandler());

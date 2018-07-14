@@ -181,6 +181,16 @@ public class UserTank extends Tank {
         if (lives == 0) {
             setAlive(false);
             GameState.gameOver = true;
+            Map.addANewExp(locX, locY);
+            Music goMusic = new Music("." + File.separator
+                    + "Sounds" + File.separator
+                    + "heavygun.mp3");
+            ThreadPool.execute(goMusic);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.exit(0);
         }
     }
@@ -382,7 +392,7 @@ public class UserTank extends Tank {
         deg = rotateTheCannon();
 //        System.out.println(deg);
         if (user.isMouseLeftClickPressed()) {
-            System.out.println(deg);
+           // System.out.println(deg);
             Bullet bullet = shoot(deg);
             if (bullet != null) {
                 ((Animation) animation).getBullets().add(bullet);

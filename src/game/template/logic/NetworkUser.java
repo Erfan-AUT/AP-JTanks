@@ -12,11 +12,20 @@ import java.util.ArrayList;
 
 public class NetworkUser extends User implements Runnable {
     private boolean isFirstTime = true;
+    private boolean trueForServerFalseForClient;
 
-    public NetworkUser(Map map, boolean trueForServerFalseForClient) {
-        this.trueForServerFalseForClient = trueForServerFalseForClient;
-        if (trueForServerFalseForClient)
-            this.map = map;
+    public NetworkUser(Map map) {
+        this.trueForServerFalseForClient = true;
+        this.map = map;
+        number = 0;
+        tank = map.getMainTanks().get(0);
+        //tank = map.getMainTanks().get(0);
+
+    }
+
+    public NetworkUser() {
+        number = 1;
+        trueForServerFalseForClient = false;
     }
 
 
@@ -46,6 +55,8 @@ public class NetworkUser extends User implements Runnable {
                         ex.printStackTrace();
                     }
                 }
+                if (client.isClosed())
+                    System.exit(0);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -66,12 +77,17 @@ public class NetworkUser extends User implements Runnable {
                                 map.setVolatileObjects((ArrayList<GameObject>) tempIn.readObject());
                             else {
                                 map = new Map((String) tempIn.readObject(), number);
+                                tank = map.getMainTanks().get(number);
                                 isFirstTime = false;
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
+                }
+                if (server.isClosed())
+                {
+                    System.exit(0);
                 }
             } catch (IOException ex) {
                 System.err.println(ex);
