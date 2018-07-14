@@ -62,12 +62,12 @@ public class Map implements Serializable {
     public Map(int level, boolean isOnNetwork, GameState state) {
         // cameraZeroY = height;
         // bullets = new ArrayList<>();
-        String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
+        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps" + File.separator + "map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
-        String softWall = ".\\images\\softWall";
-        String eTank = ".\\Move\\ETank";
-        String wicket = ".\\images\\wicket";
-        String teazel = ".\\images\\teazel";
+        String softWall = "." + File.separator + "images" + File.separator + "softWall";
+        String eTank = "." + File.separator + "Move" + File.separator + "ETank";
+        String wicket = "." + File.separator + "images" + File.separator + "wicket";
+        String teazel = "." + File.separator + "images" + File.separator + "teazel";
         try {
             exp = ImageIO.read(new File("explosion_anim.png"));
         } catch (IOException e) {
@@ -80,10 +80,10 @@ public class Map implements Serializable {
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
-                    allObjects.add(new Block(y, x, false, 40, this, 0, ".\\images\\CannonFood.png", true, data.type));
+                    allObjects.add(new Block(y, x, false, 40, this, 0, "." + File.separator + "images" + File.separator + "CannonFood.png", true, data.type));
                     break;
                 case "p":
-                    allObjects.add(new Block(y, x, false, 0, this, 0, ".\\images\\plant.png", false, data.type));
+                    allObjects.add(new Block(y, x, false, 0, this, 0, "." + File.separator + "images" + File.separator + "plant.png", false, data.type));
                     break;
                 case "t1":
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "1.png", false, data.type));
@@ -92,7 +92,7 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "2.png", false, data.type));
                     break;
                 case "nd":
-                    allObjects.add(new Block(y, x, false, 0, this, 2, ".\\images\\HardWall.png", false, data.type));
+                    allObjects.add(new Block(y, x, false, 0, this, 2, "." + File.separator + "images" + File.separator + "HardWall.png", false, data.type));
                     break;
                 case "d":
                     allObjects.add(new Block(y, x, true, 4, this, 2, softWall + ".png", false, data.type));
@@ -105,24 +105,24 @@ public class Map implements Serializable {
                     break;
                 case "c1":
                     increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png", true, 5, 2000));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon1.png", "." + File.separator + "Images" + File.separator + "EnemyBullet1.png", true, 5, 2000));
                     break;
                 case "c2":
                     increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
+                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon2.png", "." + File.separator + "Images" + File.separator + "LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
                     increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon1.png", "." + File.separator + "Images" + File.separator + "Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
                     increaseEnemyCount();
-                    allObjects.add(new ComputerTank2(y, x, 40, this, true, ".\\Move\\Robot", true));
+                    allObjects.add(new ComputerTank2(y, x, 40, this, true, "." + File.separator + "Move" + File.separator + "Robot", true));
                     break;
 
                 case "u":
                     // UserTank userTank = new UserTank(y, x, 100, this, )
-                    UserTank userTank = new UserTank(y, x, 100, this, ".\\Move\\Tank");
+                    UserTank userTank = new UserTank(y, x, 100, this, "." + File.separator + "Move" + File.separator + "Tank");
                     mainTanks.add(userTank);
                     allObjects.add(userTank);
                     break;
@@ -357,7 +357,7 @@ public class Map implements Serializable {
     public static synchronized void addANewExp(int x, int y) {
         explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
         explosions.add(explosion);
-        Music music = new Music(".\\Sounds\\enemydestroyed.mp3");
+        Music music = new Music("." + File.separator + "Sounds" + File.separator + "enemydestroyed.mp3");
         ThreadPool.execute(music);
     }
 

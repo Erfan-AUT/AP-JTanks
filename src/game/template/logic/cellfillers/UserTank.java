@@ -35,15 +35,19 @@ public class UserTank extends Tank {
     private int primeVelocity = 50;
 
     public UserTank(int y, int x, int health, Map whichMap, String location) {
-        super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
+        super(y, x, health, whichMap, location, "." + File.separator
+                + "Bullet" + File.separator
+                + "HeavyBullet.png");
         initialHealth = health;
         //setVelocity(10);
         isOnCannon = true;
         cannons = new BufferedImage[4];
-        cannonsLocation = new File(".\\PlayerCannons");
+        cannonsLocation = new File("." + File.separator
+                + "PlayerCannons");
         cannonsImages = cannonsLocation.listFiles();
         rifles = new BufferedImage[3];
-        riflesLocation = new File(".\\PlayersRifles");
+        riflesLocation = new File("." + File.separator
+                + "PlayersRifles");
         riflesImages = riflesLocation.listFiles();
         rotationDegree = 90;
         setVelocity(primeVelocity);
@@ -75,7 +79,9 @@ public class UserTank extends Tank {
     }
 
     public UserTank(int y, int x, int health, Map whichMap, String location, GameState state) {
-        super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
+        super(y, x, health, whichMap, location, "." + File.separator
+                + "Bullet" + File.separator
+                + "HeavyBullet.png");
         initialHealth = health;
         setVelocity(primeVelocity);
     }
@@ -129,11 +135,15 @@ public class UserTank extends Tank {
             if (lastShootTime == 0 || time > lastShootTime + 1000) {
                 //decreaseCannonCount();
                 if (decreaseCannonCount()) {
-                    Music music = new Music(".\\Sounds\\heavygun.mp3");
+                    Music music = new Music("." + File.separator
+                            + "Sounds" + File.separator
+                            + "heavygun.mp3");
                     ThreadPool.execute(music);
                     return finalizeShoot(heavyBulletImage, deg);
                 } else {
-                    Music music = new Music(".\\Sounds\\emptyGun.mp3");
+                    Music music = new Music("." + File.separator
+                            + "Sounds" + File.separator
+                            + "emptyGun.mp3");
                     ThreadPool.execute(music);
                 }
             }
@@ -141,11 +151,15 @@ public class UserTank extends Tank {
             if (lastShootTime == 0 || time > lastShootTime + 100) {
                 //decreaseRifleCount();
                 if (decreaseRifleCount()) {
-                    Music music = new Music(".\\Sounds\\lightgun.mp3");
+                    Music music = new Music("." + File.separator
+                            + "Sounds" + File.separator
+                            + "lightgun.mp3");
                     ThreadPool.execute(music);
                     return finalizeShoot(lightBulletImage, deg);
                 } else {
-                    Music music = new Music(".\\Sounds\\emptyGun.mp3");
+                    Music music = new Music("." + File.separator
+                            + "Sounds" + File.separator
+                            + "emptyGun.mp3");
                     ThreadPool.execute(music);
                 }
             }
@@ -156,7 +170,9 @@ public class UserTank extends Tank {
     @Override
     public void takeDamage(int damage) {
         setHealth(getHealth() - damage);
-        Music music = new Music(".\\Sounds\\enemybullettomytank.mp3");
+        Music music = new Music("." + File.separator
+                + "Sounds" + File.separator
+                + "enemybullettomytank.mp3");
         ThreadPool.execute(music);
         if (getHealth() < 0) {
             lives--;
@@ -165,6 +181,7 @@ public class UserTank extends Tank {
         if (lives == 0) {
             setAlive(false);
             GameState.gameOver = true;
+            System.exit(0);
         }
     }
 
@@ -399,8 +416,10 @@ public class UserTank extends Tank {
     public void changeTheGun() {
         if (isOnCannon) {
             ((Animation) animation).setGun(cannons[currentCannon]);
+            bulletDamage = 20;
         } else {
             ((Animation) animation).setGun(rifles[currentRifle]);
+            bulletDamage = 10;
         }
     }
 
@@ -428,5 +447,9 @@ public class UserTank extends Tank {
 
     public User getUser() {
         return user;
+    }
+
+    public int getLives() {
+        return lives;
     }
 }

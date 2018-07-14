@@ -6,6 +6,7 @@ import game.template.logic.NetworkUser;
 import game.template.logic.User;
 import game.template.logic.utils.Music;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -51,12 +52,12 @@ public class GameLoop implements Runnable, Serializable {
         // Perform all initializations ...
         // state = new GameState();
         //For now false.
-        music = new Music(".\\sick.mp3", true);
+        music = new Music("." + File.separator + "sick.mp3", true);
         ThreadPool.execute(music);
         if (OpeningPage.trueForSoloFalseForSaved)
             map = new Map(1, isOnNetwork, state);
         else
-            map = new Map(".\\maps\\savedMap.txt");
+            map = new Map("." + File.separator + "maps" + File.separator + "savedMap.txt");
         if (isOnNetwork)
             user = new NetworkUser(map, trueForServerFalseForClient);
         else

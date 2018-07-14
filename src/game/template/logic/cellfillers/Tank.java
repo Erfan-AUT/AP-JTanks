@@ -23,6 +23,7 @@ public abstract class Tank extends GameObject {
     private File bulletLocation;
     protected long lastShootTime;
     protected transient BufferedImage heavyBulletImage;
+    protected int bulletDamage = 40;
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
@@ -250,7 +251,9 @@ public abstract class Tank extends GameObject {
     public void readContents(String location) {
         super.readContents(location);
         try {
-            heavyBulletImage = ImageIO.read(new File(".\\Bullet\\HeavyBullet.png"));
+            heavyBulletImage = ImageIO.read(new File("." + File.separator
+                    + "Bullet" + File.separator
+                    + "HeavyBullet.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -271,7 +274,7 @@ public abstract class Tank extends GameObject {
         int x = (int) (locX + 67 + Math.cos(deg) * 115);
         int y = (int) (locY + 75 + Math.sin(deg) * (115));
         bullet = new Bullet(image, x,
-                y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
+                y, Math.cos(deg), Math.sin(deg), deg, whichMap, bulletDamage);
         Thread thread = new Thread(bullet);
         thread.start();
         whichMap.getBullets().add(bullet);

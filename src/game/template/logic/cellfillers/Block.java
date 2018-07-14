@@ -61,7 +61,7 @@ public class Block extends GameObject {
     @Override
     public void takeDamage(int damage) {
         if (isDestructible()) {
-            super.takeDamage(damage / 40);
+            super.takeDamage(1);
             //location = ;
             if (getHealth() > 0)
             {

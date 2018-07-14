@@ -20,9 +20,10 @@ public class ComputerTank extends Tank {
     private int damageInCaseCollisionIsDestructive = 2;
     private int deg;
     //here
-    private BufferedImage gun;
+    private transient BufferedImage gun;
     private int velocity;
     private int shootLatency;
+    private String gunLocation;
 
     //constructor changed
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location, String gunLocation, String bulletLocation, boolean isMobile, int velocity, int shootLatency) {
@@ -34,6 +35,7 @@ public class ComputerTank extends Tank {
         animation = new Animation(images, 120, 120, 5, 20,
                 false, locX, locY, 0);
         //here
+        this.gunLocation = gunLocation;
         try {
             gun = ImageIO.read(new File(gunLocation));
         } catch (IOException e) {
@@ -257,7 +259,12 @@ public class ComputerTank extends Tank {
 
     @Override
     public void loadTransientFields() {
-
+        try {
+            gun = ImageIO.read(new File(gunLocation));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ((Animation) getAnimation()).setGun(gun);
     }
 }
 

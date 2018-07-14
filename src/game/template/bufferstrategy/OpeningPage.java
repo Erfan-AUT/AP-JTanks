@@ -4,11 +4,11 @@ package game.template.bufferstrategy;
 import game.template.logic.utils.Music;
 import javazoom.jl.player.Player;
 
-import javax.jnlp.JNLPRandomAccessFile;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -64,7 +64,7 @@ public class OpeningPage extends JFrame implements Runnable {
 
         resumeOldGame.setSelected(true);
         long time = System.currentTimeMillis();
-        music = new Music(".\\Sounds\\gameSound1.mp3", true);
+        music = new Music("." + File.separator + "Sounds" + File.separator + "gameSound1.mp3", true);
         ThreadPool.execute(music);
         JLabel resumeLabel = new JLabel("Resume old game.");
         JLabel playAsServerLabel = new JLabel("Play network game as server.");
@@ -158,7 +158,11 @@ public class OpeningPage extends JFrame implements Runnable {
                             //    currentPanel.repaint();
                         }
                         else if (resumeOldGame.isSelected())
+                        {
                             trueForSoloFalseForSaved = false;
+                            dispose();
+
+                        }
                         else if (playAsClient.isSelected()) {
                             trueForServerFalseForClient = false;
                             isOnNetwork = true;
@@ -173,14 +177,7 @@ public class OpeningPage extends JFrame implements Runnable {
                         for (int i = 0; i < buttons.size(); i++)
                             if (buttons.get(i).isSelected())
                                 level = i + 1;
-                        op.dispose();
-                        isGameStarted = true;
-                        game.setGameOver(false);
-                        game.init();
-                        ThreadPool.execute(game);
-                        frame.setVisible(true);
-                        music.close();
-                        game.getState().setGame(game);
+                        dispose();
                     }
 
                     setCount++;
@@ -193,6 +190,18 @@ public class OpeningPage extends JFrame implements Runnable {
                     //  th.requestFocus();
                     break;
             }
+        }
+
+        private void dispose()
+        {
+            op.dispose();
+            isGameStarted = true;
+            game.setGameOver(false);
+            game.init();
+            ThreadPool.execute(game);
+            frame.setVisible(true);
+            music.close();
+            game.getState().setGame(game);
         }
     }
 }

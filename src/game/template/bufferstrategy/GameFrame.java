@@ -40,6 +40,7 @@ public class GameFrame extends JFrame {
     private GameState state;
     private BufferedImage cannonsCount;
     private BufferedImage riflesCount;
+    private BufferedImage healthImage;
     private GameLoop game;
     //    Block wideAreaBlock1;
 //    Block wideAreaBlock2;
@@ -67,17 +68,26 @@ public class GameFrame extends JFrame {
                 this.getY()), "img");
         this.setCursor(c);
         try {
-            cannonsCount = ImageIO.read(new File(".\\Images\\NumberOfHeavyBullet2.png"));
+            cannonsCount = ImageIO.read(new File("." + File.separator +
+                    "Images" + File.separator + "NumberOfHeavyBullet2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            riflesCount = ImageIO.read(new File(".\\Images\\NumberOfMachinGun.png"));
+            riflesCount = ImageIO.read(new File("." + File.separator +
+                    "Images" + File.separator + "NumberOfMachinGun.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            healthImage = ImageIO.read(new File("." + File.separator +
+                    "Images" + File.separator + "health.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         wideAreaBlock = new Block(0, 0, false, 0, null, 2,
-                ".\\Stuffs\\WideArea.png", false, "WA");
+                "." + File.separator + "Stuffs" +
+                        File.separator +"WideArea.png", false, "WA");
         addWindowListener(new WinListener(this));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         // Initialize the JFrame ...
@@ -196,6 +206,11 @@ public class GameFrame extends JFrame {
         g2d.drawString("" + tanks.get(user).getCannonCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(user) + 160);
         g2d.drawImage(riflesCount, null, state.getMap().getCameraZeroX(0) + 25, state.getMap().getCameraZeroY(0) + 50);
         g2d.drawImage(cannonsCount, null, state.getMap().getCameraZeroX(0) + 35, state.getMap().getCameraZeroY(0) + 120);
+        int xPlus = 36;
+        for (int i = 0; i < ((UserTank) state.getPlayerTank()).getLives(); i++)
+        {
+            g2d.drawImage(healthImage, null, state.getMap().getCameraZeroX(0) + 450 + + (i + 1) * xPlus, state.getMap().getCameraZeroY(0) + 50);
+        }
 //        int drawX, drawY;
 //        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),
 //                100, 100 );
