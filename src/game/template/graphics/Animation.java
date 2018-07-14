@@ -158,12 +158,13 @@ public class Animation extends game.template.graphics.MasterAnimation {
     }
 
     public ArrayList<Bullet> getBullets() {
-        return bullets;
+            return bullets;
     }
 
     public void drawTheBullets(Graphics2D g2d) {
         for (Iterator it = bullets.iterator(); it.hasNext(); ) {
             Bullet bullet = (Bullet) it.next();
+//            bullet.setAlive(true);
             if (bullet.isAlive()) {
                 tx = AffineTransform.getTranslateInstance(bullet.locX, bullet.locY);
                 tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);

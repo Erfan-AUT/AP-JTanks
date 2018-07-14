@@ -41,7 +41,10 @@ public class Bullet extends GameObject implements Runnable {
     @Override
     public void run() {
         while (isActive) {
-            if (!isAlive())
+//            if (deg > -0.8 && deg < -0.60) {
+//                setAlive(true);
+//            }
+            if (!isAlive() )
                 Thread.currentThread().stop();
             update();
 

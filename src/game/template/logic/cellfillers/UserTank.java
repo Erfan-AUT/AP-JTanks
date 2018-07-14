@@ -45,14 +45,9 @@ public class UserTank extends Tank {
         riflesImages = riflesLocation.listFiles();
         rotationDegree = 90;
         setVelocity(primeVelocity);
-//        setCannonX(getX() + 75);
-//        setCannonY(getY() + 75);
-        // readContents(location);
-        //animation = new Animation(tankImages, 250, 250, 4, 24, false, locX, locY, 0);
         ((Animation) animation).setGun(cannons[0]);
         currentRifle = 0;
         currentCannon = 0;
-        //    readContents(location);
         for (int i = 0; i < cannonsImages.length; i++) {
             try {
                 cannons[i] = ImageIO.read(cannonsImages[i]);
@@ -87,8 +82,7 @@ public class UserTank extends Tank {
         this.user = user;
     }
 
-    public void loadTransientFields()
-    {
+    public void loadTransientFields() {
         cannons = new BufferedImage[4];
         rifles = new BufferedImage[3];
         for (int i = 0; i < cannonsImages.length; i++) {
@@ -119,37 +113,20 @@ public class UserTank extends Tank {
     @Override
     public Bullet shoot(double deg) {
         long time = System.currentTimeMillis();
-        int kossher = 0;
         if (isOnCannon) {
-            kossher = 1;
-            if (lastShootTime == 0 || time > lastShootTime + 500) {
-                kossher = 2;
-                return finalizeShoot(heavyBulletImage, deg);
+            if (lastShootTime == 0 || time > lastShootTime + 1000) {
+                decreaseCannonCount();
+                if (getCannonCount() >= 0)
+                    return finalizeShoot(heavyBulletImage, deg);
             }
         } else {
-            kossher = 3;
             if (lastShootTime == 0 || time > lastShootTime + 100) {
-                kossher = 4;
-                return finalizeShoot(lightBulletImage, deg);
+                decreaseRifleCount();
+                if (getRifleCount() >= 0)
+                    return finalizeShoot(lightBulletImage, deg);
             }
         }
-        System.out.println(deg + " " + kossher);
         return null;
-//        boolean check;
-//        if (getCurrentWeaponType() == 'c')
-//            check = decreaseCannonCount();
-//        else
-//            check = decreaseRifleCount();
-//        if (check) {
-//            //This should be changed to cannon's location.
-//            String location;
-//            if (getCurrentWeaponType() == 'r')
-//                location = "\\images\\LightBullet.png";
-//            else
-//                location = "\\images\\HeavyBullet.png";
-//            new Bullet(locY, locX,
-//                    this.whichMap, getAngleInRadians(), getCurrentWeaponType(), location);
-//        }
     }
 
     @Override
@@ -186,8 +163,6 @@ public class UserTank extends Tank {
             locX -= avoidCollision();
             isMoving = true;
         }
-//        setCannonX(getX() + 75);
-//        setCannonY(getY() + 75);
         animation.changeCoordinates(locX, locY);
         if (isMoving) {
             ((Animation) animation).setActive(true);
@@ -357,9 +332,11 @@ public class UserTank extends Tank {
             ((Animation) animation).setActive(false);
         }
         double deg = 0;
-        if (user.isMouseMoved())
-            deg = rotateTheCannon();
+//        if (user.isMouseMoved())
+        deg = rotateTheCannon();
+//        System.out.println(deg);
         if (user.isMouseLeftClickPressed()) {
+            System.out.println(deg);
             Bullet bullet = shoot(deg);
             if (bullet != null) {
                 ((Animation) animation).getBullets().add(bullet);
@@ -368,9 +345,9 @@ public class UserTank extends Tank {
 //                whichMap.getAllObjects().add(shoot(deg));
 //            }
         }
-        if (user.isMouseRightClickPressed())
-            changeWeapon();
-
+//        if (user.isMouseRightClickPressed())
+//            changeWeapon();
+//
     }
 
     @Override
@@ -383,6 +360,7 @@ public class UserTank extends Tank {
             increaseCannonCount(20);
 
         whichMap.getAllObjects().remove(gift);
+        whichMap.getVolatileObjects().remove(gift);
 
     }
 
@@ -403,7 +381,7 @@ public class UserTank extends Tank {
     }
 
     @Override
-    protected void changeWeapon() {
+    public void changeWeapon() {
         setOnCannon(!isOnCannon);
         changeTheGun();
     }

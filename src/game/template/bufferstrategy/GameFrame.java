@@ -14,6 +14,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import javax.imageio.ImageIO;
@@ -120,7 +121,9 @@ public class GameFrame extends JFrame {
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         wideAreaBlock.getAnimation().drawIt(g2d);
-        g2d.translate(-state.getMap().getCameraZeroX(0), -state.getMap().getCameraZeroY(0));
+        ArrayList<UserTank> tanks = state.getMap().getMainTanks();
+        int user = state.getUser();
+        g2d.translate(-state.getMap().getCameraZeroX(user), -state.getMap().getCameraZeroY(user));
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getVisibleObjects()) {
             //if (!(object instanceof Tank)) {
@@ -170,6 +173,15 @@ public class GameFrame extends JFrame {
         } catch (ConcurrentModificationException ex) {
 
         }
+//        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),
+//                state.getMap().getCameraZeroX(user) + 100, state.getMap().getCameraZeroY(user) );
+//        g2d.drawString("Rifle Count: " + tanks.get(user).getRifleCount(),
+//                state.getMap().getWidth()/ 2, 150);
+        int drawX, drawY;
+        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),
+                state.getMap().getCameraZeroX(user) + 100, state.getMap().getCameraZeroY(user) );
+        g2d.drawString("Rifle Count: " + tanks.get(user).getRifleCount(),
+                100, 100);
         //g2d.translate(pTank.locX, pTank.locY);
     }
 

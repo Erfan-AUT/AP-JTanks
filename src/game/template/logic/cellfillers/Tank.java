@@ -173,8 +173,8 @@ public abstract class Tank extends GameObject {
         long time = System.currentTimeMillis();
         lastShootTime = time;
         Bullet bullet;
-        int x =  (int) (locX + 67 + Math.cos(deg) * 100);
-        int y = (int) (locY + 75 + Math.sin(deg) * (100));
+        int x =  (int) (locX + 67 + Math.cos(deg) * 115);
+        int y = (int) (locY + 75 + Math.sin(deg) * 115);
         bullet = new Bullet(image, x,
               y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
         Thread thread = new Thread(bullet);
