@@ -6,8 +6,6 @@ import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -15,8 +13,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -42,6 +38,9 @@ public class GameFrame extends JFrame {
 //    private File expAnimImageLocation;
     private Block wideAreaBlock;
     private GameState state;
+    private BufferedImage cannonsCount;
+    private BufferedImage riflesCount;
+    private GameLoop game;
     //    Block wideAreaBlock1;
 //    Block wideAreaBlock2;
 //    Block wideAreaBlock3;
@@ -67,11 +66,25 @@ public class GameFrame extends JFrame {
         Cursor c = toolkit.createCustomCursor(image, new Point(this.getX(),
                 this.getY()), "img");
         this.setCursor(c);
+        try {
+            cannonsCount = ImageIO.read(new File(".\\Images\\NumberOfHeavyBullet2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            riflesCount = ImageIO.read(new File(".\\Images\\NumberOfMachinGun.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         wideAreaBlock = new Block(0, 0, false, 0, null, 2,
                 ".\\Stuffs\\WideArea.png", false, "WA");
         addWindowListener(new WinListener(this));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         // Initialize the JFrame ...
+    }
+
+    public void setGame(GameLoop game) {
+        this.game = game;
     }
 
     /**
@@ -177,21 +190,18 @@ public class GameFrame extends JFrame {
         } catch (ConcurrentModificationException ex) {
 
         }
+        g2d.setFont(new Font( "SansSerif", Font.BOLD, 50 ));
+        g2d.setColor(Color.GREEN);
+        g2d.drawString("" + tanks.get(user).getRifleCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(0) + 100 );
+        g2d.drawString("" + tanks.get(user).getCannonCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(user) + 160);
+        g2d.drawImage(riflesCount, null, state.getMap().getCameraZeroX(0) + 25, state.getMap().getCameraZeroY(0) + 50);
+        g2d.drawImage(cannonsCount, null, state.getMap().getCameraZeroX(0) + 35, state.getMap().getCameraZeroY(0) + 120);
+//        int drawX, drawY;
 //        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),
-//                state.getMap().getCameraZeroX(user) + 100, state.getMap().getCameraZeroY(user) );
+//                100, 100 );
 //        g2d.drawString("Rifle Count: " + tanks.get(user).getRifleCount(),
-//                state.getMap().getWidth()/ 2, 150);
-        int drawX, drawY;
-        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),
-                state.getMap().getCameraZeroX(user) + 100, state.getMap().getCameraZeroY(user) );
-        g2d.drawString("Rifle Count: " + tanks.get(user).getRifleCount(),
-                100, 100);
+//                100, 100);
         //g2d.translate(pTank.locX, pTank.locY);
-    }
-
-    public static void playMusic(String loc)
-    {
-
     }
 
 
@@ -210,6 +220,7 @@ public class GameFrame extends JFrame {
                     FileUtils.writeMap(state.getMap(), ".\\maps\\savedMap.txt");
                 case JOptionPane.NO_OPTION:
                     System.exit(0);
+                    game.setGameOver(true);
                     break;
                 case JOptionPane.CANCEL_OPTION:
                     break;

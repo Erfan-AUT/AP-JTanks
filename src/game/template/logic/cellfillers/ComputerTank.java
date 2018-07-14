@@ -221,6 +221,9 @@ public class ComputerTank extends Tank {
         if (getHealth() <= 0) {
             Map.addANewExp(locX,locY);
             setAlive(false);
+            whichMap.getAllObjects().remove(this);
+            whichMap.getVolatileObjects().remove(this);
+            whichMap.decreaseEnemyCount();
         }
         else
         {

@@ -4,6 +4,9 @@ package game.template.bufferstrategy;
 import game.template.logic.Map;
 import game.template.logic.NetworkUser;
 import game.template.logic.User;
+import game.template.logic.utils.Music;
+
+import java.io.Serializable;
 
 /**
  * A very simple structure for the main game loop.
@@ -19,7 +22,7 @@ import game.template.logic.User;
  *
  * @author Seyed Mohammad Ghaffarian
  */
-public class GameLoop implements Runnable {
+public class GameLoop implements Runnable, Serializable {
 
     /**
      * Frame Per Second.
@@ -33,6 +36,8 @@ public class GameLoop implements Runnable {
     private Map map;
     private boolean isOnNetwork = false;
     private boolean trueForServerFalseForClient = true;
+    private boolean gameOver = false;
+    private Music music;
 
     public GameLoop(GameFrame frame) {
         canvas = frame;
@@ -46,8 +51,10 @@ public class GameLoop implements Runnable {
         // Perform all initializations ...
         // state = new GameState();
         //For now false.
+        music = new Music(".\\sick.mp3", true);
+        ThreadPool.execute(music);
         if (OpeningPage.trueForSoloFalseForSaved)
-            map = new Map(1, isOnNetwork);
+            map = new Map(1, isOnNetwork, state);
         else
             map = new Map(".\\maps\\savedMap.txt");
         if (isOnNetwork)
@@ -66,7 +73,6 @@ public class GameLoop implements Runnable {
 
     @Override
     public void run() {
-        boolean gameOver = false;
         while (!gameOver) {
             try {
                 long start = System.currentTimeMillis();
@@ -80,5 +86,18 @@ public class GameLoop implements Runnable {
             } catch (InterruptedException ex) {
             }
         }
+        music.close();
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public GameState getState() {
+        return state;
     }
 }

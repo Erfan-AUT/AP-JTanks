@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -21,7 +22,7 @@ import java.util.Iterator;
  *
  * @author Seyed Mohammad Ghaffarian
  */
-public class GameState {
+public class GameState implements Serializable {
 
     //    private boolean keyUP, keyDOWN, keyRIGHT, keyLEFT;
 //    private boolean mouseRightClickPressed;
@@ -35,6 +36,7 @@ public class GameState {
     private Map map;
     private Tank playerTank;
     private int user;
+    private GameLoop game;
 
     public Tank getPlayerTank() {
         return playerTank;
@@ -126,6 +128,10 @@ public class GameState {
             }
             Map.bullets.removeAll(removed);
         }
+        if (map.getEnemyCount() == 0)
+            game.setGameOver(true);
+
+
 //        for (GameObject object : map.getVisibleObjects())
 //            if (object instanceof Block)
 //                if (((Block)object).getType() =="cf")
@@ -193,5 +199,13 @@ public class GameState {
 
     public int getUser() {
         return user;
+    }
+
+    public void setGame(GameLoop game) {
+        this.game = game;
+    }
+
+    public GameLoop getGame() {
+        return game;
     }
 }

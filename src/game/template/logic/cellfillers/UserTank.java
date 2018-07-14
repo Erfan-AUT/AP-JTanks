@@ -118,6 +118,7 @@ public class UserTank extends Tank {
 
     /**
      * shoots a new bullet at a certain degree of rotation
+     *
      * @param deg the degree
      * @return the bullet.
      */
@@ -126,28 +127,24 @@ public class UserTank extends Tank {
         long time = System.currentTimeMillis();
         if (isOnCannon) {
             if (lastShootTime == 0 || time > lastShootTime + 1000) {
-                decreaseCannonCount();
-                if (getCannonCount() >= 0) {
+                //decreaseCannonCount();
+                if (decreaseCannonCount()) {
                     Music music = new Music(".\\Sounds\\heavygun.mp3");
                     ThreadPool.execute(music);
                     return finalizeShoot(heavyBulletImage, deg);
-                }
-                else
-                {
+                } else {
                     Music music = new Music(".\\Sounds\\emptyGun.mp3");
                     ThreadPool.execute(music);
                 }
             }
         } else {
             if (lastShootTime == 0 || time > lastShootTime + 100) {
-                decreaseRifleCount();
-                if (getRifleCount() >= 0) {
+                //decreaseRifleCount();
+                if (decreaseRifleCount()) {
                     Music music = new Music(".\\Sounds\\lightgun.mp3");
                     ThreadPool.execute(music);
                     return finalizeShoot(lightBulletImage, deg);
-                }
-                else
-                {
+                } else {
                     Music music = new Music(".\\Sounds\\emptyGun.mp3");
                     ThreadPool.execute(music);
                 }
@@ -388,13 +385,14 @@ public class UserTank extends Tank {
     }
 
     public void recieveGift(Block gift) {
-        if (gift.getType() == "cf")
+        if (gift.getType().equals("cf"))
             increaseCannonCount(20);
 
         whichMap.getAllObjects().remove(gift);
         whichMap.getVolatileObjects().remove(gift);
 
     }
+
     /**
      * changes the tank's weapon's animation.
      */

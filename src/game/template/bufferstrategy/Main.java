@@ -24,7 +24,7 @@ public class Main {
 			@Override
 			public void run() {
               //  Map map = new Map(1, null);
-//				OpeningPage openingPage = new OpeningPage();
+
 //				Thread thread = new Thread(openingPage);
 //                try {
 //                    thread.run();
@@ -32,16 +32,36 @@ public class Main {
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }
+//                ThreadPool.execute(openingPage);
+//                openingPage
+//                try {
+//                    this.wait();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 GameFrame frame = new GameFrame("Game Title");
-                GameFrame.playMusic("");
+//                Thread t = new Thread(openingPage);
+//                try {
+//                    t.start();
+//                    t.join();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+                //System.out.println(this.getClass());
+
+//                GameFrame.playMusic("");
 				frame.setLocationRelativeTo(null); // put frame at center of screen
 				//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				frame.setVisible(false);
 				frame.initBufferStrategy();
 				// Create and execute the game-loop
 				GameLoop game = new GameLoop(frame);
-				game.init();
-				ThreadPool.execute(game);
+				OpeningPage openingPage = new OpeningPage(game, frame);
+				Thread t  = new Thread(openingPage);
+				t.start();
+				frame.setGame(game);
+
+
 				// and the game starts ...
 			}
 		});

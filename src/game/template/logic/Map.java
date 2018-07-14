@@ -40,6 +40,8 @@ public class Map implements Serializable {
     private int initialWidth = 4700;
     private int initialHeight = 3600;
     private GameObject highestObject;
+    private int enemyCount = 0;
+    private GameState state;
     public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
     public transient static MasterAnimation explosion;
     private transient static BufferedImage exp;
@@ -57,7 +59,7 @@ public class Map implements Serializable {
      * empty blocks don't matter because the only image there is its background
      * (Which is to be loaded later.)
      */
-    public Map(int level, boolean isOnNetwork) {
+    public Map(int level, boolean isOnNetwork, GameState state) {
         // cameraZeroY = height;
         // bullets = new ArrayList<>();
         String fileName = ".\\maps\\defaultMaps\\map" + level + ".txt";
@@ -102,15 +104,19 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
+                    increaseEnemyCount();
                     allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png", true, 5, 2000));
                     break;
                 case "c2":
+                    increaseEnemyCount();
                     allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
+                    increaseEnemyCount();
                     allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
+                    increaseEnemyCount();
                     allObjects.add(new ComputerTank2(y, x, 40, this, true, ".\\Move\\Robot", true));
                     break;
 
@@ -145,6 +151,7 @@ public class Map implements Serializable {
         width = orig.width;
         mainTanks = orig.mainTanks;
         mainTank = mainTanks.get(0);
+        this.state = orig.state;
         for (GameObject object : allObjects) {
             object.readContents(object.getLocation());
             object.displayTheAnimations();
@@ -263,8 +270,10 @@ public class Map implements Serializable {
         int height1 = d.height;
         int width1 = d.width;
         if (highestObject != null)
-            if (one.locY < highestObject.locY)
+            if (one.locY < highestObject.locY) {
+                System.exit(0);
                 return false;
+            }
         if (!trueForVisibleFalseForAll) {
             if ((y + height1 <= height) && (y >= 20) && ((x >= 0) && (x + width1 <= width)))
                 return true;
@@ -358,6 +367,18 @@ public class Map implements Serializable {
 
     public void setVolatileObjects(ArrayList<GameObject> volatileObjects) {
         this.volatileObjects = volatileObjects;
+    }
+
+    public void decreaseEnemyCount() {
+        enemyCount--;
+    }
+
+    public void increaseEnemyCount() {
+        enemyCount++;
+    }
+
+    public int getEnemyCount() {
+        return enemyCount;
     }
 
     //  public static

@@ -1,6 +1,9 @@
 package game.template.bufferstrategy;
 
 
+import game.template.logic.utils.Music;
+import javazoom.jl.player.Player;
+
 import javax.jnlp.JNLPRandomAccessFile;
 import javax.swing.*;
 import java.awt.*;
@@ -27,10 +30,14 @@ public class OpeningPage extends JFrame implements Runnable {
     JRadioButton playAsClient = new JRadioButton();
     JRadioButton playSolo = new JRadioButton();
     OpeningPage op;
+    GameLoop game;
+    GameFrame frame;
+    Music music;
+    //private Runnable main;
     private KeyListener l;
     //private ArrayList<JComponent> components;
 
-    public OpeningPage() {
+    public OpeningPage(GameLoop game, GameFrame frame) {
         super("WATCHA GONNA DO WHEN THE NORMAL TANKS RUN WILD ON YOU, BROTHER?");
         //Move All of this into init.
        // init();
@@ -38,9 +45,15 @@ public class OpeningPage extends JFrame implements Runnable {
 //            firstPanel.add(component);
 
         // firstPanel.addKeyListener(new KeyListener());
+
+        //t//his.main = main;
+        this.frame = frame;
+        this.game = game;
         setSize(500, 500);
         setVisible(true);
         op = this;
+        frame.setVisible(false);
+        game.setGameOver(true);
     }
 
     private void init() {
@@ -50,7 +63,9 @@ public class OpeningPage extends JFrame implements Runnable {
         l = new KeyListener(firstPanel);
 
         resumeOldGame.setSelected(true);
-
+        long time = System.currentTimeMillis();
+        music = new Music(".\\Sounds\\gameSound1.mp3", true);
+        ThreadPool.execute(music);
         JLabel resumeLabel = new JLabel("Resume old game.");
         JLabel playAsServerLabel = new JLabel("Play network game as server.");
         JLabel playAsClientLabel = new JLabel("Play network game as client.");
@@ -79,6 +94,7 @@ public class OpeningPage extends JFrame implements Runnable {
         firstPanel.revalidate();
         this.repaint();
         this.revalidate();
+        resumeOldGame.requestFocus();
     }
 
     private void enumerate(ButtonGroup group) {
@@ -95,7 +111,7 @@ public class OpeningPage extends JFrame implements Runnable {
     @Override
     public void run() {
         init();
-        while (!isGameStarted);
+        //while (!isGameStarted);
     }
 
 
@@ -159,6 +175,12 @@ public class OpeningPage extends JFrame implements Runnable {
                                 level = i + 1;
                         op.dispose();
                         isGameStarted = true;
+                        game.setGameOver(false);
+                        game.init();
+                        ThreadPool.execute(game);
+                        frame.setVisible(true);
+                        music.close();
+                        game.getState().setGame(game);
                     }
 
                     setCount++;

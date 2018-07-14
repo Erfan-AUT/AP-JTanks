@@ -47,7 +47,7 @@ public abstract class Tank extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        rifleCount = 300;
+        rifleCount = 50;
         cannonCount = 50;
         forward = false;
         angle = 0;
@@ -268,8 +268,8 @@ public abstract class Tank extends GameObject {
         long time = System.currentTimeMillis();
         lastShootTime = time;
         Bullet bullet;
-        int x = (int) (locX + 120 + Math.cos(deg) * 120);
-        int y = (int) (locY + 75 + Math.sin(deg) * (120));
+        int x = (int) (locX + 67 + Math.cos(deg) * 115);
+        int y = (int) (locY + 75 + Math.sin(deg) * (115));
         bullet = new Bullet(image, x,
                 y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
         Thread thread = new Thread(bullet);
