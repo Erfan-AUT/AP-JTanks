@@ -19,6 +19,11 @@ public class User implements Serializable{
     private MouseHandler mouseHandler;
     private int number;
 
+    /**
+     * creates a new user and its state.
+     * @param map the map it's working on.
+     * @param trueForServerFalseForClient
+     */
     public User(Map map, boolean trueForServerFalseForClient) {
         this.map = map;
         if (trueForServerFalseForClient)

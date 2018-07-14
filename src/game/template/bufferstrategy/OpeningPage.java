@@ -42,7 +42,8 @@ public class OpeningPage extends JFrame {
         JRadioButton playAsServer = new JRadioButton();
         JRadioButton playAsClient = new JRadioButton();
         JRadioButton playSolo = new JRadioButton();
-        resumeOldGame.setSelected(true);
+        resumeOldGame.setSelected(true
+        );
 
         JLabel resumeLabel = new JLabel("Resume old game.");
         JLabel playAsServerLabel = new JLabel("Play network game as server.");

@@ -18,8 +18,10 @@ public class ComputerTank extends Tank {
             temporarilyDisabled = false;
     }
 
+     //Remember to update only objects that ARE visible.
+
     /**
-     * Remember to update only objects that ARE visible.
+     * moves the tank using its internal parameters.
      */
     public void move() {
         if (isMobile) {
@@ -34,6 +36,10 @@ public class ComputerTank extends Tank {
         }
     }
 
+    /**
+     * finds the user's tank.
+     */
+
     public void findEnemyTank() {
         if (enemyTank == null) {
             for (GameObject o : whichMap.getVisibleObjects()) {
@@ -43,6 +49,11 @@ public class ComputerTank extends Tank {
         }
     }
 
+    /**
+     * shoots a new bullet at a certain degree of rotation
+     * @param deg the degree
+     * @return the bullet.
+     */
     @Override
     public Bullet shoot(double deg) {
         findEnemyTank();
@@ -52,6 +63,9 @@ public class ComputerTank extends Tank {
     }
 
 
+    /**
+     * updates the tank given its new state.
+     */
     @Override
     public void update() {
         if (isMobile && validateAbility())
@@ -63,7 +77,11 @@ public class ComputerTank extends Tank {
         }
             //shoot();
     }
-
+    /**
+     * takes damage from other components.
+     *
+     * @param damage
+     */
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);
@@ -71,6 +89,10 @@ public class ComputerTank extends Tank {
             setAlive(false);
     }
 
+    /**
+     * validates whether or not it can attack the user's tank
+     * @return true for yes, false for no.
+     */
     private boolean validateAbility() {
         if (whichMap.doesntGoOutOfMap(this, false, 0))
             temporarilyDisabled = false;
@@ -78,6 +100,11 @@ public class ComputerTank extends Tank {
             temporarilyDisabled = true;
         return !temporarilyDisabled;
     }
+
+    /**
+     * whether or not its collision with the user tank create some damage.
+     * @return yes or no.
+     */
 
     public boolean isDoesCollisionDamageUserTank() {
         return doesCollisionDamageUserTank;
@@ -88,6 +115,7 @@ public class ComputerTank extends Tank {
         return damageInCaseCollisionIsDestructive;
     }
 
+    //TODO: load transient fields for the pc tank.
 }
 
 

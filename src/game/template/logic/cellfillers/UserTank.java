@@ -32,6 +32,17 @@ public class UserTank extends Tank {
     private User user;
     private int primeVelocity = 50;
 
+    /**
+     * creates a new user tank using the given parameters.
+     * @param y
+     * @param y              its x-location
+     * @param x              its y-location
+     * @param health
+     * @param whichMap       the map it is in
+     * @param location       the location of its animation's content.
+     */
+
+
     public UserTank(int y, int x, int health, Map whichMap, String location) {
         super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
         initialHealth = health;
@@ -83,9 +94,19 @@ public class UserTank extends Tank {
         setVelocity(primeVelocity);
     }
 
+    /**
+     * sets a new user for the tank.
+     * @param user
+     */
+
     public void setUser(User user) {
         this.user = user;
     }
+
+    /**
+     * loads the transient fields of the tank after it has been loaded from a
+     * serialized file.
+     */
 
     public void loadTransientFields()
     {
@@ -115,6 +136,11 @@ public class UserTank extends Tank {
         ((Animation) animation).setGun(cannons[currentCannon]);
     }
 
+    /**
+     * shoots a new bullet at a certain degree of rotation
+     * @param deg the degree
+     * @return the bullet.
+     */
 
     @Override
     public Bullet shoot(double deg) {
@@ -145,7 +171,11 @@ public class UserTank extends Tank {
 //                    this.whichMap, getAngleInRadians(), getCurrentWeaponType(), location);
 //        }
     }
-
+    /**
+     * takes damage from other components.
+     *
+     * @param damage
+     */
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);
@@ -158,7 +188,9 @@ public class UserTank extends Tank {
             GameState.gameOver = true;
         }
     }
-
+    /**
+     * moves the tank using its internal parameters.
+     */
     @Override
     public void move() {
         boolean isMoving = false;
@@ -190,6 +222,9 @@ public class UserTank extends Tank {
         }
     }
 
+    /**
+     * rotates the tank using the user-driven degrees.
+     */
 
     public void rotate() {
         int tmp = getAngle() % 360;
@@ -318,6 +353,11 @@ public class UserTank extends Tank {
         }
     }
 
+    /**
+     * does some particular type of rotation that's used widely in the code.
+     * @param deg the degree of rotation.
+     */
+
     private void rot(int deg) {
         setForward(false);
         setVelocity(0);
@@ -326,6 +366,10 @@ public class UserTank extends Tank {
         ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
+    /**
+     * does some other particular type of rotation that's used widely in the code.
+     * @param deg the degree of rotation.
+     */
     private void crossRot(int deg) {
         setForward(false);
         setVelocity(0);
@@ -334,6 +378,11 @@ public class UserTank extends Tank {
         ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
+    /**
+     * rotates the tank's cannon.
+     * @return it degree after rotation.
+     */
+
     private double rotateTheCannon() {
         int dx = user.getMouseX() - (locX + 10);
         int dy = user.getMouseY() - (locY + 20);
@@ -341,6 +390,10 @@ public class UserTank extends Tank {
         ((Animation) animation).setCannonRotationDeg(deg);
         return deg;
     }
+
+    /**
+     * updates the tank given its new state.
+     */
 
     public void update() {
 
@@ -367,11 +420,10 @@ public class UserTank extends Tank {
 
     }
 
-    @Override
-    public void readContents(String location) {
-        super.readContents(location);
-    }
-
+    /**
+     * recieves a gif block and adds it to itself.
+     * @param gift the gift.
+     */
     public void recieveGift(Block gift) {
         if (gift.getType() == "cf")
             increaseCannonCount(20);
@@ -379,6 +431,10 @@ public class UserTank extends Tank {
         whichMap.getAllObjects().remove(gift);
 
     }
+
+    /**
+     * chnages its gun.
+     */
 
     public void changeTheGun() {
         if (isOnCannon) {
@@ -392,9 +448,18 @@ public class UserTank extends Tank {
         return isOnCannon;
     }
 
+    /**
+     * sets a new state for its cannon.
+     * @param onCannon the new state.
+     */
+
     public void setOnCannon(boolean onCannon) {
         isOnCannon = onCannon;
     }
+
+    /**
+     * changes its weapon.
+     */
 
     @Override
     protected void changeWeapon() {
@@ -402,8 +467,4 @@ public class UserTank extends Tank {
         changeTheGun();
     }
 
-    @Override
-    public void displayTheAnimations() {
-        super.displayTheAnimations();
-    }
 }

@@ -15,6 +15,18 @@ public class Block extends GameObject {
     private boolean isGift;
     private String type;
 
+    /**
+     * creates a new block using the properly named parameters..
+     * @param y its x-location
+     * @param x its y-location
+     * @param isDestructible
+     * @param health
+     * @param whichMap the map it is in
+     * @param pass which objects can pass through it.
+     * @param location the location of its animation's content.
+     * @param isGift whether or not it is a gift.
+     * @param type the type of it.
+     */
     public Block(int y, int x, boolean isDestructible, int health, Map whichMap, int pass,
                  String location, boolean isGift, String type) {
         super(y, x, isDestructible, health, whichMap, location);
@@ -40,6 +52,11 @@ public class Block extends GameObject {
         //Any other means non-passable.
     }
 
+    /**
+     * takes damage from other components.
+     * @param damage
+     */
+
     @Override
     public void takeDamage(int damage) {
         if (isDestructible()) {
@@ -54,32 +71,32 @@ public class Block extends GameObject {
         }
     }
 
-//    public void update() {
-//        if (isDestructible())
-//            if (initialHealth > getHealth()) ;
-////                case "d1":
-////        allObjects.add(new Block(y, x, true, 20, this, 2, softWall + "1.png", false));
-////        break;
-////        case "d2":
-////        allObjects.add(new Block(y, x, true, 30, this, 2, softWall + "2.png", false));
-////        break;
-////        case "d3":
-////        allObjects.add(new Block(y, x, true, 40, this, 2, softWall + "3.png", false));
-////        break;
-//    }
 
-
+    /**
+     * @return whether or not it is passable by a tank.
+     */
     public boolean isPassableByTank() {
         return isPassableByTank;
     }
+
+    /**
+     * @return whether or not it's passable by a bullet.
+     */
 
     public boolean isPassableByBullet() {
         return isPassableByBullet;
     }
 
+    /**
+     * @return whether or not it is a gift.
+     */
     public boolean isGift() {
         return isGift;
     }
+
+    /**
+     * @return the type of the block.
+     */
 
     public String getType() {
         return type;

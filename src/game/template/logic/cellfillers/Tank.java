@@ -26,6 +26,17 @@ public abstract class Tank extends GameObject {
     //protected boolean mousePress;
     //private int mouseX, mouseY;
 
+    /**
+     * creates a new tank using the given parameters.
+     *
+     * @param y
+     * @param y              its x-location
+     * @param x              its y-location
+     * @param health         its health
+     * @param whichMap       the map it is in
+     * @param location       the location of its animation's content.
+     * @param bulletLocation the location of its bullet's animation's content.
+     */
 
     public Tank(int y, int x, int health, Map whichMap, String location, String bulletLocation) {
         super(y, x, true, health, whichMap, location);
@@ -38,6 +49,11 @@ public abstract class Tank extends GameObject {
         animation.active = true;
         lastShootTime = 0;
     }
+
+    /**
+     * Avoids collision with other non-passable object when moving.
+     * @return how much it needs to go back.
+     */
 
     public int avoidCollision() {
         if (!whichMap.doesntGoOutOfMap(this, false, 0))
@@ -53,7 +69,7 @@ public abstract class Tank extends GameObject {
                 if (GameState.checkIfTwoObjectsCollide(object, this)) {
                     if (object instanceof Block) {
                         if (!((Block) object).isPassableByTank()) {
-                          //  System.out.println("Collides with object.");
+                            //  System.out.println("Collides with object.");
                             return -velocity;
                         }
                     } else if (object instanceof ComputerTank)
@@ -63,6 +79,11 @@ public abstract class Tank extends GameObject {
         }
         return 0;
     }
+
+    /**
+     * loads the transient fields of the tank after it has been loaded from a
+     * serialized file.
+     */
 
     public void loadTransientFields() {
 
@@ -83,12 +104,21 @@ public abstract class Tank extends GameObject {
         moving = false;
     }
 
-
+    /**
+     * shoots a new bullet at a certain degree of rotation
+     * @param deg the degree
+     * @return the bullet.
+     */
     protected abstract Bullet shoot(double deg);
 
+    /**
+     * moves the tank using its internal parameters.
+     */
     protected abstract void move();
 
-
+    /**
+     * changes the tank's weapon.
+     */
     protected void changeWeapon() {
 
 //        if (currentWeaponType == 'c')
@@ -127,33 +157,69 @@ public abstract class Tank extends GameObject {
         return true;
     }
 
+    /**
+     * @return its velocity.
+     */
     public int getVelocity() {
         return velocity;
     }
 
+    /**
+     * sets a new veloctiy for the tank.
+     * @param velocity the new velocity.
+     */
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }
+
+    /**
+     * @return whether or not it is moving forward.
+     */
 
     public boolean isForward() {
         return forward;
     }
 
+    /**
+     * sets its moving direction.
+     * @param forward the direction.
+     */
+
     public void setForward(boolean forward) {
         this.forward = forward;
     }
+
+    /**
+     * @return its rotating angle.
+     */
 
     public int getAngle() {
         return angle;
     }
 
+    /**
+     * sets a new angle of rotation for it.
+     * @param angle the angle.
+     */
+
     public void setAngle(int angle) {
         this.angle = angle;
     }
 
+    /**
+     * sets whether or not its moving.
+     * @param moving the state.
+     */
+
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
+
+    /**
+     * reads the content necessary for the object's animation.
+     *
+     * @param location where to read the info from.
+     */
 
     @Override
     public void readContents(String location) {
@@ -165,30 +231,50 @@ public abstract class Tank extends GameObject {
         }
     }
 
-    protected Bullet finalizeShoot(BufferedImage image, double deg )
-    {
+    /**
+     * does the  common things that need to be done in case a bullet is shot.
+     * @param image the image of the bullet, manifesting its type.
+     * @param deg the degree at which the bullet is shot.
+     * @return the bullet that is shot.
+     */
+
+    protected Bullet finalizeShoot(BufferedImage image, double deg) {
         long time = System.currentTimeMillis();
         lastShootTime = time;
         Bullet bullet;
-        int x =  (int) (locX + 67 + Math.cos(deg) * 100);
+        int x = (int) (locX + 67 + Math.cos(deg) * 100);
         int y = (int) (locY + 75 + Math.sin(deg) * (100));
         bullet = new Bullet(image, x,
-              y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
+                y, Math.cos(deg), Math.sin(deg), deg, whichMap, 40);
         Thread thread = new Thread(bullet);
         thread.start();
         whichMap.getBullets().add(bullet);
         return bullet;
     }
 
-    protected void increaseCannonCount(int plus)
-    {
+    /**
+     * increases the count of remaining cannons for the tank.
+     * @param plus
+     */
+
+    protected void increaseCannonCount(int plus) {
         cannonCount += plus;
     }
 
-    protected void increaseRifleCount(int plus)
-    {
+
+    /**
+     * increases the count of remaining rifles for the tank.
+     * @param plus
+     */
+
+
+    protected void increaseRifleCount(int plus) {
         rifleCount += plus;
     }
+
+    /**
+     * creates its animation and puts it in the proper state.
+     */
 
     @Override
     public void displayTheAnimations() {

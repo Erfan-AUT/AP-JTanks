@@ -111,7 +111,10 @@ public class Map implements Serializable {
         findTheHighestAllowedHeight();
     }
 
-    //To Load from savedData, doing this in this way because we could add loading from multiple savedDatas later.
+    /**
+     *  To Load from savedData, doing this in this way because we
+     *  could add loading from multiple savedData as late
+     */
     public Map(String fileName) {
         Map orig = FileUtils.readMap(fileName);
         allObjects = orig.allObjects;
@@ -129,6 +132,10 @@ public class Map implements Serializable {
         findTheHighestAllowedHeight();
         orig = null;
     }
+
+    /**
+     * finds the highest object that exists in the map.
+     */
 
     public void findTheHighestAllowedHeight() {
         int maxY = height / 2;
@@ -157,6 +164,12 @@ public class Map implements Serializable {
         return visibleObjects;
     }
 
+    /**
+     * modifies and reads string which are used to load the map from a saved file.
+     * @param fileName the name of the file where it is saved.
+     * @return an arrayList of data that is later used to load the map.
+     */
+
 
     private ArrayList<MapData> modifyReadString(String fileName) {
         ArrayList<String> read = FileUtils.readWithStream(fileName);
@@ -177,6 +190,10 @@ public class Map implements Serializable {
         return returnValue;
     }
 
+    /**
+     * updates the map's relative widith considering its visible object by user
+     * @param user the user.
+     */
     public void updateWidth(int user) {
 //        int maxX = 0;
 //        for (GameObject object : visibleObjects) {
@@ -197,7 +214,10 @@ public class Map implements Serializable {
         width = maxX;
     }
 
-
+    /**
+     * updates the 0-0 point of the user's camera.
+     * @param user the user that is doing this.
+     */
     public void updateCameraZeros(int user) {
 //        if (mainTank.isMoving()) {
 //            int i = 1;
@@ -221,7 +241,10 @@ public class Map implements Serializable {
 //        System.out.println("Camera y is:" + cameraZeroY);
     }
 
-
+    /**
+     * updates the objects that are visible to the user.
+     * @param user the user which is doing this.
+     */
     public void updateVisibleObjects(int user) {
         //Resets everything in order to see what has been renewed.
         if (visibleObjects != null) {
@@ -237,6 +260,13 @@ public class Map implements Serializable {
         //
     }
 
+    /**
+     * whether or not one object goes out of thr map.
+      * @param one the object.
+     * @param trueForVisibleFalseForAll obv.
+     * @param user the user that has the camera.
+     * @return yes or no.
+     */
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll, int user) {
         Dimension d = GameState.getRelativeHeightWidth(one);
         int y = one.locY;
@@ -268,6 +298,10 @@ public class Map implements Serializable {
         return false;
     }
 
+    /**
+     * updates the map given everything that has happened to it.
+     * @param user the user that updates its own cameraZeros.
+     */
 
     public synchronized void update(int user) {
         if (!isOnNetwork) {
@@ -288,6 +322,11 @@ public class Map implements Serializable {
         }
     }
 
+    /**
+     * returns the first user's tank
+     * @return
+     */
+
     public UserTank getMainTank() {
         return mainTank;
     }
@@ -305,18 +344,37 @@ public class Map implements Serializable {
         }
     }
 
+    /**
+     * @param user
+     * @return the camera's x-0 point
+     */
+
     public int getCameraZeroX(int user) {
         return cameraZeroXs[user];
     }
+
+    /**
+     * @param user
+     * @return the camera's y-0 point
+     */
 
     public int getCameraZeroY(int user) {
         return cameraZeroYs[user];
     }
 
+    /**
+     * gets all the user tanks in it.
+     * @return
+     */
+
     public ArrayList<UserTank> getMainTanks() {
         return mainTanks;
     }
 
+    /**
+     * whether it;s local or on network.
+     * @return
+     */
     public boolean isOnNetwork() {
         return isOnNetwork;
     }
