@@ -60,8 +60,16 @@ public abstract class GameObject implements Serializable {
     }
 
     public void takeDamage(int damage) {
-        if (isDestructible)
+        if (isDestructible) {
             health -= damage;
+            if (getHealth() <= 0) {
+                whichMap.getAllObjects().remove(this);
+                whichMap.getVolatileObjects().remove(this);
+                setAlive(false);
+            }
+
+        }
+
     }
 
     public int getHeight() {

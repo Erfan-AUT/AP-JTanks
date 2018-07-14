@@ -110,6 +110,10 @@ public class GameState {
                             removed.add(bullet);
                             bullet.setAlive(false);
                         }
+                    } else if (target instanceof Tank) {
+                        target.takeDamage(bullet.getDamage());
+                        removed.add(bullet);
+                        bullet.setAlive(false);
                     }
                 }
             }
@@ -164,10 +168,9 @@ public class GameState {
         return false;
     }
 
-    private boolean checkIfBulletCollides(Bullet bullet, GameObject target)
-    {
+    private boolean checkIfBulletCollides(Bullet bullet, GameObject target) {
         if ((bullet.locY >= target.locY) && (bullet.locY <= target.locY + target.getHeight())
-            && (bullet.locX >= target.locX) && (bullet.locX <= target.locX + target.getWidth()))
+                && (bullet.locX >= target.locX) && (bullet.locX <= target.locX + target.getWidth()))
             return true;
         return false;
     }

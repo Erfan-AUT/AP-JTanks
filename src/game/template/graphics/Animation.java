@@ -28,6 +28,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
 
     private ArrayList<Bullet> bullets;
 
+    private boolean isShooting;
+
     /**
      * Creates animation.
      *
@@ -48,6 +50,8 @@ public class Animation extends game.template.graphics.MasterAnimation {
     public Animation(BufferedImage[] animImages, int frameWidth, int frameHeight, int numberOfFrames, long frameTime, boolean loop, int x, int y, long showDelay) {
         super(animImages, frameWidth, frameHeight, numberOfFrames, frameTime, loop, x, y, showDelay);
         bullets = new ArrayList<>();
+        active = false;
+        isShooting = false;
     }
 
     /**
@@ -145,10 +149,12 @@ public class Animation extends game.template.graphics.MasterAnimation {
         tx = AffineTransform.getTranslateInstance(x, y);
         tx.rotate(Math.toRadians(movingRotationDeg), 75, 75);
         g2d.drawImage(animImages[currentFrameNumber], tx, null);
-        tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
-        tx.rotate(cannonRotationDeg, animImages[4].getWidth() / 2 - 20, animImages[4].getHeight() / 2);
-        g2d.drawImage(gun, tx, null);
-        //drawTheBullet(g2d);
+        if (gun != null) {
+            tx = AffineTransform.getTranslateInstance(x + 20, y + 12);
+            tx.rotate(cannonRotationDeg, gun.getWidth() / 2 - 20, gun.getHeight() / 2);
+            g2d.drawImage(gun, tx, null);
+        }
+//        drawTheBullets(g2d);
     }
 
     public ArrayList<Bullet> getBullets() {
@@ -158,13 +164,13 @@ public class Animation extends game.template.graphics.MasterAnimation {
     public void drawTheBullets(Graphics2D g2d) {
         for (Iterator it = bullets.iterator(); it.hasNext(); ) {
             Bullet bullet = (Bullet) it.next();
-           if (bullet.isAlive()) {
+            if (bullet.isAlive()) {
                 tx = AffineTransform.getTranslateInstance(bullet.locX, bullet.locY);
                 tx.rotate(bullet.getDeg(), bullet.getBullet().getWidth() / 2, bullet.getBullet().getHeight() / 2);
                 g2d.drawImage(bullet.getBullet(), tx, null);
             } else {
                 it.remove();
-               Map.bullets.remove(bullet);
+                Map.bullets.remove(bullet);
             }
         }
     }

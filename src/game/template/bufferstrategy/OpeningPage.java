@@ -11,26 +11,36 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-public class OpeningPage extends JFrame {
+public class OpeningPage extends JFrame implements Runnable {
 
     private int level;
     // private ArrayList<JRadioButton> buttons = new ArrayList<>()
     private JFrame th = this;
     private ArrayList<JRadioButton> buttons;
+    public static boolean isOnNetwork;
+    public static boolean trueForServerFalseForClient;
+    public static boolean trueForSoloFalseForSaved = true;
+    private boolean isGameStarted = false;
     JRadioButton editMapBeforePlaying = new JRadioButton();
+    JRadioButton resumeOldGame = new JRadioButton();
+    JRadioButton playAsServer = new JRadioButton();
+    JRadioButton playAsClient = new JRadioButton();
+    JRadioButton playSolo = new JRadioButton();
+    OpeningPage op;
     private KeyListener l;
     //private ArrayList<JComponent> components;
 
     public OpeningPage() {
         super("WATCHA GONNA DO WHEN THE NORMAL TANKS RUN WILD ON YOU, BROTHER?");
         //Move All of this into init.
-        init();
+       // init();
 //        for (JComponent component : components)
 //            firstPanel.add(component);
 
         // firstPanel.addKeyListener(new KeyListener());
         setSize(500, 500);
         setVisible(true);
+        op = this;
     }
 
     private void init() {
@@ -38,10 +48,7 @@ public class OpeningPage extends JFrame {
         buttons = new ArrayList<>();
         //components = new ArrayList<>();
         l = new KeyListener(firstPanel);
-        JRadioButton resumeOldGame = new JRadioButton();
-        JRadioButton playAsServer = new JRadioButton();
-        JRadioButton playAsClient = new JRadioButton();
-        JRadioButton playSolo = new JRadioButton();
+
         resumeOldGame.setSelected(true);
 
         JLabel resumeLabel = new JLabel("Resume old game.");
@@ -68,6 +75,10 @@ public class OpeningPage extends JFrame {
         enumerate(zeroGroup);
         firstPanel.setBackground(Color.BLACK);
         add(firstPanel);
+        firstPanel.repaint();
+        firstPanel.revalidate();
+        this.repaint();
+        this.revalidate();
     }
 
     private void enumerate(ButtonGroup group) {
@@ -79,6 +90,12 @@ public class OpeningPage extends JFrame {
             buttons.add(button);
             // buttons.add(button);
         }
+    }
+
+    @Override
+    public void run() {
+        init();
+        while (!isGameStarted);
     }
 
 
@@ -101,7 +118,8 @@ public class OpeningPage extends JFrame {
                 case KeyEvent.VK_ENTER:
                     currentPanel.removeAll();
                     if (setCount == 0) {
-                        if (!editMapBeforePlaying.isSelected()) {
+                        if ((!editMapBeforePlaying.isSelected()) && (!resumeOldGame.isSelected())
+                                && (!playAsClient.isSelected())) {
                             ButtonGroup initialGroup = new ButtonGroup();
                             JRadioButton easyButton = new JRadioButton();
                             JRadioButton mediumButton = new JRadioButton();
@@ -123,12 +141,24 @@ public class OpeningPage extends JFrame {
                             easyButton.requestFocus();
                             //    currentPanel.repaint();
                         }
+                        else if (resumeOldGame.isSelected())
+                            trueForSoloFalseForSaved = false;
+                        else if (playAsClient.isSelected()) {
+                            trueForServerFalseForClient = false;
+                            isOnNetwork = true;
+                        }
+                        if (playAsServer.isSelected()) {
+                            isOnNetwork = true;
+                            trueForServerFalseForClient = true;
+                        }
                     }
+
                     if (setCount == 1) {
                         for (int i = 0; i < buttons.size(); i++)
                             if (buttons.get(i).isSelected())
                                 level = i + 1;
-
+                        op.dispose();
+                        isGameStarted = true;
                     }
 
                     setCount++;

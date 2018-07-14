@@ -6,8 +6,11 @@ import game.template.graphics.MasterAnimation;
 import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,6 +21,7 @@ public class Map implements Serializable {
      */
     private ArrayList<GameObject> allObjects = new ArrayList<>();
     private ArrayList<GameObject> visibleObjects = new ArrayList<>();
+    private ArrayList<GameObject> volatileObjects = new ArrayList<>();
     //Purely arbitrary.
     //Assuming normal cartesian coordinates.
     //Starts from bottom-left.
@@ -37,7 +41,7 @@ public class Map implements Serializable {
     public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
     public transient static MasterAnimation explosion;
     private transient static BufferedImage exp;
-    public transient static ArrayList<MasterAnimation> explosions;
+    public transient static ArrayList<MasterAnimation> explosions = new ArrayList<>();
 
     /**
      * To load from scratch,
@@ -60,6 +64,11 @@ public class Map implements Serializable {
         String eTank = ".\\Move\\ETank";
         String wicket = ".\\images\\wicket";
         String teazel = ".\\images\\teazel";
+        try {
+            exp = ImageIO.read(new File("explosion_anim.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.isOnNetwork = isOnNetwork;
         for (MapData data : readObjects) {
             int y = data.y, x = data.x;
@@ -102,6 +111,7 @@ public class Map implements Serializable {
                 case "r":
                     allObjects.add(new ComputerTank2(y, x, 50, this, true, ".\\Move\\Robot", true));
                     break;
+
                 case "u":
                     // UserTank userTank = new UserTank(y, x, 100, this, )
                     UserTank userTank = new UserTank(y, x, 100, this, ".\\Move\\Tank");
@@ -114,6 +124,14 @@ public class Map implements Serializable {
 //            object.readContents();
         mainTank = mainTanks.get(0);
         findTheHighestAllowedHeight();
+        for (GameObject object : allObjects) {
+            if (object.isDestructible())
+                volatileObjects.add(object);
+            if (object instanceof Block) {
+                if (((Block) object).isGift())
+                    volatileObjects.add(object);
+            }
+        }
     }
 
     //To Load from savedData, doing this in this way because we could add loading from multiple savedDatas later.
@@ -139,7 +157,7 @@ public class Map implements Serializable {
     public void findTheHighestAllowedHeight() {
         int maxY = height / 2;
         for (GameObject object : allObjects) {
-            if (object.locY < maxY) {
+            if (object.locY <= maxY) {
                 maxY = object.locY;
                 highestObject = object;
             }
@@ -195,11 +213,10 @@ public class Map implements Serializable {
             }
         }
         width = maxX;
-        if (width != w0)
-        {
-            System.out.println("PrevWidth: " + w0);
-            System.out.println("CurrWidth: " + width);
-        }
+//        if (width != w0) {
+//            System.out.println("PrevWidth: " + w0);
+//            System.out.println("CurrWidth: " + width);
+//        }
     }
 
 
@@ -243,8 +260,9 @@ public class Map implements Serializable {
         int x = one.locX;
         int height1 = d.height;
         int width1 = d.width;
-        if (one.locY < highestObject.locY)
-            return false;
+        if (highestObject != null)
+            if (one.locY < highestObject.locY)
+                return false;
         if (!trueForVisibleFalseForAll) {
             if ((y + height1 <= height) && (y >= 20) && ((x >= 0) && (x + width1 <= width)))
                 return true;
@@ -261,9 +279,9 @@ public class Map implements Serializable {
                     ((x >= cameraZeroXs[user]) && (x + width1 <= cameraZeroXs[user] + cameraWidth)))
                 return true;
         }
-        System.out.println("Goes out of map.");
-        System.out.println("y:" + y);
-        System.out.println("x:" + x);
+//        System.out.println("Goes out of map.");
+//        System.out.println("y:" + y);
+//        System.out.println("x:" + x);
 
         return false;
     }
@@ -325,9 +343,17 @@ public class Map implements Serializable {
         return highestObject;
     }
 
-    public static void addANewExp(int x, int y) {
+    public static synchronized void addANewExp(int x, int y) {
         explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
         explosions.add(explosion);
+    }
+
+    public ArrayList<GameObject> getVolatileObjects() {
+        return volatileObjects;
+    }
+
+    public void setVolatileObjects(ArrayList<GameObject> volatileObjects) {
+        this.volatileObjects = volatileObjects;
     }
 
     //  public static

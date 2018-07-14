@@ -119,15 +119,21 @@ public class UserTank extends Tank {
     @Override
     public Bullet shoot(double deg) {
         long time = System.currentTimeMillis();
+        int kossher = 0;
         if (isOnCannon) {
-            if (lastShootTime == 0 || time > lastShootTime + 1000) {
+            kossher = 1;
+            if (lastShootTime == 0 || time > lastShootTime + 500) {
+                kossher = 2;
                 return finalizeShoot(heavyBulletImage, deg);
             }
         } else {
+            kossher = 3;
             if (lastShootTime == 0 || time > lastShootTime + 100) {
+                kossher = 4;
                 return finalizeShoot(lightBulletImage, deg);
             }
         }
+        System.out.println(deg + " " + kossher);
         return null;
 //        boolean check;
 //        if (getCurrentWeaponType() == 'c')
@@ -148,7 +154,7 @@ public class UserTank extends Tank {
 
     @Override
     public void takeDamage(int damage) {
-        super.takeDamage(damage);
+        setHealth(getHealth() - damage);
         if (getHealth() < 0) {
             lives--;
             setHealth(initialHealth);

@@ -3,7 +3,6 @@ package game.template.graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 
 public class MasterAnimation {
 
@@ -117,7 +116,7 @@ public class MasterAnimation {
         startingFrameTime = System.currentTimeMillis() + showDelay;
         timeForNextFrame = startingFrameTime + this.frameTime;
         currentFrameNumber = 0;
-        active = true;
+        active = false;
     }
 
     /**
@@ -206,7 +205,7 @@ public class MasterAnimation {
     }
 
     public void drawIt(Graphics2D g2d) {
-       // g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
+        // g2d.drawImage(animImages[currentFrameNumber], x, y, x + frameWidth, y + frameHeight, startingXOfFrameInImage, 0, endingXOfFrameInImage, frameHeight, null);
         g2d.drawImage(animImages[currentFrameNumber], x, y, null);
     }
 

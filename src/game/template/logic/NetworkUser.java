@@ -1,11 +1,13 @@
 package game.template.logic;
 
 import game.template.logic.Map;
+import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class NetworkUser extends User implements Runnable {
 
@@ -31,9 +33,9 @@ public class NetworkUser extends User implements Runnable {
                         ex.printStackTrace();
                     }
                 }
-                byte[] mapBytes = createMapBytes();
-                if (mapBytes != null)
-                    client.getOutputStream().write(mapBytes);
+                byte[] volatileBytes = createVolatileBytes();
+                if (volatileBytes != null)
+                    client.getOutputStream().write(volatileBytes);
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -50,7 +52,7 @@ public class NetworkUser extends User implements Runnable {
                     ByteArrayInputStream bis = new ByteArrayInputStream(maxSized);
                     try (ObjectInputStream tempIn = new ObjectInputStream(bis)) {
                         try {
-                            map = (Map) tempIn.readObject();
+                            map.setVolatileObjects((ArrayList<GameObject>) tempIn.readObject());
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -75,11 +77,11 @@ public class NetworkUser extends User implements Runnable {
     }
 
 
-    private byte[] createMapBytes() {
+    private byte[] createVolatileBytes() {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try (ObjectOutputStream tempOut = new ObjectOutputStream(bos)) {
-            tempOut.writeObject(map);
+            tempOut.writeObject(map.getVolatileObjects());
             tempOut.flush();
             return bos.toByteArray();
         } catch (IOException ex) {

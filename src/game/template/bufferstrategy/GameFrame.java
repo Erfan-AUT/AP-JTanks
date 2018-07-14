@@ -2,10 +2,9 @@
 package game.template.bufferstrategy;
 
 import game.template.graphics.Animation;
+import game.template.graphics.MasterAnimation;
 import game.template.logic.Map;
-import game.template.logic.cellfillers.Block;
-import game.template.logic.cellfillers.GameObject;
-import game.template.logic.cellfillers.UserTank;
+import game.template.logic.cellfillers.*;
 import game.template.logic.utils.FileUtils;
 
 import java.awt.*;
@@ -15,6 +14,8 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
@@ -75,8 +76,10 @@ public class GameFrame extends JFrame {
      */
     public void initBufferStrategy() {
         // Triple-buffering
+        setVisible(true);
         createBufferStrategy(3);
         bufferStrategy = getBufferStrategy();
+        //setVisible(false);
     }
 
     /**
@@ -117,27 +120,33 @@ public class GameFrame extends JFrame {
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         wideAreaBlock.getAnimation().drawIt(g2d);
-//        wideAreaBlock1.getAnimation().drawIt(g2d);
-//        wideAreaBlock2.getAnimation().drawIt(g2d);
-//        wideAreaBlock3.getAnimation().drawIt(g2d);
-//        wideAreaBlock4.getAnimation().drawIt(g2d);
-//        wideAreaBlock5.getAnimation().drawIt(g2d);
-//        wideAreaBlock6.getAnimation().drawIt(g2d);
-//        wideAreaBlock7.getAnimation().drawIt(g2d);
-
-//        if (first) {
-//            g2d.translate(0, -3600);
-//            first = false;
-//        } else;
-        // user = state.getMap().get
         g2d.translate(-state.getMap().getCameraZeroX(0), -state.getMap().getCameraZeroY(0));
         //TODO: should be visible ones.
         for (GameObject object : state.getMap().getVisibleObjects()) {
-            if (!(object instanceof UserTank)) {
+            //if (!(object instanceof Tank)) {
+            if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
                 if (object.isAlive())
                     object.getAnimation().drawIt(g2d);
+            } else if (object instanceof ComputerTank) {
+                if (object.isAlive()) {
+                    Tank tank = ((Tank) object);
+                    ((Animation) tank.getAnimation()).drawTheBullets(g2d);
+//                tank.getAnimation().drawIt(g2d);
+                    if (tank.getAnimation().active) {
+                        if (tank.isForward()) {
+                            tank.getAnimation().drawImages(g2d);
+                        } else {
+                            ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                        }
+                    } else {
+                        ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                    }
+                } else {
+                    state.getMap().getAllObjects().remove(object);
+                }
             }
         }
+
         UserTank pTank = (UserTank) state.getPlayerTank();
         if (pTank.getAnimation().isActive()) {
             if (pTank.isForward()) {
@@ -149,6 +158,18 @@ public class GameFrame extends JFrame {
             ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
         }
         ((Animation) pTank.getAnimation()).drawTheBullets(g2d);
+        try {
+            for (Iterator it = Map.explosions.iterator(); it.hasNext(); ) {
+                MasterAnimation masterAnimation = (MasterAnimation) it.next();
+                if (masterAnimation.isActive()) {
+                    masterAnimation.Draw(g2d);
+                } else {
+                    Map.explosions.remove(masterAnimation);
+                }
+            }
+        } catch (ConcurrentModificationException ex) {
+
+        }
         //g2d.translate(pTank.locX, pTank.locY);
     }
 

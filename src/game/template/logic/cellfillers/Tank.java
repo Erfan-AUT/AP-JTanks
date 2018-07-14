@@ -30,6 +30,11 @@ public abstract class Tank extends GameObject {
     public Tank(int y, int x, int health, Map whichMap, String location, String bulletLocation) {
         super(y, x, true, health, whichMap, location);
         this.bulletLocation = new File(bulletLocation);
+        try {
+            heavyBulletImage = ImageIO.read(new File(bulletLocation));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         rifleCount = 300;
         cannonCount = 50;
         forward = false;
@@ -37,6 +42,9 @@ public abstract class Tank extends GameObject {
         animation = new Animation(images, 150, 150, 4, 20, false, x, y, 0);
         animation.active = true;
         lastShootTime = 0;
+    }
+    public Tank(int y, int x, int health, Map whichMap, String location) {
+        super(y,x,true,health,whichMap,location);
     }
 
     public int avoidCollision() {
@@ -158,11 +166,6 @@ public abstract class Tank extends GameObject {
     @Override
     public void readContents(String location) {
         super.readContents(location);
-        try {
-            heavyBulletImage = ImageIO.read(new File(".\\Bullet\\HeavyBullet.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     protected Bullet finalizeShoot(BufferedImage image, double deg )

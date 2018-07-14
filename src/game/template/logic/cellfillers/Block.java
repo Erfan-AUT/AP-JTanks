@@ -45,9 +45,8 @@ public class Block extends GameObject {
         if (isDestructible()) {
             super.takeDamage(damage / 40);
             //location = ;
-            if (getHealth() <= 0)
-                whichMap.getAllObjects().remove(this);
-            else {
+            if (getHealth() > 0)
+            {
                 readContents(".\\images\\softWall" + Integer.toString(4 - getHealth()) + ".png");
                 displayTheAnimations();
             }

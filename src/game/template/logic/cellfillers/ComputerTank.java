@@ -39,8 +39,8 @@ public class ComputerTank extends Tank {
         }
         ((Animation) getAnimation()).setGun(gun);
         //till here
-//        if (whichMap.doesntGoOutOfMap(this, true, 0))
-//            temporarilyDisabled = false;
+        if (whichMap.doesntGoOutOfMap(this, true, 0))
+            temporarilyDisabled = false;
         this.isMobile = isMobile;
         this.velocity = velocity;
         setVelocity(velocity);
@@ -50,33 +50,13 @@ public class ComputerTank extends Tank {
 
     //here
     public ComputerTank(int y, int x, int health, Map whichMap, boolean doesCollisionDamageUserTank, String location) {
-        super(y, x, health, whichMap, location, ".\\Bullet\\HeavyBullet.png");
+        super(y, x, health, whichMap, location);
         this.doesCollisionDamageUserTank = doesCollisionDamageUserTank;
     }
 
     /**
      * Remember to update only objects that ARE visible.
      */
-
-    public void finalizeMove() {
-        if (deg != 0 && deg != 180) {
-            if (locX > enemyTank.locX) {
-                deg -= 5;
-                ((Animation) animation).setMovingRotationDeg(deg);
-            } else {
-                deg += 5;
-                ((Animation) animation).setMovingRotationDeg(deg);
-            }
-            setForward(false);
-        } else {
-            if (locX > enemyTank.locX) {
-                setForward(false);
-            } else {
-                setForward(true);
-            }
-        }
-    }
-
     public void move() {
         this.animation.active = true;
         deg %= 360;
@@ -89,26 +69,86 @@ public class ComputerTank extends Tank {
             int plusX = velocity * xSign;
             locX += plusX + avoidCollision() * xSign;
             animation.changeCoordinates(locX, locY);
-            finalizeMove();
+            if (deg != 0 && deg != 180) {
+                if (locX > enemyTank.locX) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locX > enemyTank.locX) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
         } else if (Math.abs(locX - enemyTank.locX) < 240) {
             int xSign = (locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
             int plusX = velocity * xSign;
             System.out.println(xSign);
             locX += plusX + avoidCollision() * xSign;
             animation.changeCoordinates(locX, locY);
-            finalizeMove();
+            if (deg != 0 && deg != 180) {
+                if (locX > enemyTank.locX) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locX > enemyTank.locX) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
         } else if (Math.abs(locY - enemyTank.locY) > 240) {
             int ySign = -(locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
             int plusY = velocity * ySign;
             locY += plusY + avoidCollision() * ySign;
             animation.changeCoordinates(locX, locY);
-            finalizeMove();
+            if (deg != 90 && deg != 270) {
+                if (locY > enemyTank.locY) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locY > enemyTank.locY) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
         } else if (Math.abs(locY - enemyTank.locY) < 240) {
             int ySign = (locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
             int plusY = velocity * ySign;
             locY += plusY + avoidCollision() * ySign;
             animation.changeCoordinates(locX, locY);
-            finalizeMove();
+            if (deg != 90 && deg != 270) {
+                if (locY > enemyTank.locY) {
+                    deg -= 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                } else {
+                    deg += 5;
+                    ((Animation) animation).setMovingRotationDeg(deg);
+                }
+                setForward(false);
+            } else {
+                if (locY > enemyTank.locY) {
+                    setForward(false);
+                } else {
+                    setForward(true);
+                }
+            }
         }
     }
 
@@ -124,14 +164,27 @@ public class ComputerTank extends Tank {
     @Override
     public Bullet shoot(double deg) {
         findEnemyTank();
-        return new Bullet(heavyBulletImage, (int) (locX + 67 + Math.cos(-deg) * 110),
-                (int) (locY + 75 + Math.sin(-deg) * (110)), Math.cos(-deg), Math.sin(-deg), -deg, whichMap, 100);
+        long time = System.currentTimeMillis();
+        lastShootTime = time;
+        Bullet bullet;
+        int x = (int) (locX + 67 + Math.cos(-deg) * 110);
+        int y = (int) (locY + 75 + Math.sin(-deg) * (110));
+       // int y = (int) (locY + 75 + Math.sin(deg) * (100));
+        bullet = new Bullet(heavyBulletImage, x,
+                y, Math.cos(-deg), Math.sin(-deg), -deg, whichMap, 40);
+        Thread thread = new Thread(bullet);
+        thread.start();
+        whichMap.getBullets().add(bullet);
+        return bullet;
+//        return new Bullet(heavyBulletImage, (int) (locX + 67 + Math.cos(-deg) * 110),
+        //      (int) (locY + 75 + Math.sin(-deg) * (110)), Math.cos(-deg), Math.sin(-deg), -deg, whichMap, 100);
     }
 
 
     @Override
     public void update() {
         animation.active = false;
+//
         if (isMobile && validateAbility())
             move();
         if (!temporarilyDisabled) {
@@ -151,22 +204,25 @@ public class ComputerTank extends Tank {
 
         }
         //shoot();
+
     }
 
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);
-        if (getHealth() < 0)
+        if (getHealth() <= 0) {
+            Map.addANewExp(locX,locY);
             setAlive(false);
+        }
+
     }
 
     protected boolean validateAbility() {
-//        if (whichMap.doesntGoOutOfMap(this, true))
-//            temporarilyDisabled = false;
-//        else
-//            temporarilyDisabled = true;
-//        return !temporarilyDisabled;
-        return true;
+        if (whichMap.doesntGoOutOfMap(this, true, 0))
+            temporarilyDisabled = false;
+        else
+            temporarilyDisabled = true;
+        return !temporarilyDisabled;
     }
 
     public boolean isDoesCollisionDamageUserTank() {
