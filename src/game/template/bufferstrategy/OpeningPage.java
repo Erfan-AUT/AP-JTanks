@@ -1,6 +1,7 @@
 package game.template.bufferstrategy;
 
 
+import game.template.logic.utils.MapEditor.EditorMain;
 import game.template.logic.utils.Music;
 import javazoom.jl.player.Player;
 
@@ -17,6 +18,7 @@ import java.util.Iterator;
 public class OpeningPage extends JFrame implements Runnable {
 
     private int level;
+    private String mapName;
     // private ArrayList<JRadioButton> buttons = new ArrayList<>()
     private JFrame th = this;
     private ArrayList<JRadioButton> buttons;
@@ -24,29 +26,21 @@ public class OpeningPage extends JFrame implements Runnable {
     public static boolean trueForServerFalseForClient;
     public static boolean trueForSoloFalseForSaved = true;
     private boolean isGameStarted = false;
-    JRadioButton editMapBeforePlaying = new JRadioButton();
-    JRadioButton resumeOldGame = new JRadioButton();
-    JRadioButton playAsServer = new JRadioButton();
-    JRadioButton playAsClient = new JRadioButton();
-    JRadioButton playSolo = new JRadioButton();
-    OpeningPage op;
-    GameLoop game;
-    GameFrame frame;
-    Music music;
+    private JRadioButton editMapBeforePlaying = new JRadioButton("Edit maps before you play.");
+    private JRadioButton resumeOldGame = new JRadioButton("Resume old game.");
+    private JRadioButton playAsServer = new JRadioButton("Play network game as server.");
+    private JRadioButton playAsClient = new JRadioButton("Play network game as client.");
+    private JRadioButton playSolo = new JRadioButton("Play locally and solo.");
+    private OpeningPage op;
+    private GameLoop game;
+    private GameFrame frame;
+    private Music music;
     //private Runnable main;
     private KeyListener l;
     //private ArrayList<JComponent> components;
 
     public OpeningPage(GameLoop game, GameFrame frame) {
         super("WATCHA GONNA DO WHEN THE NORMAL TANKS RUN WILD ON YOU, BROTHER?");
-        //Move All of this into init.
-       // init();
-//        for (JComponent component : components)
-//            firstPanel.add(component);
-
-        // firstPanel.addKeyListener(new KeyListener());
-
-        //t//his.main = main;
         this.frame = frame;
         this.game = game;
         setSize(500, 500);
@@ -57,7 +51,7 @@ public class OpeningPage extends JFrame implements Runnable {
     }
 
     private void init() {
-        JPanel firstPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        JPanel firstPanel = new JPanel(new GridLayout(0, 1, 5, 5));
         buttons = new ArrayList<>();
         //components = new ArrayList<>();
         l = new KeyListener(firstPanel);
@@ -66,11 +60,11 @@ public class OpeningPage extends JFrame implements Runnable {
         long time = System.currentTimeMillis();
         music = new Music("." + File.separator + "Sounds" + File.separator + "gameSound1.mp3", true);
         ThreadPool.execute(music);
-        JLabel resumeLabel = new JLabel("Resume old game.");
-        JLabel playAsServerLabel = new JLabel("Play network game as server.");
-        JLabel playAsClientLabel = new JLabel("Play network game as client.");
-        JLabel playSoloLabel = new JLabel("Play locally and solo.");
-        JLabel mapEditorLabel = new JLabel("Edit maps before you play.");
+//        JLabel resumeLabel = new JLabel();
+//        JLabel playAsServerLabel = new JLabel();
+//        JLabel playAsClientLabel = new JLabel();
+//        JLabel playSoloLabel = new JLabel();
+//        JLabel mapEditorLabel = new JLabel();
         ButtonGroup zeroGroup = new ButtonGroup();
         zeroGroup.add(resumeOldGame);
         zeroGroup.add(playAsServer);
@@ -78,15 +72,15 @@ public class OpeningPage extends JFrame implements Runnable {
         zeroGroup.add(playSolo);
         zeroGroup.add(editMapBeforePlaying);
         firstPanel.add(resumeOldGame);
-        firstPanel.add(resumeLabel);
+        //firstPanel.add(resumeLabel);
         firstPanel.add(playAsServer);
-        firstPanel.add(playAsServerLabel);
+        //firstPanel.add(playAsServerLabel);
         firstPanel.add(playAsClient);
-        firstPanel.add(playAsClientLabel);
+        //firstPanel.add(playAsClientLabel);
         firstPanel.add(playSolo);
-        firstPanel.add(playSoloLabel);
+        //firstPanel.add(playSoloLabel);
         firstPanel.add(editMapBeforePlaying);
-        firstPanel.add(mapEditorLabel);
+        //firstPanel.add(mapEditorLabel);
         enumerate(zeroGroup);
         firstPanel.setBackground(Color.BLACK);
         add(firstPanel);
@@ -117,7 +111,8 @@ public class OpeningPage extends JFrame implements Runnable {
 
     class KeyListener extends KeyAdapter {
         JPanel currentPanel;
-        int setCount = 0;
+        double setCount = 0;
+        ArrayList<JRadioButton> mapButtons = new ArrayList<>();
 
         public KeyListener(JPanel currentPanel) {
             this.currentPanel = currentPanel;
@@ -136,44 +131,61 @@ public class OpeningPage extends JFrame implements Runnable {
                     if (setCount == 0) {
                         if ((!editMapBeforePlaying.isSelected()) && (!resumeOldGame.isSelected())
                                 && (!playAsClient.isSelected())) {
-                            ButtonGroup initialGroup = new ButtonGroup();
-                            JRadioButton easyButton = new JRadioButton();
-                            JRadioButton mediumButton = new JRadioButton();
-                            JRadioButton hardButton = new JRadioButton();
-                            JLabel easyLabel = new JLabel("Easy.");
-                            JLabel mediumLabel = new JLabel("Medium");
-                            JLabel hardLabel = new JLabel("Hard");
-                            initialGroup.add(easyButton);
-                            initialGroup.add(mediumButton);
-                            initialGroup.add(hardButton);
-                            easyButton.setSelected(true);
-                            enumerate(initialGroup);
-                            currentPanel.add(easyButton);
-                            currentPanel.add(easyLabel);
-                            currentPanel.add(mediumButton);
-                            currentPanel.add(mediumLabel);
-                            currentPanel.add(hardButton);
-                            currentPanel.add(hardLabel);
-                            easyButton.requestFocus();
+                            ButtonGroup mapGroup = new ButtonGroup();
+
+                            ArrayList<String> distinctMapNames = new ArrayList<>();
+                            File mapDirectory = new File("." + File.separator + "maps" + File.separator + "defaultMaps");
+                            for (File map : mapDirectory.listFiles()) {
+                                String buttonName = "";
+                                for (char c : map.getName().toCharArray()) {
+                                    if (!Character.isDigit(c))
+                                        buttonName += c;
+                                    else
+                                        break;
+                                }
+                                boolean isNew = true;
+                                for (String name : distinctMapNames)
+                                    if (name.equals(buttonName))
+                                        isNew = false;
+                                if (isNew) {
+                                    JRadioButton button = new JRadioButton(buttonName);
+                                    distinctMapNames.add(buttonName);
+                                    mapButtons.add(button);
+                                    mapGroup.add(button);
+                                    currentPanel.add(button);
+                                    currentPanel.revalidate();
+                                    currentPanel.repaint();
+                                }
+                            }
+                            mapButtons.get(0).requestFocus();
+                            enumerate(mapGroup);
                             //    currentPanel.repaint();
-                        }
-                        else if (resumeOldGame.isSelected())
-                        {
+                        } else if (resumeOldGame.isSelected()) {
                             trueForSoloFalseForSaved = false;
                             dispose();
 
-                        }
-                        else if (playAsClient.isSelected()) {
+                        } else if (playAsClient.isSelected()) {
                             trueForServerFalseForClient = false;
                             isOnNetwork = true;
-                        }
-                        if (playAsServer.isSelected()) {
+                        } else if (playAsServer.isSelected()) {
                             isOnNetwork = true;
                             trueForServerFalseForClient = true;
+                        } else if (editMapBeforePlaying.isSelected()) {
+                            Thread t = new Thread(new EditorMain());
+                            t.start();
+                            music.close();
+                            op.dispose();
                         }
                     }
+                    if (setCount == 1)
+                    {
+                        for (JRadioButton radioButton : mapButtons)
+                            if (radioButton.isSelected())
+                                mapName = radioButton.getText();
+                        showLevelButtons();
+                    }
 
-                    if (setCount == 1) {
+                    if (setCount == 2) {
                         for (int i = 0; i < buttons.size(); i++)
                             if (buttons.get(i).isSelected())
                                 level = i + 1;
@@ -192,8 +204,30 @@ public class OpeningPage extends JFrame implements Runnable {
             }
         }
 
-        private void dispose()
-        {
+        private void showLevelButtons() {
+            ButtonGroup initialGroup = new ButtonGroup();
+            JRadioButton easyButton = new JRadioButton("Easy.");
+            JRadioButton mediumButton = new JRadioButton("Medium");
+            JRadioButton hardButton = new JRadioButton("Hard.");
+//            JLabel easyLabel = new JLabel("Easy.");
+//            JLabel mediumLabel = new JLabel("Medium");
+//            JLabel hardLabel = new JLabel("Hard");
+            initialGroup.add(easyButton);
+            initialGroup.add(mediumButton);
+            initialGroup.add(hardButton);
+            easyButton.setSelected(true);
+            enumerate(initialGroup);
+            currentPanel.add(easyButton);
+            //currentPanel.add(easyLabel);
+            currentPanel.add(mediumButton);
+            //currentPanel.add(mediumLabel);
+            currentPanel.add(hardButton);
+            // currentPanel.add(hardLabel);
+            easyButton.requestFocus();
+        }
+
+
+        private void dispose() {
             op.dispose();
             isGameStarted = true;
             game.setGameOver(false);

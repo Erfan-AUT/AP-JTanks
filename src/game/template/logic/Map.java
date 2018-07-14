@@ -62,12 +62,12 @@ public class Map implements Serializable {
     public Map(int level, boolean isOnNetwork, GameState state) {
         // cameraZeroY = height;
         // bullets = new ArrayList<>();
-        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps" + File.separator + "map" + level + ".txt";
+        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps" + File.separator + "ErfansDick00.txt"; //"map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
-        String softWall = "." + File.separator + "images" + File.separator + "softWall";
+        String softWall = "." + File.separator + "Images" + File.separator + "softWall";
         String eTank = "." + File.separator + "Move" + File.separator + "ETank";
-        String wicket = "." + File.separator + "images" + File.separator + "wicket";
-        String teazel = "." + File.separator + "images" + File.separator + "teazel";
+        String wicket = "." + File.separator + "Images" + File.separator + "wicket";
+        String teazel = "." + File.separator + "Images" + File.separator + "teazel";
         try {
             exp = ImageIO.read(new File("explosion_anim.png"));
         } catch (IOException e) {
@@ -80,10 +80,10 @@ public class Map implements Serializable {
             //  Soon to be reloaded.
             switch (data.type) {
                 case "cf":
-                    allObjects.add(new Block(y, x, false, 40, this, 0, "." + File.separator + "images" + File.separator + "CannonFood.png", true, data.type));
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\Images\\CannonFood.png", true, data.type));
                     break;
                 case "p":
-                    allObjects.add(new Block(y, x, false, 0, this, 0, "." + File.separator + "images" + File.separator + "plant.png", false, data.type));
+                    allObjects.add(new Block(y, x, false, 0, this, 0, ".\\Images\\plant.png", false, data.type));
                     break;
                 case "t1":
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "1.png", false, data.type));
@@ -92,7 +92,7 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, false, 0, this, 0, teazel + "2.png", false, data.type));
                     break;
                 case "nd":
-                    allObjects.add(new Block(y, x, false, 0, this, 2, "." + File.separator + "images" + File.separator + "HardWall.png", false, data.type));
+                    allObjects.add(new Block(y, x, false, 0, this, 2, ".\\Images\\HardWall.png", false, data.type));
                     break;
                 case "d":
                     allObjects.add(new Block(y, x, true, 4, this, 2, softWall + ".png", false, data.type));
@@ -104,27 +104,31 @@ public class Map implements Serializable {
                     allObjects.add(new Block(y, x, true, 40, this, 2, wicket + "2.png", false, data.type));
                     break;
                 case "c1":
-                    increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon1.png", "." + File.separator + "Images" + File.separator + "EnemyBullet1.png", true, 5, 2000));
+                    allObjects.add(new ComputerTank(y, x, 100, this, false, eTank, ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\EnemyBullet1.png", true, 5, 2000));
                     break;
                 case "c2":
-                    increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon2.png", "." + File.separator + "Images" + File.separator + "LightBullet.png", true, 10, 500));
+                    allObjects.add(new ComputerTank(y, x, 200, this, false, eTank + "2", ".\\EnemyGun\\EnemyCannon2.png", ".\\Images\\LightBullet.png", true, 10, 500));
                     break;
                 case "c3":
-                    increaseEnemyCount();
-                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", "." + File.separator + "EnemyGun" + File.separator + "EnemyCannon1.png", "." + File.separator + "Images" + File.separator + "Enemy2Bullet.png", false, 0, 3000));
+                    allObjects.add(new ComputerTank(y, x, 300, this, false, eTank + "3", ".\\EnemyGun\\EnemyCannon1.png", ".\\Images\\Enemy2Bullet.png", false, 0, 3000));
                     break;
                 case "r":
-                    increaseEnemyCount();
-                    allObjects.add(new ComputerTank2(y, x, 40, this, true, "." + File.separator + "Move" + File.separator + "Robot", true));
+                    allObjects.add(new ComputerTank2(y, x, 50, this, true, ".\\Move\\Robot", true));
                     break;
-
                 case "u":
                     // UserTank userTank = new UserTank(y, x, 100, this, )
-                    UserTank userTank = new UserTank(y, x, 100, this, "." + File.separator + "Move" + File.separator + "Tank");
+                    UserTank userTank = new UserTank(y, x, 100, this, ".\\Move\\Tank");
                     mainTanks.add(userTank);
                     allObjects.add(userTank);
+                    break;
+                case "rf":
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\Images\\MashinGunFood.png", true, data.type));
+                    break;
+                case "re":
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\Images\\RepairFood.png", true, data.type));
+                    break;
+                case "up":
+                    allObjects.add(new Block(y, x, true, 40, this, 0, ".\\Images\\upgrade.png", true, data.type));
                     break;
             }
         }
@@ -162,6 +166,18 @@ public class Map implements Serializable {
         findTheHighestAllowedHeight();
         orig = null;
     }
+
+    /**
+     * To load from the web.
+     * @param fileName
+     * @param user
+     */
+    public Map(String fileName, int user)
+    {
+        this(fileName);
+        update(user);
+    }
+
 
     public void findTheHighestAllowedHeight() {
         int maxY = height / 2;
@@ -222,11 +238,22 @@ public class Map implements Serializable {
             }
         }
         width = maxX;
-//        if (width != w0) {
-//            System.out.println("PrevWidth: " + w0);
-//            System.out.println("CurrWidth: " + width);
-//        }
     }
+
+    public void updateHeight(int user)
+    {
+        int maxX = 0;
+        for (GameObject object : allObjects) {
+            if (object != mainTanks.get(user)) {
+                int felan = object.locX + (object.getWidth() / 2);
+                if ((felan >= mainTanks.get(user).locX) && (felan <= mainTanks.get(user).locX + mainTanks.get(user).getWidth()))
+                    if (object.locY > maxX)
+                        maxX = object.locY + object.getWidth();
+            }
+        }
+        height = maxX;
+    }
+
 
 
     public void updateCameraZeros(int user) {
@@ -300,9 +327,10 @@ public class Map implements Serializable {
 
     public synchronized void update(int user) {
         if (!isOnNetwork) {
+            updateWidth(user);
+            updateHeight(user);
             updateCameraZeros(user);
             updateVisibleObjects(user);
-            updateWidth(user);
             for (Iterator it = allObjects.iterator(); it.hasNext(); ) {
                 try {
                     ((GameObject) (it.next())).update();
@@ -323,10 +351,16 @@ public class Map implements Serializable {
         public String type;
 
         public MapData(String value) {
-            String[] values = value.split("-");
-            this.y = Integer.parseInt(values[1]);
-            this.x = Integer.parseInt(values[2]);
-            this.type = values[0];
+            if (!value.equals("")) {
+                String[] values = value.split("-");
+                try {
+                    this.y = Integer.parseInt(values[1]);
+                    this.x = Integer.parseInt(values[2]);
+                    this.type = values[0];
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    int i = 0;
+                }
+            }
         }
     }
 

@@ -17,7 +17,10 @@ public class User implements Serializable{
     private int mouseX, mouseY;
     private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
-    private int number;
+    protected int number;
+
+    public User()
+    {}
 
     public User(Map map, boolean trueForServerFalseForClient) {
         this.map = map;

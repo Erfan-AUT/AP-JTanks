@@ -168,6 +168,7 @@ public class ComputerTank extends Tank {
 
     /**
      * shoots a new bullet at a certain degree of rotation
+     *
      * @param deg the degree
      * @return the bullet.
      */
@@ -179,7 +180,7 @@ public class ComputerTank extends Tank {
         Bullet bullet;
         int x = (int) (locX + 67 + Math.cos(-deg) * 110);
         int y = (int) (locY + 75 + Math.sin(-deg) * (110));
-       // int y = (int) (locY + 75 + Math.sin(deg) * (100));
+        // int y = (int) (locY + 75 + Math.sin(deg) * (100));
         bullet = new Bullet(heavyBulletImage, x,
                 y, Math.cos(-deg), Math.sin(-deg), -deg, whichMap, 40);
         Thread thread = new Thread(bullet);
@@ -221,14 +222,12 @@ public class ComputerTank extends Tank {
     public void takeDamage(int damage) {
         super.takeDamage(damage);
         if (getHealth() <= 0) {
-            Map.addANewExp(locX,locY);
+            Map.addANewExp(locX, locY);
             setAlive(false);
             whichMap.getAllObjects().remove(this);
             whichMap.getVolatileObjects().remove(this);
-            whichMap.decreaseEnemyCount();
-        }
-        else
-        {
+//            whichMap.decreaseEnemyCount();
+        } else {
             Music music = new Music(".\\Sounds\\enemyshot.mp3");
             ThreadPool.execute(music);
         }
@@ -236,11 +235,12 @@ public class ComputerTank extends Tank {
     }
 
     protected boolean validateAbility() {
-        if (whichMap.doesntGoOutOfMap(this, true, 0))
-            temporarilyDisabled = false;
-        else
-            temporarilyDisabled = true;
-        return !temporarilyDisabled;
+//        if (whichMap.doesntGoOutOfMap(this, true, 0))
+//            temporarilyDisabled = false;
+//        else
+//            temporarilyDisabled = true;
+//        return !temporarilyDisabled;
+        return true;
     }
 
     public boolean isDoesCollisionDamageUserTank() {

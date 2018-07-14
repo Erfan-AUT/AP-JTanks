@@ -90,8 +90,8 @@ public class GameState implements Serializable {
             for (GameObject bullet : map.getVisibleObjects()) {
                 if (target != bullet) {
                     if (target.isDestructible()) {
-                        if (((target instanceof UserTank) && (bullet instanceof ComputerTank)
-                                && ((ComputerTank) bullet).isDoesCollisionDamageUserTank())) {
+                        if (((target instanceof UserTank) && (bullet instanceof ComputerTank2)
+                                && ((ComputerTank2) bullet).isDoesCollisionDamageUserTank())) {
                             if (checkIfTwoObjectsCollide(bullet, target)) {
                                 target.takeDamage(bullet.getDamage());
                                 break;
@@ -128,8 +128,8 @@ public class GameState implements Serializable {
             }
             Map.bullets.removeAll(removed);
         }
-        if (map.getEnemyCount() == 0)
-            game.setGameOver(true);
+//        if (map.getEnemyCount() == 0)
+//            game.setGameOver(true);
 
 
 //        for (GameObject object : map.getVisibleObjects())

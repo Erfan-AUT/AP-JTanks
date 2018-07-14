@@ -70,7 +70,7 @@ public class UserTank extends Tank {
         }
 
         try {
-            lightBulletImage = ImageIO.read(new File("./Bullet/LightBullet.png"));
+            lightBulletImage = ImageIO.read(new File("." + File.separator + "Bullet" + File.separator + "LightBullet.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +113,7 @@ public class UserTank extends Tank {
         }
 
         try {
-            lightBulletImage = ImageIO.read(new File("./Bullet/LightBullet.png"));
+            lightBulletImage = ImageIO.read(new File("." + File.separator + "Bullet"  + File.separator + "LightBullet.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

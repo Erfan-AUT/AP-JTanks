@@ -10,11 +10,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class NetworkUser extends User implements Runnable {
-
+    private boolean isFirstTime = true;
 
     public NetworkUser(Map map, boolean trueForServerFalseForClient) {
-        super(map, trueForServerFalseForClient);
+        this.trueForServerFalseForClient = trueForServerFalseForClient;
+        if (trueForServerFalseForClient)
+            this.map = map;
     }
+
+
 
     @Override
     public void run() {
@@ -27,8 +31,12 @@ public class NetworkUser extends User implements Runnable {
                 try (ObjectInputStream tempIn = new ObjectInputStream(bis)) {
                     try {
                         //Thread.sleep until the game state has refreshed?
-                        NetworkData newData = (NetworkData) tempIn.readObject();
-                        updateFromNetwork(newData);
+                        if (isFirstTime) {
+                            map = new Map((String)tempIn.readObject(), number);
+                        } else {
+                            NetworkData newData = (NetworkData) tempIn.readObject();
+                            updateFromNetwork(newData);
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -36,10 +44,10 @@ public class NetworkUser extends User implements Runnable {
                 byte[] volatileBytes = createVolatileBytes();
                 if (volatileBytes != null)
                     client.getOutputStream().write(volatileBytes);
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+
         } else {
             try (Socket server = new Socket("127.0.0.1", 7654)) {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
