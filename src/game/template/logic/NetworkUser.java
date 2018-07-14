@@ -1,5 +1,6 @@
 package game.template.logic;
 
+import game.template.bufferstrategy.OpeningPage;
 import game.template.logic.Map;
 import game.template.logic.cellfillers.GameObject;
 import game.template.logic.cellfillers.UserTank;
@@ -19,48 +20,54 @@ public class NetworkUser extends User implements Runnable {
     }
 
 
-
     @Override
     public void run() {
         if (trueForServerFalseForClient) {
             try (ServerSocket server = new ServerSocket(7654)) {
                 Socket client = server.accept();
                 byte[] maxSized = new byte[2048];
-                client.getInputStream().read(maxSized);
-                ByteArrayInputStream bis = new ByteArrayInputStream(maxSized);
-                try (ObjectInputStream tempIn = new ObjectInputStream(bis)) {
+                try (ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
+                    if (isFirstTime) {
+                        out.writeObject(OpeningPage.mapName);
+                    } else {
+                        out.writeObject(map.getVolatileObjects());
+                    }
+                }
+
+                try (ObjectInputStream tempIn = new ObjectInputStream(client.getInputStream())) {
                     try {
                         //Thread.sleep until the game state has refreshed?
-                        if (isFirstTime) {
-                            map = new Map((String)tempIn.readObject(), number);
-                        } else {
+                        if (!isFirstTime) {
                             NetworkData newData = (NetworkData) tempIn.readObject();
                             updateFromNetwork(newData);
-                        }
+                        } else
+                            isFirstTime = false;
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
-                byte[] volatileBytes = createVolatileBytes();
-                if (volatileBytes != null)
-                    client.getOutputStream().write(volatileBytes);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
         } else {
             try (Socket server = new Socket("127.0.0.1", 7654)) {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
-                    NetworkData data = new NetworkData(isKeyUP(), isKeyDOWN(), isKeyRIGHT(),
-                            isKeyLEFT(), isMouseRightClickPressed(),
-                            isMouseLeftClickPressed(), isMouseMoved(), getMouseX(), getMouseY());
-                    out.writeObject(data);
-                    byte[] maxSized = new byte[4096];
-                    ByteArrayInputStream bis = new ByteArrayInputStream(maxSized);
-                    try (ObjectInputStream tempIn = new ObjectInputStream(bis)) {
+                try (ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream())) {
+                    if (!isFirstTime) {
+                        NetworkData data = new NetworkData(isKeyUP(), isKeyDOWN(), isKeyRIGHT(),
+                                isKeyLEFT(), isMouseRightClickPressed(),
+                                isMouseLeftClickPressed(), isMouseMoved(), getMouseX(), getMouseY());
+                        out.writeObject(data);
+                        out.flush();
+                    }
+                    try (ObjectInputStream tempIn = new ObjectInputStream(server.getInputStream())) {
                         try {
-                            map.setVolatileObjects((ArrayList<GameObject>) tempIn.readObject());
+                            if (!isFirstTime)
+                                map.setVolatileObjects((ArrayList<GameObject>) tempIn.readObject());
+                            else {
+                                map = new Map((String) tempIn.readObject(), number);
+                                isFirstTime = false;
+                            }
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

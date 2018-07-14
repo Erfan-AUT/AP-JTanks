@@ -17,8 +17,8 @@ import java.util.Iterator;
 
 public class OpeningPage extends JFrame implements Runnable {
 
-    private int level;
-    private String mapName;
+    public static int level;
+    public static String mapName;
     // private ArrayList<JRadioButton> buttons = new ArrayList<>()
     private JFrame th = this;
     private ArrayList<JRadioButton> buttons;
@@ -188,7 +188,7 @@ public class OpeningPage extends JFrame implements Runnable {
                     if (setCount == 2) {
                         for (int i = 0; i < buttons.size(); i++)
                             if (buttons.get(i).isSelected())
-                                level = i + 1;
+                                level = i;
                         dispose();
                     }
 

@@ -2,6 +2,7 @@ package game.template.logic;
 
 import game.template.bufferstrategy.GameFrame;
 import game.template.bufferstrategy.GameState;
+import game.template.bufferstrategy.OpeningPage;
 import game.template.bufferstrategy.ThreadPool;
 import game.template.graphics.MasterAnimation;
 import game.template.logic.cellfillers.*;
@@ -40,7 +41,7 @@ public class Map implements Serializable {
     private int initialWidth = 4700;
     private int initialHeight = 3600;
     private GameObject highestObject;
-    private int enemyCount = 0;
+   // private int enemyCount = 0;
     private GameState state;
     public transient static ArrayList<Bullet> bullets = new ArrayList<>(0);
     public transient static MasterAnimation explosion;
@@ -62,7 +63,8 @@ public class Map implements Serializable {
     public Map(int level, boolean isOnNetwork, GameState state) {
         // cameraZeroY = height;
         // bullets = new ArrayList<>();
-        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps" + File.separator + "ErfansDick00.txt"; //"map" + level + ".txt";
+        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps"
+                + File.separator + OpeningPage.mapName + "0" + level +".txt"; //"map" + level + ".txt";
         ArrayList<MapData> readObjects = modifyReadString(fileName);
         String softWall = "." + File.separator + "Images" + File.separator + "softWall";
         String eTank = "." + File.separator + "Move" + File.separator + "ETank";
@@ -403,17 +405,17 @@ public class Map implements Serializable {
         this.volatileObjects = volatileObjects;
     }
 
-    public void decreaseEnemyCount() {
-        enemyCount--;
-    }
-
-    public void increaseEnemyCount() {
-        enemyCount++;
-    }
-
-    public int getEnemyCount() {
-        return enemyCount;
-    }
+//    public void decreaseEnemyCount() {
+//        enemyCount--;
+//    }
+//
+//    public void increaseEnemyCount() {
+//        enemyCount++;
+//    }
+//
+//    public int getEnemyCount() {
+//        return enemyCount;
+//    }
 
     //  public static
 }

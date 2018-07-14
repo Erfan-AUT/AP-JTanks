@@ -55,7 +55,7 @@ public class GameLoop implements Runnable, Serializable {
         music = new Music("." + File.separator + "sick.mp3", true);
         ThreadPool.execute(music);
         if (OpeningPage.trueForSoloFalseForSaved)
-            map = new Map(1, isOnNetwork, state);
+            map = new Map(OpeningPage.level, isOnNetwork, state);
         else
             map = new Map("." + File.separator + "maps" + File.separator + "savedMap.txt");
         if (isOnNetwork)

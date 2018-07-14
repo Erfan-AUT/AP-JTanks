@@ -2,22 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b614a82-a9f9-4e43-b77a-14dfd36cf229" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/CenterPanel.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/CreatedMap.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/EditorMain.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/GameStuffs.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/maps/savedMap.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/bufferstrategy/OpeningPage$KeyListener.class" afterPath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/bufferstrategy/OpeningPage$KeyListener.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/bufferstrategy/OpeningPage.class" afterPath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/bufferstrategy/OpeningPage.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/logic/cellfillers/ComputerTank.class" afterPath="$PROJECT_DIR$/out/production/Java2DGraphicsGameTemplate/game/template/logic/cellfillers/ComputerTank.class" />
-      <change beforePath="$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java" afterPath="$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/ErfansDick01.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/ErfansDick01.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/ErfansDick02.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/ErfansDick02.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Inferno00.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Inferno00.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Inferno01.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Inferno01.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Inferno02.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Inferno02.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Limbo00.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Limbo00.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Limbo01.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Limbo01.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/Limbo02.txt" afterPath="$PROJECT_DIR$/maps/defaultMaps/Limbo02.txt" />
+      <change beforePath="$PROJECT_DIR$/maps/defaultMaps/map2.txt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java" afterPath="$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java" />
       <change beforePath="$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java" afterPath="$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java" />
       <change beforePath="$PROJECT_DIR$/src/game/template/logic/Map.java" afterPath="$PROJECT_DIR$/src/game/template/logic/Map.java" />
       <change beforePath="$PROJECT_DIR$/src/game/template/logic/NetworkUser.java" afterPath="$PROJECT_DIR$/src/game/template/logic/NetworkUser.java" />
-      <change beforePath="$PROJECT_DIR$/src/game/template/logic/User.java" afterPath="$PROJECT_DIR$/src/game/template/logic/User.java" />
       <change beforePath="$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java" afterPath="$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java" />
-      <change beforePath="$PROJECT_DIR$/src/game/template/logic/cellfillers/UserTank.java" afterPath="$PROJECT_DIR$/src/game/template/logic/cellfillers/UserTank.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,16 +27,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CenterPanel.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/CenterPanel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="151" column="32" lean-forward="true" selection-start-line="151" selection-start-column="32" selection-end-line="151" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="User.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/game/template/logic/User.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -51,118 +39,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Map.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/Map.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="115" column="44" lean-forward="false" selection-start-line="115" selection-start-column="44" selection-end-line="115" selection-end-column="44" />
-              <folding>
-                <element signature="e#8231#8232#0" expanded="true" />
-                <element signature="e#8260#8261#0" expanded="true" />
-                <element signature="e#8289#8290#0" expanded="true" />
-                <element signature="e#8317#8318#0" expanded="true" />
-                <element signature="e#8369#8370#0" expanded="true" />
-                <element signature="e#8402#8403#0" expanded="true" />
-                <element signature="e#8458#8459#0" expanded="true" />
-                <element signature="e#8495#8496#0" expanded="true" />
-                <element signature="e#13607#13608#0" expanded="true" />
-                <element signature="e#13638#13639#0" expanded="true" />
-                <element signature="e#14233#14234#0" expanded="true" />
-                <element signature="e#14274#14275#0" expanded="true" />
-                <element signature="e#14317#14318#0" expanded="true" />
-                <element signature="e#14358#14359#0" expanded="true" />
-                <element signature="e#14407#14408#0" expanded="true" />
-                <element signature="e#14439#14440#0" expanded="true" />
-                <element signature="e#14475#14476#0" expanded="true" />
-                <element signature="e#14509#14510#0" expanded="true" />
-                <element signature="e#14554#14555#0" expanded="true" />
-                <element signature="e#14584#14585#0" expanded="true" />
-                <element signature="e#14628#14629#0" expanded="true" />
-                <element signature="e#14664#14665#0" expanded="true" />
-                <element signature="e#15047#15048#0" expanded="true" />
-                <element signature="e#15085#15086#0" expanded="true" />
-                <element signature="e#15162#15163#0" expanded="true" />
-                <element signature="e#15216#15217#0" expanded="true" />
-                <element signature="e#15256#15257#0" expanded="true" />
-                <element signature="e#15284#15285#0" expanded="true" />
-                <element signature="e#15324#15325#0" expanded="true" />
-                <element signature="e#15352#15353#0" expanded="true" />
-                <element signature="e#15386#15387#0" expanded="true" />
-                <element signature="e#15419#15420#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComputerTank2.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank2.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="82">
-              <caret line="10" column="11" lean-forward="false" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameObject.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/GameObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="173" column="0" lean-forward="false" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Block.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/Block.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="67" column="0" lean-forward="false" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetworkUser.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="NetworkUser.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/game/template/logic/NetworkUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="34" column="79" lean-forward="false" selection-start-line="34" selection-start-column="79" selection-end-line="34" selection-end-column="79" />
+            <state relative-caret-position="681">
+              <caret line="78" column="9" lean-forward="true" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameLoop.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComputerTank.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="242" column="20" lean-forward="false" selection-start-line="242" selection-start-column="20" selection-end-line="242" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameState.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="209">
-              <caret line="91" column="50" lean-forward="true" selection-start-line="91" selection-start-column="50" selection-end-line="91" selection-end-column="50" />
-              <folding>
-                <element signature="e#7161#7162#0" expanded="true" />
-                <element signature="e#7188#7189#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -269,19 +151,19 @@
         <option value="$PROJECT_DIR$/src/game/template/logic/utils/Music.java" />
         <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/Main.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/cellfillers/Block.java" />
-        <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/cellfillers/Tank.java" />
         <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/GameFrame.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/Main.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/EditorMain.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/cellfillers/UserTank.java" />
-        <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/utils/MapEditor/CenterPanel.java" />
         <option value="$PROJECT_DIR$/src/game/template/logic/User.java" />
-        <option value="$PROJECT_DIR$/src/game/template/logic/NetworkUser.java" />
-        <option value="$PROJECT_DIR$/src/game/template/logic/Map.java" />
-        <option value="$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java" />
         <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java" />
+        <option value="$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java" />
+        <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java" />
+        <option value="$PROJECT_DIR$/src/game/template/logic/Map.java" />
+        <option value="$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java" />
+        <option value="$PROJECT_DIR$/src/game/template/logic/NetworkUser.java" />
       </list>
     </option>
   </component>
@@ -404,7 +286,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="BufferedImage&#9;PSI&#9;JAVA://java.awt.image.BufferedImage&#10;&quot;Collides&#9;PSI&#9;JAVA://game.template.logic.cellfillers.ComputerTank#damageInCaseCollisionIsDestructive" />
+    <property name="SearchEverywhereHistoryKey" value="enemyCount&#9;PSI&#9;JAVA://game.template.logic.Map#enemyCount&#10;BufferedImage&#9;PSI&#9;JAVA://java.awt.image.BufferedImage&#10;&quot;Collides&#9;PSI&#9;JAVA://game.template.logic.cellfillers.ComputerTank#damageInCaseCollisionIsDestructive" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/JLayer1.0.1/jl1.0.1.jar!/" />
@@ -651,16 +533,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17760417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18032786" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15248619" sideWeight="0.48958334" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1756906" sideWeight="0.52916664" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3116022" sideWeight="0.47083333" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3116022" sideWeight="0.47083333" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3295325" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12154696" sideWeight="0.48125" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -753,7 +634,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/game/template/logic/Map.java</url>
-          <line>360</line>
+          <line>362</line>
           <properties />
           <option name="timeStamp" value="220" />
         </line-breakpoint>
@@ -769,7 +650,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/game/template/logic/Tan2k.java" />
     <entry file="file://$PROJECT_DIR$/src/game/template/logic/objectstates/BulletState.java" />
     <entry file="file://$PROJECT_DIR$/src/game/template/logic/objectstates/TankState.java" />
     <entry file="file://$PROJECT_DIR$/src/game/template/logic/objectstates/UserTankState.java" />
@@ -800,13 +680,6 @@
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_162/src.zip!/javax/swing/AbstractButton.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_162/src.zip!/javax/swing/ButtonGroup.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_162/src.zip!/java/awt/image/BufferedImage.java" />
-    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/ThreadPool.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="19" column="23" lean-forward="false" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/game/template/graphics/Animation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="301">
@@ -911,14 +784,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="126" column="0" lean-forward="false" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/game/template/logic/utils/Music.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -947,30 +812,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/logic/NetworkUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="34" column="79" lean-forward="false" selection-start-line="34" selection-start-column="79" selection-end-line="34" selection-end-column="79" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="80" column="0" lean-forward="false" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="242" column="20" lean-forward="false" selection-start-line="242" selection-start-column="20" selection-end-line="242" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/Block.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
@@ -987,54 +828,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/logic/User.java">
+    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        <state relative-caret-position="209">
+          <caret line="91" column="50" lean-forward="true" selection-start-line="91" selection-start-column="50" selection-end-line="91" selection-end-column="50" />
           <folding>
-            <element signature="docComment;class#MouseHandler#0;class#User#0" expanded="false" />
+            <element signature="e#7161#7162#0" expanded="true" />
+            <element signature="e#7188#7189#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/logic/Map.java">
+    <entry file="file://$PROJECT_DIR$/src/game/template/logic/cellfillers/ComputerTank.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="115" column="44" lean-forward="false" selection-start-line="115" selection-start-column="44" selection-end-line="115" selection-end-column="44" />
-          <folding>
-            <element signature="e#8231#8232#0" expanded="true" />
-            <element signature="e#8260#8261#0" expanded="true" />
-            <element signature="e#8289#8290#0" expanded="true" />
-            <element signature="e#8317#8318#0" expanded="true" />
-            <element signature="e#8369#8370#0" expanded="true" />
-            <element signature="e#8402#8403#0" expanded="true" />
-            <element signature="e#8458#8459#0" expanded="true" />
-            <element signature="e#8495#8496#0" expanded="true" />
-            <element signature="e#13607#13608#0" expanded="true" />
-            <element signature="e#13638#13639#0" expanded="true" />
-            <element signature="e#14233#14234#0" expanded="true" />
-            <element signature="e#14274#14275#0" expanded="true" />
-            <element signature="e#14317#14318#0" expanded="true" />
-            <element signature="e#14358#14359#0" expanded="true" />
-            <element signature="e#14407#14408#0" expanded="true" />
-            <element signature="e#14439#14440#0" expanded="true" />
-            <element signature="e#14475#14476#0" expanded="true" />
-            <element signature="e#14509#14510#0" expanded="true" />
-            <element signature="e#14554#14555#0" expanded="true" />
-            <element signature="e#14584#14585#0" expanded="true" />
-            <element signature="e#14628#14629#0" expanded="true" />
-            <element signature="e#14664#14665#0" expanded="true" />
-            <element signature="e#15047#15048#0" expanded="true" />
-            <element signature="e#15085#15086#0" expanded="true" />
-            <element signature="e#15162#15163#0" expanded="true" />
-            <element signature="e#15216#15217#0" expanded="true" />
-            <element signature="e#15256#15257#0" expanded="true" />
-            <element signature="e#15284#15285#0" expanded="true" />
-            <element signature="e#15324#15325#0" expanded="true" />
-            <element signature="e#15352#15353#0" expanded="true" />
-            <element signature="e#15386#15387#0" expanded="true" />
-            <element signature="e#15419#15420#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="357">
+          <caret line="227" column="55" lean-forward="false" selection-start-line="227" selection-start-column="55" selection-end-line="227" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameLoop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="57" column="43" lean-forward="false" selection-start-line="57" selection-start-column="43" selection-end-line="57" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/ThreadPool.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="19" column="23" lean-forward="false" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1046,14 +871,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/GameState.java">
+    <entry file="file://$PROJECT_DIR$/src/game/template/logic/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="91" column="50" lean-forward="true" selection-start-line="91" selection-start-column="50" selection-end-line="91" selection-end-column="50" />
+        <state relative-caret-position="503">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding>
-            <element signature="e#7161#7162#0" expanded="true" />
-            <element signature="e#7188#7189#0" expanded="true" />
+            <element signature="e#8321#8322#0" expanded="true" />
+            <element signature="e#8350#8351#0" expanded="true" />
+            <element signature="e#8379#8380#0" expanded="true" />
+            <element signature="e#8407#8408#0" expanded="true" />
+            <element signature="e#8459#8460#0" expanded="true" />
+            <element signature="e#8492#8493#0" expanded="true" />
+            <element signature="e#8548#8549#0" expanded="true" />
+            <element signature="e#8585#8586#0" expanded="true" />
+            <element signature="e#13697#13698#0" expanded="true" />
+            <element signature="e#13728#13729#0" expanded="true" />
+            <element signature="e#14323#14324#0" expanded="true" />
+            <element signature="e#14364#14365#0" expanded="true" />
+            <element signature="e#14407#14408#0" expanded="true" />
+            <element signature="e#14448#14449#0" expanded="true" />
+            <element signature="e#14497#14498#0" expanded="true" />
+            <element signature="e#14529#14530#0" expanded="true" />
+            <element signature="e#14565#14566#0" expanded="true" />
+            <element signature="e#14599#14600#0" expanded="true" />
+            <element signature="e#14644#14645#0" expanded="true" />
+            <element signature="e#14674#14675#0" expanded="true" />
+            <element signature="e#14718#14719#0" expanded="true" />
+            <element signature="e#14754#14755#0" expanded="true" />
+            <element signature="e#15137#15138#0" expanded="true" />
+            <element signature="e#15175#15176#0" expanded="true" />
+            <element signature="e#15252#15253#0" expanded="true" />
+            <element signature="e#15306#15307#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/template/bufferstrategy/OpeningPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="190" column="42" lean-forward="false" selection-start-line="190" selection-start-column="42" selection-end-line="190" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/template/logic/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+          <folding>
+            <element signature="docComment;class#MouseHandler#0;class#User#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_162/src.zip!/java/net/Socket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="900" column="23" lean-forward="false" selection-start-line="900" selection-start-column="23" selection-end-line="900" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/template/logic/NetworkUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="78" column="9" lean-forward="true" selection-start-line="78" selection-start-column="9" selection-end-line="78" selection-end-column="9" />
+          <folding />
         </state>
       </provider>
     </entry>

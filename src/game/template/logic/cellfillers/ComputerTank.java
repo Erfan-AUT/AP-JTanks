@@ -226,7 +226,6 @@ public class ComputerTank extends Tank {
             setAlive(false);
             whichMap.getAllObjects().remove(this);
             whichMap.getVolatileObjects().remove(this);
-//            whichMap.decreaseEnemyCount();
         } else {
             Music music = new Music(".\\Sounds\\enemyshot.mp3");
             ThreadPool.execute(music);
