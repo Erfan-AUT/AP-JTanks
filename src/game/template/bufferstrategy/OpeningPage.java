@@ -117,7 +117,7 @@ public class OpeningPage extends JFrame implements Runnable {
         //op.dispose();
         isGameStarted = true;
         game.setGameOver(false);
-        game.init(map);
+        game.init();
         ThreadPool.execute(game);
         frame.setVisible(true);
         music.close();
@@ -196,7 +196,8 @@ public class OpeningPage extends JFrame implements Runnable {
                             op.dispose();
                         }
                     }
-                    if (setCount == 1) {
+                    if (setCount == 1)
+                    {
                         for (JRadioButton radioButton : mapButtons)
                             if (radioButton.isSelected())
                                 mapName = radioButton.getText();
@@ -212,12 +213,9 @@ public class OpeningPage extends JFrame implements Runnable {
                             map = new Map(OpeningPage.level, isOnNetwork, game.getState());
                         else
                             map = new Map("." + File.separator + "maps" + File.separator + "savedMap.txt");
-                        if (isOnNetwork) {
-                            if (trueForServerFalseForClient)
-                                game.setUser(new NetworkUser(map));
-                            else
-                                game.setUser(new NetworkUser());
-                        } else
+                        if (isOnNetwork)
+                            game.setUser(new NetworkUser(map));
+                        else
                             game.setUser(new User(map));
                         op.dispose();
                         dispose();
@@ -256,6 +254,7 @@ public class OpeningPage extends JFrame implements Runnable {
             // currentPanel.add(hardLabel);
             easyButton.requestFocus();
         }
+
 
 
     }

@@ -48,7 +48,7 @@ public abstract class Tank extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        rifleCount = 50;
+        rifleCount = 300;
         cannonCount = 50;
         forward = false;
         angle = 0;

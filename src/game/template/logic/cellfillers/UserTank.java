@@ -401,6 +401,8 @@ public class UserTank extends Tank {
 //                whichMap.getAllObjects().add(shoot(deg));
 //            }
         }
+        if (user.isMouseRightClickPressed())
+            whichMap.getMainTanks().get(user.getNumber()).changeWeapon();
 //        if (user.isMouseRightClickPressed())
 //            changeWeapon();
 //

@@ -51,6 +51,11 @@ public class Block extends GameObject {
                 isPassableByBullet = true;
                 break;
         }
+        if (type.startsWith("w")) {
+            isPassableByTank = false;
+            isPassableByBullet = true;
+            isDestructible = false;
+        }
         displayTheAnimations();
         //Any other means non-passable.
     }

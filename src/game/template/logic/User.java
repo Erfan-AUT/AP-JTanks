@@ -132,7 +132,6 @@ public class User implements Serializable{
             if (e.getButton() == 1) {
                 mouseLeftClickPressed = true;
             } else if (e.getButton() == 3) {
-                tank.changeWeapon();
                 mouseRightClickPressed = true;
             }
         }
@@ -144,8 +143,8 @@ public class User implements Serializable{
             } else if (e.getButton() == 3) {
                 mouseRightClickPressed = false;
             }
-            System.out.println("Mouse X: " + e.getX());
-            System.out.println("Mouse Y: " + e.getY());
+//            System.out.println("Mouse X: " + e.getX());
+//            System.out.println("Mouse Y: " + e.getY());
 
         }
 
@@ -218,5 +217,9 @@ public class User implements Serializable{
 
     public int getNumber() {
         return number;
+    }
+
+    public Map getMap() {
+        return map;
     }
 }

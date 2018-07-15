@@ -77,6 +77,7 @@ public class NetworkUser extends User implements Runnable {
                                 map.setVolatileObjects((ArrayList<GameObject>) tempIn.readObject());
                             else {
                                 map = new Map((String) tempIn.readObject(), number);
+                                map.getState().setMap(map);
                                 tank = map.getMainTanks().get(number);
                                 isFirstTime = false;
                             }

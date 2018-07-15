@@ -46,15 +46,14 @@ public class GameLoop implements Runnable, Serializable {
         //   map = new Map(1, state);
     }
 
-    public void setUser(User user)
-    {
+    public void setUser(User user) {
         this.user = user;
     }
 
     /**
      * This must be called before the game loop starts.
      */
-    public void init(Map map) {
+    public void init() {
         // Perform all initializations ...
         // state = new GameState();
         //For now false.
@@ -65,8 +64,9 @@ public class GameLoop implements Runnable, Serializable {
 //            user = new NetworkUser(map, trueForServerFalseForClient);
 //        else
 //            user = new User(map, true);
-        this.map = map;
-        map.getMainTank().setUser(user);
+        this.map = user.getMap();
+        if ((!OpeningPage.isOnNetwork) || ((OpeningPage.isOnNetwork) && (OpeningPage.trueForServerFalseForClient)))
+            map.getMainTank().setUser(user);
         state.setMap(map);
         canvas.addKeyListener(user.getKeyHandler());
         canvas.addMouseListener(user.getMouseHandler());

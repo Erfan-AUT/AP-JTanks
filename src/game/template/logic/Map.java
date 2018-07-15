@@ -70,6 +70,7 @@ public class Map implements Serializable {
         String eTank = "." + File.separator + "Move" + File.separator + "ETank";
         String wicket = "." + File.separator + "Images" + File.separator + "wicket";
         String teazel = "." + File.separator + "Images" + File.separator + "teazel";
+        this.state = state;
         try {
             exp = ImageIO.read(new File("explosion_anim.png"));
         } catch (IOException e) {
@@ -405,7 +406,11 @@ public class Map implements Serializable {
         this.volatileObjects = volatileObjects;
     }
 
-//    public void decreaseEnemyCount() {
+    public GameState getState() {
+        return state;
+    }
+
+    //    public void decreaseEnemyCount() {
 //        enemyCount--;
 //    }
 //

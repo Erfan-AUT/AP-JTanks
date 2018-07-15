@@ -87,7 +87,7 @@ public class GameFrame extends JFrame {
         }
         wideAreaBlock = new Block(0, 0, false, 0, null, 2,
                 "." + File.separator + "Stuffs" +
-                        File.separator +"WideArea.png", false, "WA");
+                        File.separator + "WideArea.png", false, "WA");
         addWindowListener(new WinListener(this));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         // Initialize the JFrame ...
@@ -148,72 +148,75 @@ public class GameFrame extends JFrame {
         g2d.setColor(Color.GRAY);
         g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         wideAreaBlock.getAnimation().drawIt(g2d);
-        ArrayList<UserTank> tanks = state.getMap().getMainTanks();
-        int user = state.getUser();
-        g2d.translate(-state.getMap().getCameraZeroX(user), -state.getMap().getCameraZeroY(user));
-        //TODO: should be visible ones.
-        try {
-            for (GameObject object : state.getMap().getVisibleObjects()) {
-                if (!(object instanceof Tank)) {
-               // if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
-                    if (object.isAlive())
-                        object.getAnimation().drawIt(g2d);
-                } else if (object instanceof ComputerTank) {
-                    if (object.isAlive()) {
-                        Tank tank = ((Tank) object);
-                        ((Animation) tank.getAnimation()).drawTheBullets(g2d);
-    //                tank.getAnimation().drawIt(g2d);
-                        if (tank.getAnimation().active) {
-                            if (tank.isForward()) {
-                                tank.getAnimation().drawImages(g2d);
+        ArrayList<UserTank> tanks = new ArrayList<>();
+        int user = 0;
+        if (state.getMap() != null) {
+            tanks = state.getMap().getMainTanks();
+            user = state.getUser();
+            g2d.translate(-state.getMap().getCameraZeroX(user), -state.getMap().getCameraZeroY(user));
+            //TODO: should be visible ones.
+            try {
+                for (GameObject object : state.getMap().getVisibleObjects()) {
+                    if (!(object instanceof Tank)) {
+                        // if (!(object instanceof ComputerTank) && !(object instanceof UserTank)) {
+                        if (object.isAlive())
+                            object.getAnimation().drawIt(g2d);
+                    } else if (object instanceof ComputerTank) {
+                        if (object.isAlive()) {
+                            Tank tank = ((Tank) object);
+                            ((Animation) tank.getAnimation()).drawTheBullets(g2d);
+                            //                tank.getAnimation().drawIt(g2d);
+                            if (tank.getAnimation().active) {
+                                if (tank.isForward()) {
+                                    tank.getAnimation().drawImages(g2d);
+                                } else {
+                                    ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                                }
                             } else {
-                                ((Animation) tank.getAnimation()).drawImagesReverse(g2d);
+                                ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
                             }
                         } else {
-                            ((Animation) tank.getAnimation()).drawOnlyTheCurrentFrame(g2d);
+                            state.getMap().getAllObjects().remove(object);
                         }
-                    } else {
-                        state.getMap().getAllObjects().remove(object);
                     }
                 }
+            } catch (Exception e) {
+                //  e.printStackTrace();
             }
-        } catch (Exception e) {
-          //  e.printStackTrace();
-        }
 
-        UserTank pTank = (UserTank) state.getPlayerTank();
-        if (pTank.getAnimation().isActive()) {
-            if (pTank.isForward()) {
-                pTank.getAnimation().drawImages(g2d);
-            } else {
-                ((Animation) pTank.getAnimation()).drawImagesReverse(g2d);
-            }
-        } else {
-            ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
-        }
-        ((Animation) pTank.getAnimation()).drawTheBullets(g2d);
-        try {
-            for (Iterator it = Map.explosions.iterator(); it.hasNext(); ) {
-                MasterAnimation masterAnimation = (MasterAnimation) it.next();
-                if (masterAnimation.isActive()) {
-                    masterAnimation.Draw(g2d);
+            UserTank pTank = (UserTank) state.getPlayerTank();
+            if (pTank.getAnimation().isActive()) {
+                if (pTank.isForward()) {
+                    pTank.getAnimation().drawImages(g2d);
                 } else {
-                    Map.explosions.remove(masterAnimation);
+                    ((Animation) pTank.getAnimation()).drawImagesReverse(g2d);
                 }
+            } else {
+                ((Animation) state.getPlayerTank().getAnimation()).drawOnlyTheCurrentFrame(g2d);
             }
-        } catch (ConcurrentModificationException ex) {
+            ((Animation) pTank.getAnimation()).drawTheBullets(g2d);
+            try {
+                for (Iterator it = Map.explosions.iterator(); it.hasNext(); ) {
+                    MasterAnimation masterAnimation = (MasterAnimation) it.next();
+                    if (masterAnimation.isActive()) {
+                        masterAnimation.Draw(g2d);
+                    } else {
+                        Map.explosions.remove(masterAnimation);
+                    }
+                }
+            } catch (ConcurrentModificationException ex) {
 
-        }
-        g2d.setFont(new Font( "SansSerif", Font.BOLD, 50 ));
-        g2d.setColor(Color.GREEN);
-        g2d.drawString("" + tanks.get(user).getRifleCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(0) + 100 );
-        g2d.drawString("" + tanks.get(user).getCannonCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(user) + 160);
-        g2d.drawImage(riflesCount, null, state.getMap().getCameraZeroX(0) + 25, state.getMap().getCameraZeroY(0) + 50);
-        g2d.drawImage(cannonsCount, null, state.getMap().getCameraZeroX(0) + 35, state.getMap().getCameraZeroY(0) + 120);
-        int xPlus = 36;
-        for (int i = 0; i < ((UserTank) state.getPlayerTank()).getLives(); i++)
-        {
-            g2d.drawImage(healthImage, null, state.getMap().getCameraZeroX(0) + 450 + + (i + 1) * xPlus, state.getMap().getCameraZeroY(0) + 50);
+            }
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 50));
+            g2d.setColor(Color.GREEN);
+            g2d.drawString("" + tanks.get(user).getRifleCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(0) + 100);
+            g2d.drawString("" + tanks.get(user).getCannonCount(), state.getMap().getCameraZeroX(0) + 100, state.getMap().getCameraZeroY(user) + 160);
+            g2d.drawImage(riflesCount, null, state.getMap().getCameraZeroX(0) + 25, state.getMap().getCameraZeroY(0) + 50);
+            g2d.drawImage(cannonsCount, null, state.getMap().getCameraZeroX(0) + 35, state.getMap().getCameraZeroY(0) + 120);
+            int xPlus = 36;
+            for (int i = 0; i < ((UserTank) state.getPlayerTank()).getLives(); i++) {
+                g2d.drawImage(healthImage, null, state.getMap().getCameraZeroX(0) + 450 + +(i + 1) * xPlus, state.getMap().getCameraZeroY(0) + 50);
+            }
         }
 //        int drawX, drawY;
 //        g2d.drawString("Cannon Count: " + tanks.get(user).getCannonCount(),

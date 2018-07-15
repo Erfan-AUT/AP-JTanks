@@ -74,7 +74,8 @@ public class GameState implements Serializable {
 
     public void setMap(Map map) {
         this.map = map;
-        playerTank = map.getMainTank();
+        if ((!OpeningPage.isOnNetwork)  || ((OpeningPage.isOnNetwork) &&(OpeningPage.trueForServerFalseForClient)))
+                playerTank = map.getMainTank();
 
     }
 
@@ -85,7 +86,7 @@ public class GameState implements Serializable {
 //        int i;
 //        if (map.getMainTank().getUser().isKeyUP())
 //            i = 0;
-        if (user == 0) {
+        if ((user == 0) && (map != null)){
             map.update(0);
             if (OpeningPage.isOnNetwork)
                 map.update(1);
@@ -141,13 +142,13 @@ public class GameState implements Serializable {
 //            if (object instanceof Block)
 //                if (((Block)object).getType() =="cf")
 //                    System.out.println("Found it!");
-        //map.update(0);
-        //map.update();
-        //playerTank.update();
-        //
-        // Update the state of all game elements
-        //  based on user input and elapsed time ...
-        //
+    //map.update(0);
+    //map.update();
+    //playerTank.update();
+    //
+    // Update the state of all game elements
+    //  based on user input and elapsed time ...
+    //
 
 
 //    public KeyListener getKeyListener() {
@@ -211,5 +212,9 @@ public class GameState implements Serializable {
 
     public GameLoop getGame() {
         return game;
+    }
+
+    public void setPlayerTank(Tank playerTank) {
+        this.playerTank = playerTank;
     }
 }

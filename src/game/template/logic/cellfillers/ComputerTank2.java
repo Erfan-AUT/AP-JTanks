@@ -27,49 +27,51 @@ public class ComputerTank2 extends ComputerTank {
         if (deg < 0) {
             deg = 360 + deg;
         }
-        if (Math.abs(locX - enemyTank.locX) > 75) {
-            int xSign = -(locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
-            int plusX = getVelocity() * xSign;
-            System.out.println(avoidCollision());
-            locX += plusX;
-            locX += xSign * avoidCollision();
-            animation.changeCoordinates(locX, locY);
-            if (deg != 0 && deg != 180) {
-                if (locX > enemyTank.locX) {
-                    deg += 5;
-                    ((Animation) animation).setMovingRotationDeg(deg);
-                } else {
-                    deg -= 5;
-                    ((Animation) animation).setMovingRotationDeg(deg);
-                }
-                setForward(false);
-            } else {
-                if (locX > enemyTank.locX) {
+        if ((Math.abs(locX - enemyTank.locX) != 0) && (Math.abs(locY - enemyTank.locY) != 0)) {
+            if (Math.abs(locX - enemyTank.locX) > 75) {
+                int xSign = -(locX - enemyTank.locX) / Math.abs(locX - enemyTank.locX);
+                int plusX = getVelocity() * xSign;
+                System.out.println(avoidCollision());
+                locX += plusX;
+                locX += avoidCollision();
+                animation.changeCoordinates(locX, locY);
+                if (deg != 0 && deg != 180) {
+                    if (locX > enemyTank.locX) {
+                        deg += 5;
+                        ((Animation) animation).setMovingRotationDeg(deg);
+                    } else {
+                        deg -= 5;
+                        ((Animation) animation).setMovingRotationDeg(deg);
+                    }
                     setForward(false);
                 } else {
-                    setForward(true);
+                    if (locX > enemyTank.locX) {
+                        setForward(false);
+                    } else {
+                        setForward(true);
+                    }
                 }
-            }
-        } else if (Math.abs(locY - enemyTank.locY) > 0) {
-            int ySign = -(locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
-            int plusY = getVelocity() * ySign;
-            locY += plusY;
-            locY += ySign * avoidCollision();
-            animation.changeCoordinates(locX, locY);
-            if (deg != 90 && deg != 270) {
-                if (locY > enemyTank.locY) {
-                    deg += 5;
-                    ((Animation) animation).setMovingRotationDeg(deg);
-                } else {
-                    deg -= 5;
-                    ((Animation) animation).setMovingRotationDeg(deg);
-                }
-                setForward(false);
-            } else {
-                if (locY > enemyTank.locY) {
+            } else if (Math.abs(locY - enemyTank.locY) > 0) {
+                int ySign = -(locY - enemyTank.locY) / Math.abs(locY - enemyTank.locY);
+                int plusY = getVelocity() * ySign;
+                locY += plusY;
+                locY += avoidCollision();
+                animation.changeCoordinates(locX, locY);
+                if (deg != 90 && deg != 270) {
+                    if (locY > enemyTank.locY) {
+                        deg += 5;
+                        ((Animation) animation).setMovingRotationDeg(deg);
+                    } else {
+                        deg -= 5;
+                        ((Animation) animation).setMovingRotationDeg(deg);
+                    }
                     setForward(false);
                 } else {
-                    setForward(true);
+                    if (locY > enemyTank.locY) {
+                        setForward(false);
+                    } else {
+                        setForward(true);
+                    }
                 }
             }
         }
@@ -89,7 +91,17 @@ public class ComputerTank2 extends ComputerTank {
             moveIt();
     }
 
-//    @Override
+    @Override
+    protected boolean validateAbility() {
+        long current = System.currentTimeMillis();
+        if (current - lastShootTime >= 100) {
+            lastShootTime = current;
+            return true;
+        }
+        return false;
+    }
+
+    //    @Override
 //    public void takeDamage(int damage) {
 //        super.takeDamage(damage);
 //    }
