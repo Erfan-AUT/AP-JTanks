@@ -22,6 +22,10 @@ public class User implements Serializable{
     public User()
     {}
 
+    /**
+     * Creates a new user giving its map.
+     * @param map the map assigned to the user.
+     */
     public User(Map map) {
         this.map = map;
         number = 0;

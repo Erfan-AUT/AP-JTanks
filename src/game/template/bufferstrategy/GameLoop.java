@@ -5,6 +5,7 @@ import game.template.logic.Map;
 import game.template.logic.NetworkUser;
 import game.template.logic.User;
 import game.template.logic.utils.Music;
+import sun.nio.ch.Net;
 
 import java.io.File;
 import java.io.Serializable;
@@ -48,6 +49,11 @@ public class GameLoop implements Runnable, Serializable {
 
     public void setUser(User user) {
         this.user = user;
+        if (user instanceof NetworkUser)
+        {
+            Thread thread = new Thread((NetworkUser)user);
+            thread.start();
+        }
     }
 
     /**

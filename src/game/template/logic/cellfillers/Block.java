@@ -51,7 +51,7 @@ public class Block extends GameObject {
                 isPassableByBullet = true;
                 break;
         }
-        if (type.startsWith("w")) {
+        if (type.startsWith("t")) {
             isPassableByTank = false;
             isPassableByBullet = true;
             isDestructible = false;

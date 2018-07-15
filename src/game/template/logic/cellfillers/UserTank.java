@@ -227,7 +227,9 @@ public class UserTank extends Tank {
         }
     }
 
-
+    /**
+     * the main part of the rotation.
+     */
     public void rotate() {
         int tmp = getAngle() % 360;
         int x = locX;
@@ -355,6 +357,10 @@ public class UserTank extends Tank {
         }
     }
 
+    /***
+     * the initial part of the tank's rotation.
+     * @param deg
+     */
     private void rot(int deg) {
         setForward(false);
         setVelocity(0);
@@ -363,6 +369,10 @@ public class UserTank extends Tank {
         ((Animation) animation).setMovingRotationDeg(getAngle());
     }
 
+    /**
+     * the final part of the rotation.
+     * @param deg
+     */
     private void crossRot(int deg) {
         setForward(false);
         setVelocity(0);
@@ -370,6 +380,11 @@ public class UserTank extends Tank {
         setAngle(getAngle() + rotationDegree);
         ((Animation) animation).setMovingRotationDeg(getAngle());
     }
+
+    /**
+     * rotates the tank's cannon using the user's mouse location
+     * @return the degree in which it returns.
+     */
 
     private double rotateTheCannon() {
         int dx = user.getMouseX() - (locX + 10);
@@ -413,13 +428,32 @@ public class UserTank extends Tank {
         super.readContents(location);
     }
 
+    /**
+     * eats a gift.
+     * @param gift the gift.
+     */
     public void recieveGift(Block gift) {
-        if (gift.getType().equals("cf"))
-            increaseCannonCount(20);
+        switch (gift.getType())
+        {
+            case "cf":
+                increaseCannonCount(20);
+                break;
+            case "re":
+                //setHealth(initialHealth);
+                lives++;
+                break;
+            case "mf":
+                increaseRifleCount(80);
+                break;
+            case "up":
+                bulletDamage += 40;
+                break;
+
+        }
+
 
         whichMap.getAllObjects().remove(gift);
         whichMap.getVolatileObjects().remove(gift);
-
     }
 
     /**

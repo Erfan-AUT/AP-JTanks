@@ -44,6 +44,11 @@ public class Bullet extends GameObject implements Runnable {
         this.damage = damage;
     }
 
+    /**
+     * shoots the bullet into the void, into the meaningless and pre-determined death that is before it.
+     * Quite sad, isn't it me lads?
+     * Tell this story to your grandchildren when you get ilder.
+     */
     @Override
     public void run() {
         while (isActive) {

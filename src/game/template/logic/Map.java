@@ -181,6 +181,9 @@ public class Map implements Serializable {
     }
 
 
+    /**
+     * finds the map's highest block, not letting the tank pass through it.
+     */
     public void findTheHighestAllowedHeight() {
         int maxY = height / 2;
         for (GameObject object : allObjects) {
@@ -211,6 +214,11 @@ public class Map implements Serializable {
     }
 
 
+    /**
+     * modifes and reads the string that is going to be converted to the map.
+     * @param fileName the source file.
+     * @return an arraylist of data.
+     */
     private ArrayList<MapData> modifyReadString(String fileName) {
         ArrayList<String> read = FileUtils.readWithStream(fileName);
         ArrayList<MapData> returnValue = new ArrayList<>();
@@ -230,6 +238,10 @@ public class Map implements Serializable {
         return returnValue;
     }
 
+    /**
+     * updates the map's width relative to the tank's position in the map
+     * @param user which user's map?
+     */
     public void updateWidth(int user) {
         int maxX = 0;
         int w0 = width;
@@ -244,6 +256,10 @@ public class Map implements Serializable {
         width = maxX;
     }
 
+    /**
+     * same thing, only with height.
+     * @param user
+     */
     public void updateHeight(int user) {
         int maxX = 0;
         for (GameObject object : allObjects) {
@@ -257,6 +273,10 @@ public class Map implements Serializable {
         height = maxX;
     }
 
+    /**
+     * updates the 0-0 point of the camera of the map/
+     * @param user which user?
+     */
 
     public void updateCameraZeros(int user) {
         if (mainTanks.get(user).locX + cameraWidth <= width) {
@@ -278,6 +298,10 @@ public class Map implements Serializable {
     }
 
 
+    /**
+     * updates the visible objects of the map in order to render them later.
+     * @param user
+     */
     public void updateVisibleObjects(int user) {
         //Resets everything in order to see what has been renewed.
         if (visibleObjects != null) {
@@ -292,6 +316,13 @@ public class Map implements Serializable {
         }
     }
 
+    /**
+     * checks whether or not the tank goes out of the map's boundaries or not.
+     * @param one the tank
+     * @param trueForVisibleFalseForAll obv.
+     * @param user the user
+     * @return yes or no.
+     */
     public boolean doesntGoOutOfMap(GameObject one, boolean trueForVisibleFalseForAll, int user) {
         Dimension d = GameState.getRelativeHeightWidth(one);
         int y = one.locY;
@@ -327,7 +358,10 @@ public class Map implements Serializable {
         return false;
     }
 
-
+    /**
+     * updates the map accordingly.
+     * @param user
+     */
     public synchronized void update(int user) {
         if (!isOnNetwork) {
             updateWidth(user);
@@ -391,6 +425,11 @@ public class Map implements Serializable {
         return highestObject;
     }
 
+    /**
+     * adds a new explosion to the map that does the relative work.
+     * @param x where to put it.
+     * @param y
+     */
     public static synchronized void addANewExp(int x, int y) {
         explosion = new MasterAnimation(exp, 134, 134, 12, 20, false, x, y, 0);
         explosions.add(explosion);

@@ -20,6 +20,10 @@ public class CreatedMap extends JFrame {
     private ArrayList<BufferedImage> imagesOfObjects;
     private ButtonHandler buttonHandler;
 
+    /**
+     * creates a NEW map, if you know what I mean.
+     * @throws HeadlessException
+     */
     public CreatedMap() throws HeadlessException {
         buttonsOfObjects = new ArrayList<JButton>();
         imagesOfObjects = new ArrayList<BufferedImage>();
@@ -27,6 +31,9 @@ public class CreatedMap extends JFrame {
         configure();
     }
 
+    /**
+     * Configures the intiial details of the map.
+     */
     private void configure() {
         setUndecorated(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -54,16 +61,27 @@ public class CreatedMap extends JFrame {
         });
     }
 
+    /**
+     * initalizes the main panel of our working space.
+     */
+
     private void initMainPanel() {
         mainJPanle = new JPanel();
         mainJPanle.setLayout(new BorderLayout());
     }
 
+
+    /**
+     * intializes the center panel of our working space.
+     */
     private void initCenterPanel() {
         centerPanel = new CenterPanel();
         mainJPanle.add(centerPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * initalizes our toolbar.
+     */
     private void initToolBar() {
         toolBar = new JToolBar();
         toolBar.setLayout(new GridLayout(buttonsOfObjects.size() + 1, 1));
@@ -76,6 +94,10 @@ public class CreatedMap extends JFrame {
         save.addActionListener(buttonHandler);
         toolBar.add(save);
     }
+
+    /**
+     * inits our buttons.
+     */
 
     private void initButtons() {
         File nailsDir = new File(".\\Nails");
@@ -90,6 +112,9 @@ public class CreatedMap extends JFrame {
         }
     }
 
+    /**
+     * inits the object images.
+     */
     private void initObjectImages() {
         File objects = new File(".\\Objects");
         File[] imagesOfObjects = objects.listFiles();

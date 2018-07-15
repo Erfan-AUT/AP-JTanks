@@ -13,12 +13,14 @@ import java.util.ArrayList;
 public class NetworkUser extends User implements Runnable {
     private boolean isFirstTime = true;
     private boolean trueForServerFalseForClient;
+    private OpeningPage op;
 
-    public NetworkUser(Map map) {
+    public NetworkUser(Map map, OpeningPage op) {
         this.trueForServerFalseForClient = true;
         this.map = map;
         number = 0;
         tank = map.getMainTanks().get(0);
+        this.op = op;
         //tank = map.getMainTanks().get(0);
 
     }
@@ -28,7 +30,9 @@ public class NetworkUser extends User implements Runnable {
         trueForServerFalseForClient = false;
     }
 
-
+    /**
+     * Tries to connect with another user and move data.
+     */
     @Override
     public void run() {
         if (trueForServerFalseForClient) {
@@ -37,7 +41,10 @@ public class NetworkUser extends User implements Runnable {
                 byte[] maxSized = new byte[2048];
                 try (ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream())) {
                     if (isFirstTime) {
-                        out.writeObject(OpeningPage.mapName);
+                        String fileName = "." + File.separator + "maps" + File.separator + "defaultMaps"
+                                + File.separator + OpeningPage.mapName + "0" + OpeningPage.level + ".txt";
+                        out.writeObject(fileName);
+                        out.flush();
                     } else {
                         out.writeObject(map.getVolatileObjects());
                     }
@@ -57,6 +64,7 @@ public class NetworkUser extends User implements Runnable {
                 }
                 if (client.isClosed())
                     System.exit(0);
+                op.dispose();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -109,18 +117,18 @@ public class NetworkUser extends User implements Runnable {
     }
 
 
-    private byte[] createVolatileBytes() {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-        try (ObjectOutputStream tempOut = new ObjectOutputStream(bos)) {
-            tempOut.writeObject(map.getVolatileObjects());
-            tempOut.flush();
-            return bos.toByteArray();
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
-        return null;
-    }
+//    private byte[] createVolatileBytes() {
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//
+//        try (ObjectOutputStream tempOut = new ObjectOutputStream(bos)) {
+//            tempOut.writeObject(map.getVolatileObjects());
+//            tempOut.flush();
+//            return bos.toByteArray();
+//        } catch (IOException ex) {
+//            System.err.println(ex);
+//        }
+//        return null;
+//    }
 
 
     class NetworkData implements Serializable {

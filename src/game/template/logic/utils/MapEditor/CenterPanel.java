@@ -24,6 +24,9 @@ public class CenterPanel extends JPanel {
     private boolean place;
     private String type;
 
+    /**
+     * Creates a new panel in which the map is created.
+     */
     public CenterPanel() {
         type = null;
         requestFocus();
@@ -41,6 +44,11 @@ public class CenterPanel extends JPanel {
             e.printStackTrace();
         }
     }
+
+    /**
+     * paints the components in their respective places.
+     * @param g g2d.
+     */
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -75,6 +83,10 @@ public class CenterPanel extends JPanel {
 //            g2d.drawLine(0, j * 120, 1800, j * 120);
 //        }
     }
+
+    /**
+     * initalizes the input that we should give to the app by mouse and keyboard movements.
+     */
 
     private void initInput() {
 
@@ -155,6 +167,10 @@ public class CenterPanel extends JPanel {
 
     }
 
+    /**
+     * saves the map in a persice location.
+     */
+
     public void save() {
         String name = JOptionPane.showInputDialog("Please Enter a name");
         String st = name + ".txt";
@@ -176,6 +192,11 @@ public class CenterPanel extends JPanel {
             e.printStackTrace();
         }
     }
+
+    /**
+     * sets the image that is under the mouse.
+     * @param imageUnderTheMouse
+     */
 
     public void setImageUnderTheMouse(BufferedImage imageUnderTheMouse) {
         this.imageUnderTheMouse = imageUnderTheMouse;

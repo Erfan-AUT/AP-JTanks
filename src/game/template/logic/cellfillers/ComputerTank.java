@@ -195,6 +195,9 @@ public class ComputerTank extends Tank {
     }
 
 
+    /**
+     * updates the tank accordingly.
+     */
     @Override
     public void update() {
         animation.active = false;
@@ -221,6 +224,11 @@ public class ComputerTank extends Tank {
 
     }
 
+    /**
+     * takes damage from an external object.
+     * @param damage
+     */
+
     @Override
     public void takeDamage(int damage) {
         super.takeDamage(damage);
@@ -236,6 +244,10 @@ public class ComputerTank extends Tank {
 
     }
 
+    /**
+     * We'll talk about this later.
+     * @return
+     */
     protected boolean validateAbility() {
 //        if (whichMap.doesntGoOutOfMap(this, true, 0))
 //            temporarilyDisabled = false;
@@ -265,6 +277,9 @@ public class ComputerTank extends Tank {
         return animation;
     }
 
+    /**
+     * loads fields that could not be saved into the file.
+     */
     @Override
     public void loadTransientFields() {
         try {
